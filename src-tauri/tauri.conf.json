@@ -36,7 +36,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "pgn-pusher",
+        "title": "Lichess PGN Uploader",
         "width": 800,
         "height": 600
       }
