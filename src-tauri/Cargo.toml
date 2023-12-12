@@ -1,5 +1,5 @@
 [package]
-name = "pgn-pusher"
+name = "pgn-broadcaster"
 version = "0.0.0"
 description = "A Tauri App"
 authors = ["you"]

@@ -28,6 +28,14 @@
     pnpm tauri dev
     ```
 
+## Icon Generation
+
+Given a source image file, generate the icon files for the app:
+
+```bash
+pnpm tauri icon public/lichess-favicon-1024.png
+```
+
 ## Test Build
 
 ```bash
