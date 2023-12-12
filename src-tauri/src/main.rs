@@ -30,6 +30,11 @@ struct Round {
     url: String,
 }
 
+#[derive(Serialize, Deserialize, Debug)]
+struct PgnUploadResponse {
+    ok: bool,
+}
+
 #[derive(Serialize, Deserialize, Debug, Clone)]
 struct FolderChangeEvent {
     kind: String,
@@ -38,10 +43,9 @@ struct FolderChangeEvent {
 
 #[tauri::command]
 fn get_broadcast_by_token(token: &str) -> BroadcastResponse {
-    let url = "https://eoz4efc1xj7c8cl.m.pipedream.net/api/broadcast-by-token";
     let client = reqwest::blocking::Client::new();
     client
-        .get(url)
+        .get("http://0.0.0.0:3000/get-broadcast.json")
         .bearer_auth(token)
         .send()
         .unwrap()
@@ -51,7 +55,7 @@ fn get_broadcast_by_token(token: &str) -> BroadcastResponse {
 
 #[tauri::command]
 fn start_watching_folder(window: Window, token: &str, round: &str, folder: &str) {
-    println!("starting watching folder: {folder:?}");
+    println!("started watching folder: {folder:?}");
     let (tx, rx) = std::sync::mpsc::channel();
 
     let folder_to_watch = folder.to_string();
@@ -64,7 +68,6 @@ fn start_watching_folder(window: Window, token: &str, round: &str, folder: &str)
 
                     match event.kind {
                         EventKind::Create(_) => {
-                            println!("file created");
                             tx.send(FolderChangeEvent {
                                 kind: "create".to_string(),
                                 paths: event.paths,
@@ -72,7 +75,6 @@ fn start_watching_folder(window: Window, token: &str, round: &str, folder: &str)
                             .unwrap();
                         }
                         EventKind::Modify(_) => {
-                            println!("file modified");
                             tx.send(FolderChangeEvent {
                                 kind: "modified".to_string(),
                                 paths: event.paths,
@@ -100,18 +102,32 @@ fn start_watching_folder(window: Window, token: &str, round: &str, folder: &str)
         }
     });
 
-    while let Ok(event) = rx.recv() {
-        println!("rx: {event:?}");
-        window.emit("folder-change", &event).unwrap();
+    let token2 = token.to_string();
+    let round2 = round.to_string();
+    std::thread::spawn(move || {
+        while let Ok(event) = rx.recv() {
+            println!("rx: {event:?}");
+            window.emit("folder-contents-changed", &event).unwrap();
 
-        for path in event.paths {
-            post_pgn_to_lichess(token, round, path);
+            for path in event.paths {
+                post_pgn_to_lichess(&token2, &round2, path);
+            }
         }
-    }
+    });
 }
 
-fn post_pgn_to_lichess(_token: &str, _round: &str, path: PathBuf) {
+fn post_pgn_to_lichess(token: &str, round: &str, path: PathBuf) -> PgnUploadResponse {
     println!("posting pgn to lichess: {path:?}");
+
+    let client = reqwest::blocking::Client::new();
+    client
+        .post(format!("http://0.0.0.0:3000/post-pgn.json?round={round}"))
+        .bearer_auth(token)
+        .body(std::fs::read_to_string(path).unwrap())
+        .send()
+        .unwrap()
+        .json::<PgnUploadResponse>()
+        .unwrap()
 }
 
 fn main() {

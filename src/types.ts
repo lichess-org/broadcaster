@@ -18,3 +18,8 @@ export interface Round {
     url: string
     description: string
 }
+
+export interface FolderContentsChangedEvent {
+    kind:  string;
+    paths: string[];
+}
