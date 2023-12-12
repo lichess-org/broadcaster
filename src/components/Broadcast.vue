@@ -18,10 +18,6 @@ async function getBroadcast() {
   isLoading.value = false;
 }
 
-async function startWatchingFolder() {
-  await invoke("start_watching_folder", { broadcastToken: broadcastToken.value, round: currentRoundSlug.value });
-}
-
 async function selectPgnFolder() {
   const selected = await open({ directory: true });
 
@@ -30,6 +26,14 @@ async function selectPgnFolder() {
   } else if (selected) {
     pgnFolder.value = selected;
   }
+}
+
+async function startWatchingFolder() {
+  await invoke("start_watching_folder", {
+    token: broadcastToken.value,
+    round: currentRoundSlug.value,
+    folder: pgnFolder.value,
+  });
 }
 </script>
 
