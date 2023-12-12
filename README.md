@@ -27,3 +27,11 @@
     pnpm install
     pnpm tauri dev
     ```
+
+## Test Build
+
+```bash
+pnpm tauri build
+```
+
+Release artifacts are in `src-tauri/target/release/bundle/`
