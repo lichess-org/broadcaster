@@ -1,0 +1,23 @@
+{
+    "tour": {
+        "description": "Only the best of the best",
+        "id": "QYiOYnl1",
+        "name": "Trevlar Invitational",
+        "slug": "trevlar-invitational",
+        "url": "http://localhost:8080/broadcast/trevlar-invitational/phgcXuBl"
+    },
+    "rounds": [
+        {
+            "id": "BueO56UJ",
+            "name": "Finals Day 1",
+            "slug": "finals-day-1",
+            "url": "http://localhost:8080/broadcast/trevlar-invitational/finals-day-1/BueO56UJ"
+        },
+        {
+            "id": "yeGGfkfY",
+            "name": "Finals Day 2",
+            "slug": "finals-day-2",
+            "url": "http://localhost:8080/broadcast/trevlar-invitational/finals-day-2/yeGGfkfY"
+        }
+    ]
+}
