@@ -45,7 +45,7 @@ struct FolderChangeEvent {
 fn get_broadcast_by_token(token: &str) -> BroadcastResponse {
     let client = reqwest::blocking::Client::new();
     client
-        .get("http://0.0.0.0:3000/get-broadcast.json")
+        .get("http://localhost:3000/get-broadcast.json")
         .bearer_auth(token)
         .send()
         .unwrap()
@@ -121,7 +121,7 @@ fn post_pgn_to_lichess(token: &str, round: &str, path: PathBuf) -> PgnUploadResp
 
     let client = reqwest::blocking::Client::new();
     client
-        .post(format!("http://0.0.0.0:3000/post-pgn.json?round={round}"))
+        .post(format!("http://localhost:3000/post-pgn.json?round={round}"))
         .bearer_auth(token)
         .body(std::fs::read_to_string(path).unwrap())
         .send()
