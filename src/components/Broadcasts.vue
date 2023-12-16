@@ -50,7 +50,8 @@ broadcasts((value) => {
 </script>
 
 <template>
-  <h3 class="text-white text-xl">Your Broadcasts</h3>
+  <h3 class="text-white text-2xl">Your Broadcasts</h3>
+
   <button type="button" @click="openMyBroadcasts"
     class="inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 font-medium bg-indigo-100 text-indigo-800 hover:bg-indigo-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
     View on Lichess

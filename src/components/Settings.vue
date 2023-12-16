@@ -3,8 +3,10 @@ import { ref } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/tauri";
+import { useUserStore } from "../stores/user";
 
 const settings = useSettingsStore()
+const user = useUserStore()
 
 const appVersion = ref('')
 getVersion().then((version) => {
@@ -26,28 +28,39 @@ async function openBrowser(url: string) {
 </script>
 
 <template>
-  <h3>Settings</h3>
+  <h3 class="text-white text-2xl">Settings</h3>
+  <div v-if="user.isLoggedIn()" class="text-white">
+    Logged in as <strong>{{ user.username }}</strong>
 
-  <form class="flex flex-col space-y-4">
+    <a href="#" @click="user.logout" class="underline">
+      Logout
+    </a>
+  </div>
+
+  <form class="flex flex-col space-y-4 my-8">
     <label class="flex flex-col space-y-1">
-      <span>Lichess URL</span>
+      <span class="text-white">Lichess URL</span>
       <input type="text" v-model="form.lichessUrl" />
+      <div class="text-gray-300 text-sm">Advanced setting. Only change for development.</div>
     </label>
 
     <button type="button" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
       @click="save">Save</button>
   </form>
 
-  <h3 class="text-lg font-medium leading-6 text-gray-900 mt-8">About</h3>
-  <p class="mt-1 max-w-2xl text-sm text-gray-700">
+  <h3 class="text-white text-xl">About</h3>
+  <p class="text-white">
     You are using version v<strong>{{ appVersion }}</strong>
     <br />
     See the source and contribute to this
-    <a href="#" @click.prevent="openBrowser('https://github.com/fitztrev/pgn-broadcaster')" class="underline">app on
+    <a href="#" class="underline" @click.prevent="openBrowser('https://github.com/fitztrev/pgn-broadcaster')">app on
       GitHub</a>
   </p>
-  <p>If you're having trouble with your broadcast, please
-    <a href="#" @click.prevent="openBrowser('https://discord.com/channels/1094189632691904573/1122545040686858340')">
+
+  <h3 class="text-white text-xl mt-4">Support</h3>
+  <p class="text-white">If you're having trouble with your broadcast, please
+    <a href="#" class="underline"
+      @click.prevent="openBrowser('https://discord.com/channels/1094189632691904573/1122545040686858340')">
       post to <code>#broadcast-errors</code> on the Lichess Content Discord</a>.
   </p>
 </template>
