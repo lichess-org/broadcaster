@@ -17,13 +17,33 @@ listen<string>('update_lichess_url', (event) => {
 </script>
 
 <template>
-  <div class="h-screen bg-gray-800 p-12">
-    <div class="text-center mb-12">
-      <img src="./assets/lichess-white.svg" class="w-24 inline-block" alt="Lichess logo" />
-    </div>
+  <div class="h-screen bg-gray-800 p-4">
+    <header class="mb-12 flex">
+      <div class="">
+        <img src="./assets/lichess-white.svg" class="w-12 inline-block" alt="Lichess logo" />
+      </div>
 
-    <router-link to ="/">Home</router-link>
-    <router-link to ="/settings">Settings</router-link>
+      <div class="grow">
+        <nav class="flex space-x-4 justify-end">
+          <router-link to="/"
+            class="text-indigo-100 hover:text-indigo-800 hover:bg-indigo-200 rounded-md px-3 py-2 text-sm font-medium"
+            active-class="bg-indigo-100 text-indigo-800">
+            <template v-if="user.isLoggedIn()">
+              Broadcasts
+            </template>
+            <template v-else>
+              Login
+            </template>
+          </router-link>
+
+          <router-link to="/settings"
+            class="text-indigo-100 hover:text-indigo-800 hover:bg-indigo-200 rounded-md px-3 py-2 text-sm font-medium"
+            active-class="bg-indigo-100 text-indigo-800">
+            Settings
+          </router-link>
+        </nav>
+      </div>
+    </header>
 
     <router-view />
   </div>
