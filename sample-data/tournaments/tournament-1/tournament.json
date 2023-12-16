@@ -1,0 +1,11 @@
+{
+  "id" : "short title",
+  "name" : "name",
+  "rounds" : [ {
+    "count" : 2,
+    "live" : 0
+  }, {
+    "count" : 0,
+    "live" : 0
+  } ]
+}

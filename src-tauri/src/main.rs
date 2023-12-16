@@ -1,11 +1,17 @@
+#![warn(clippy::pedantic)]
 // Prevents additional console window on Windows in release, DO NOT REMOVE!!
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 use std::path::{Path, PathBuf};
 
 use notify::{EventKind, RecursiveMode, Watcher};
+use oauth::start_oauth_flow;
 use serde::{Deserialize, Serialize};
 use tauri::Window;
+use utils::open_path;
+
+mod oauth;
+mod utils;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct BroadcastResponse {
@@ -39,6 +45,28 @@ struct PgnUploadResponse {
 struct FolderChangeEvent {
     kind: String,
     paths: Vec<PathBuf>,
+}
+
+fn main() {
+    tauri::Builder::default()
+        .invoke_handler(tauri::generate_handler![
+            get_broadcast_by_token,
+            login_with_lichess,
+            open_browser,
+            start_watching_folder
+        ])
+        .run(tauri::generate_context!())
+        .expect("error while running tauri application");
+}
+
+#[tauri::command]
+fn open_browser(url: String) {
+    open_path(url);
+}
+
+#[tauri::command]
+fn login_with_lichess(window: Window, lichess_url: String) {
+    start_oauth_flow(window, lichess_url);
 }
 
 #[tauri::command]
@@ -128,14 +156,4 @@ fn post_pgn_to_lichess(token: &str, round: &str, path: PathBuf) -> PgnUploadResp
         .unwrap()
         .json::<PgnUploadResponse>()
         .unwrap()
-}
-
-fn main() {
-    tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            get_broadcast_by_token,
-            start_watching_folder
-        ])
-        .run(tauri::generate_context!())
-        .expect("error while running tauri application");
 }

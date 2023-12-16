@@ -10,23 +10,27 @@
 
 ### Run
 
-1. Start the mock Lichess endpoints (in a separate terminal)
+```bash
+pnpm install
+pnpm tauri dev
+```
 
-    ```bash
-    cd mock
-    node serve.js
-    ```
+#### Testing
 
-    http://localhost:3000/get-broadcast.json
+##### Simulate boards writing PGN to a folder:
 
-    http://localhost:3000/post-pgn.json
+Once you start a folder watch in the app, you can run this to automatically write a bunch of PGN to the folder.
 
-2. Start the app
+```bash
+pnpm esrun sample-data/generate/index.ts sample-data/tournaments/simulated
+```
 
-    ```bash
-    pnpm install
-    pnpm tauri dev
-    ```
+## Formatting / Linting
+
+```bash
+pnpm dlx @biomejs/biome ci .
+pnpm tsc
+```
 
 ## Icon Generation
 

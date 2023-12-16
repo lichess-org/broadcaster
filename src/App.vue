@@ -1,5 +1,19 @@
 <script setup lang="ts">
-import Broadcast from "./components/Broadcast.vue";
+import { useUserStore } from "./stores/user";
+import { listen } from '@tauri-apps/api/event';
+import { AccessTokenResponse } from "./types";
+import { useSettingsStore } from "./stores/settings";
+
+const user = useUserStore()
+const settings = useSettingsStore()
+
+listen<AccessTokenResponse>('update_access_token', (event) => {
+  user.setAccessToken(event.payload)
+})
+
+listen<string>('update_lichess_url', (event) => {
+  settings.lichessUrl = event.payload
+})
 </script>
 
 <template>
@@ -8,6 +22,9 @@ import Broadcast from "./components/Broadcast.vue";
       <img src="./assets/lichess-white.svg" class="w-24 inline-block" alt="Lichess logo" />
     </div>
 
-    <Broadcast />
+    <router-link to ="/">Home</router-link>
+    <router-link to ="/settings">Settings</router-link>
+
+    <router-view />
   </div>
 </template>

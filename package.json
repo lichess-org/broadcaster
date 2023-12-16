@@ -7,16 +7,26 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
-    "tauri": "tauri"
+    "tauri": "tauri",
+    "tsc": "vue-tsc --noEmit"
   },
   "dependencies": {
     "@tauri-apps/api": "^1.5.2",
-    "vue": "^3.3.11"
+    "fetch-ndjson": "^1.1.7",
+    "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.0",
+    "vue": "^3.3.12",
+    "vue-router": "^4.2.5"
   },
   "devDependencies": {
-    "@tauri-apps/cli": "^1.5.7",
+    "@biomejs/biome": "1.4.1",
+    "@digitak/esrun": "^3.2.26",
+    "@faker-js/faker": "^8.3.1",
+    "@tauri-apps/cli": "^1.5.8",
+    "@types/node": "^20.10.4",
     "@vitejs/plugin-vue": "^4.5.2",
     "autoprefixer": "^10.4.16",
+    "chess.js": "1.0.0-beta.6",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.3.6",
     "typescript": "^5.3.3",

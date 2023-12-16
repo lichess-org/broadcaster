@@ -1,25 +1,42 @@
-export interface Broadcast {
-    tour: Tournament
-    rounds: Round[]
+export interface LichessBroadcast {
+  tour: Tournament;
+  round: Round;
+  study: Study;
 }
 
-export interface Tournament {
-    id: string
-    name: string
-    slug: string
-    url: string
-    description: string
+interface Tournament {
+  id: string;
+  name: string;
+  slug: string;
+  description: string;
+  official?: boolean;
 }
 
-export interface Round {
-    id: string
-    name: string
-    slug: string
-    url: string
-    description: string
+interface Round {
+  id: string;
+  name: string;
+  slug: string;
+  url: string;
+  finished?: boolean;
+  ongoing?: boolean;
+  startsAt?: number;
+}
+
+interface Study {
+  writeable: boolean;
 }
 
 export interface FolderContentsChangedEvent {
-    kind:  string;
-    paths: string[];
+  kind: string;
+  paths: string[];
+}
+
+export interface AccessTokenResponse {
+  token_type: string;
+  access_token: string;
+  expires_in: number;
+}
+
+export interface LichessUser {
+  username: string;
 }
