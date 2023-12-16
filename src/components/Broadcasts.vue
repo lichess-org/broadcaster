@@ -4,9 +4,12 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { LichessBroadcast } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
+import { ref } from 'vue';
 
 const settings = useSettingsStore();
 const user = useUserStore();
+
+const broadcasts = ref<LichessBroadcast[]>([])
 
 async function openBrowser(path: string) {
   await invoke("open_browser", {
@@ -18,7 +21,7 @@ async function openMyBroadcasts() {
   await openBrowser(`/broadcast/by/${user.username}`)
 }
 
-async function broadcasts(callback: (value: LichessBroadcast) => void) {
+async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
   let response = await fetch(`http://localhost:8080/api/broadcast/my-rounds`, {
     headers: {
       'Authorization': `Bearer ${user.accessToken?.access_token}`,
@@ -42,22 +45,48 @@ async function broadcasts(callback: (value: LichessBroadcast) => void) {
   })
 }
 
-broadcasts((value) => {
-  console.log('broadcast:', value)
+getBroadcasts((value) => {
+  broadcasts.value.push(value)
 }).then(() => {
   console.log('done fetching broadcasts')
 })
 </script>
 
 <template>
-  <h3 class="text-white text-2xl">Your Broadcasts</h3>
+  <div class="flex">
+    <h3 class=" text-2xl text-white">Your Broadcasts</h3>
 
-  <button type="button" @click="openMyBroadcasts"
-    class="inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 font-medium bg-indigo-100 text-indigo-800 hover:bg-indigo-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
-    View on Lichess
-  </button>
-  <button type="button" @click="openBrowser('/broadcast/new')"
-    class="inline-flex items-center justify-center rounded-md border border-transparent px-4 py-2 font-medium bg-indigo-100 text-indigo-800 hover:bg-indigo-500 hover:text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:text-sm">
-    Create a new broadcast
-  </button>
+    <div class="grow text-right text-gray-200 text-sm space-x-4">
+      <a href="#" @click="openMyBroadcasts" class="underline">
+        View on Lichess
+      </a>
+      <a href="#" @click="openBrowser('/broadcast/new')" class="underline">
+        &plus; Create a new broadcast
+      </a>
+    </div>
+  </div>
+
+  <div class="text-white">
+    <ul>
+      <li v-for="broadcast in broadcasts" class="border-b-2">
+        tour:
+        {{ broadcast.tour.id }}
+        {{ broadcast.tour.name }}
+        {{ broadcast.tour.slug }}
+        {{ broadcast.tour.description }}
+        {{ broadcast.tour.official }}
+        <br>
+        round:
+        {{ broadcast.round.id }}
+        {{ broadcast.round.name }}
+        {{ broadcast.round.slug }}
+        {{ broadcast.round.url }}
+        {{ broadcast.round.finished }}
+        {{ broadcast.round.ongoing }}
+        {{ broadcast.round.startsAt }}
+        <br>
+        writable: {{ broadcast.study.writeable }}
+      </li>
+    </ul>
+  </div>
 </template>
