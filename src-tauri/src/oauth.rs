@@ -31,7 +31,7 @@ pub fn start_oauth_flow(window: Window, lichess_url: String) {
             let code = url.query_pairs().find(|(key, _)| key == "code").unwrap().1;
 
             let access_token = reqwest::blocking::Client::new()
-                .post(format!("{}/api/token", lichess_url))
+                .post(format!("{lichess_url}/api/token"))
                 .form(&[
                     ("grant_type", "authorization_code"),
                     ("client_id", OAUTH_CLIENT_ID),
