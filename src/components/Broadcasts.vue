@@ -22,7 +22,7 @@ async function openMyBroadcasts() {
 }
 
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
-  let response = await fetch(`http://localhost:8080/api/broadcast/my-rounds`, {
+  let response = await fetch(`${settings.lichessUrl}/api/broadcast/my-rounds`, {
     headers: {
       'Authorization': `Bearer ${user.accessToken?.access_token}`,
     }

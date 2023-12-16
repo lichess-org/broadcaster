@@ -50,7 +50,6 @@ struct FolderChangeEvent {
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            get_broadcast_by_token,
             login_with_lichess,
             open_browser,
             start_watching_folder
@@ -67,18 +66,6 @@ fn open_browser(url: String) {
 #[tauri::command]
 fn login_with_lichess(window: Window, lichess_url: String) {
     start_oauth_flow(window, lichess_url);
-}
-
-#[tauri::command]
-fn get_broadcast_by_token(token: &str) -> BroadcastResponse {
-    let client = reqwest::blocking::Client::new();
-    client
-        .get("http://localhost:3000/get-broadcast.json")
-        .bearer_auth(token)
-        .send()
-        .unwrap()
-        .json::<BroadcastResponse>()
-        .unwrap()
 }
 
 #[tauri::command]
