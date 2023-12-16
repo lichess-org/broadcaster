@@ -25,20 +25,15 @@ listen<string>('update_lichess_url', (event) => {
 
       <div class="grow">
         <nav class="flex space-x-4 justify-end">
-          <router-link to="/"
-            class="text-indigo-100 hover:text-indigo-800 hover:bg-indigo-200 rounded-md px-3 py-2 text-sm font-medium"
-            active-class="bg-indigo-100 text-indigo-800">
-            <template v-if="user.isLoggedIn()">
-              Broadcasts
-            </template>
-            <template v-else>
-              Login
-            </template>
+          <router-link to="/" class="nav-item" active-class="active">
+            Home
           </router-link>
 
-          <router-link to="/settings"
-            class="text-indigo-100 hover:text-indigo-800 hover:bg-indigo-200 rounded-md px-3 py-2 text-sm font-medium"
-            active-class="bg-indigo-100 text-indigo-800">
+          <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()">
+            Broadcasts
+          </router-link>
+
+          <router-link to="/settings" class="nav-item" active-class="active">
             Settings
           </router-link>
         </nav>

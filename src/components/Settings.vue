@@ -40,7 +40,7 @@ async function openBrowser(url: string) {
   <form class="flex flex-col space-y-4 my-8">
     <label class="flex flex-col space-y-1">
       <span class="text-white">Lichess URL</span>
-      <input type="text" v-model="form.lichessUrl" />
+      <input type="text" v-model="form.lichessUrl" class="p-1" />
       <div class="text-gray-300 text-sm">Advanced setting. Only change for development.</div>
     </label>
 
