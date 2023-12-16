@@ -28,13 +28,14 @@ async function openBrowser(url: string) {
 </script>
 
 <template>
-  <h3 class="text-white text-2xl">Settings</h3>
+  <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
+
   <div v-if="user.isLoggedIn()" class="text-white">
     Logged in as <strong>{{ user.username }}</strong>
 
-    <a href="#" @click="user.logout" class="underline">
-      Logout
-    </a>
+    <span class="ml-2">
+      <a href="#" @click="user.logout" class="underline">Logout</a>
+    </span>
   </div>
 
   <form class="flex flex-col space-y-4 my-8">

@@ -53,40 +53,50 @@ getBroadcasts((value) => {
 </script>
 
 <template>
-  <div class="flex">
-    <h3 class=" text-2xl text-white">Your Broadcasts</h3>
-
-    <div class="grow text-right text-gray-200 text-sm space-x-4">
-      <a href="#" @click="openMyBroadcasts" class="underline">
-        View on Lichess
-      </a>
-      <a href="#" @click="openBrowser('/broadcast/new')" class="underline">
-        &plus; Create a new broadcast
-      </a>
+  <div class="md:flex md:items-center md:justify-between">
+    <div class="min-w-0 flex-1">
+      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Your Broadcasts</h2>
+    </div>
+    <div class="mt-4 flex md:ml-4 md:mt-0">
+      <button type="button" @click="openMyBroadcasts"
+        class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">View
+        on Lichess</button>
+      <button type="button" @click="openBrowser('/broadcast/new')"
+        class="ml-3 inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">&plus;
+        Create a new broadcast</button>
     </div>
   </div>
 
-  <div class="text-white">
-    <ul>
-      <li v-for="broadcast in broadcasts" class="border-b-2">
-        tour:
-        {{ broadcast.tour.id }}
-        {{ broadcast.tour.name }}
-        {{ broadcast.tour.slug }}
-        {{ broadcast.tour.description }}
-        {{ broadcast.tour.official }}
-        <br>
-        round:
-        {{ broadcast.round.id }}
-        {{ broadcast.round.name }}
-        {{ broadcast.round.slug }}
-        {{ broadcast.round.url }}
-        {{ broadcast.round.finished }}
-        {{ broadcast.round.ongoing }}
-        {{ broadcast.round.startsAt }}
-        <br>
-        writable: {{ broadcast.study.writeable }}
-      </li>
-    </ul>
-  </div>
+  <table class="text-white w-full">
+    <thead>
+      <tr>
+        <th>Round</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="broadcast in broadcasts">
+        <td>
+          {{ broadcast.round.name }}
+          <div class="ml-4">{{ broadcast.tour.name }}</div>
+        </td>
+        <td>
+          <template v-if="broadcast.round.startsAt">
+            <!-- {{ broadcast.round.startsAt.toLocaleDateString(undefined, {
+              weekday: 'long',
+              year: 'numeric',
+              month: 'numeric',
+              day: 'numeric',
+              hour: 'numeric',
+              minute: 'numeric',
+            }) }} -->
+          </template>
+        </td>
+        <td>
+          <span v-if="broadcast.round.finished" class="">Completed</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
