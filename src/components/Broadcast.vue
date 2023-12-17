@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { LichessBroadcast } from '../types';
+import { router } from '../router';
 
 const props = defineProps<{
   broadcast: LichessBroadcast
@@ -38,10 +39,22 @@ const relativeTime = computed<string>(() => {
   const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 })
+
+function openRound(broadcastTournamentSlug: string, broadcastRoundSlug: string, broadcastRoundId: string) {
+  router.push({
+    name: 'round',
+    query: {
+      broadcastTournamentSlug,
+      broadcastRoundSlug,
+      broadcastRoundId,
+    }
+  })
+}
 </script>
 
 <template>
-  <li class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
+  <li class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8"
+    @click="openRound(broadcast.tour.slug, broadcast.round.slug, broadcast.round.id)">
     <div class="min-w-0 flex-auto">
       <div class="flex items-center gap-x-3">
         <div class="flex-none rounded-full p-1 text-gray-500 bg-gray-100/10">

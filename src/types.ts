@@ -41,3 +41,20 @@ export interface AccessTokenResponse {
 export interface LichessUser {
   username: string;
 }
+
+export interface RoundResponse {
+  id: string;
+  name: string;
+  slug: string;
+  startsAt: number;
+  url: string;
+  games: Game[];
+}
+
+interface Game {
+  id: string;
+  name: string;
+  ongoing?: boolean;
+  res?: string;
+  url: string;
+}
