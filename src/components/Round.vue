@@ -5,6 +5,7 @@ import { useSettingsStore } from '../stores/settings';
 import { RoundResponse } from '../types';
 import { useUserStore } from '../stores/user';
 import { invoke } from '@tauri-apps/api';
+import NewFolderSync from './NewFolderSync.vue';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -80,6 +81,7 @@ const startsAt = computed<string>(() => {
       Upload PGN
     </h3>
     <p class="text-gray-200">Monitor a local folder and automatically upload PGN files to Lichess.</p>
+    <NewFolderSync :broadcast-round-id="round.id" />
 
     <h3 class="text-white text-xl my-4">Games</h3>
 

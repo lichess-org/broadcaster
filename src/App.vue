@@ -14,6 +14,12 @@ listen<AccessTokenResponse>('update_access_token', (event) => {
 listen<string>('update_lichess_url', (event) => {
   settings.lichessUrl = event.payload
 })
+
+// listen<FolderContentsChangedEvent>('folder-contents-changed', (event) => {
+//   let currentTime = new Date().toLocaleTimeString();
+//   let entry = `[${currentTime}] ${event.payload.kind} ${event.payload.paths}`;
+//   logs.value.push(entry);
+// });
 </script>
 
 <template>

@@ -38,7 +38,7 @@ struct Round {
 
 #[derive(Serialize, Deserialize, Debug)]
 struct PgnUploadResponse {
-    ok: bool,
+    ok: String,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -69,7 +69,13 @@ fn login_with_lichess(window: Window, lichess_url: String) {
 }
 
 #[tauri::command]
-fn start_watching_folder(window: Window, token: &str, round: &str, folder: &str) {
+fn start_watching_folder(
+    window: Window,
+    lichess_url: &str,
+    api_token: &str,
+    broadcast_round_id: &str,
+    folder: &str,
+) {
     println!("started watching folder: {folder:?}");
     let (tx, rx) = std::sync::mpsc::channel();
 
@@ -117,26 +123,32 @@ fn start_watching_folder(window: Window, token: &str, round: &str, folder: &str)
         }
     });
 
-    let token2 = token.to_string();
-    let round2 = round.to_string();
+    let lichess_url2 = lichess_url.to_string();
+    let api_token2 = api_token.to_string();
+    let round2 = broadcast_round_id.to_string();
     std::thread::spawn(move || {
         while let Ok(event) = rx.recv() {
             println!("rx: {event:?}");
             window.emit("folder-contents-changed", &event).unwrap();
 
             for path in event.paths {
-                post_pgn_to_lichess(&token2, &round2, path);
+                post_pgn_to_lichess(&lichess_url2, &api_token2, &round2, path);
             }
         }
     });
 }
 
-fn post_pgn_to_lichess(token: &str, round: &str, path: PathBuf) -> PgnUploadResponse {
+fn post_pgn_to_lichess(
+    lichess_url: &str,
+    token: &str,
+    round: &str,
+    path: PathBuf,
+) -> PgnUploadResponse {
     println!("posting pgn to lichess: {path:?}");
 
     let client = reqwest::blocking::Client::new();
     client
-        .post(format!("http://localhost:3000/post-pgn.json?round={round}"))
+        .post(format!("{lichess_url}/broadcast/round/{round}/push"))
         .bearer_auth(token)
         .body(std::fs::read_to_string(path).unwrap())
         .send()
