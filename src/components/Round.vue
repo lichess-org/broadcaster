@@ -13,7 +13,7 @@ const user = useUserStore();
 const round = ref<RoundResponse | null>(null);
 
 function getRound() {
-  fetch(`${settings.lichessUrl}/broadcast/${router.currentRoute.value.query.broadcastTournamentSlug}/${router.currentRoute.value.query.broadcastRoundSlug}/${router.currentRoute.value.query.broadcastRoundId}`, {
+  fetch(`${settings.lichessUrl}/api/broadcast/-/-/${router.currentRoute.value.query.broadcastRoundId}`, {
     headers: {
       'Accept': 'application/json',
       'Authorization': `Bearer ${user.accessToken?.access_token}`,
