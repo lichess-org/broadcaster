@@ -38,24 +38,9 @@ const relativeTime = computed<string>(() => {
   const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 })
-
-// const delay = computed<string>(() => {
-//   if (!props.broadcast.round.delay) {
-//     return ''
-//   }
-
-//   return props.broadcast.round.delay
-// })
 </script>
 
 <template>
-  <!-- <div class="text-white">
-    
-    {{ broadcast.tour.name }}
-    {{ startsAt }}
-    <span v-if="broadcast.round.finished" class="">Completed</span>
-  </div> -->
-
   <li class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8">
     <div class="min-w-0 flex-auto">
       <div class="flex items-center gap-x-3">
@@ -79,9 +64,6 @@ const relativeTime = computed<string>(() => {
         <p class="whitespace-nowrap">{{ relativeTime }}</p>
       </div>
     </div>
-    <!-- <div v-if="delay"
-      class="rounded-full flex-none py-1 px-2 text-xs font-medium ring-1 ring-inset text-gray-400 bg-gray-400/10 ring-gray-400/20">
-      {{ delay }} Delay</div> -->
     <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path fill-rule="evenodd"
         d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
