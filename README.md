@@ -47,3 +47,17 @@ pnpm tauri build
 ```
 
 Release artifacts are in `src-tauri/target/release/bundle/`
+
+## Release
+
+1. Tag the new version:
+
+    ```bash
+    git checkout main
+    npm version 0.x.x
+    git push origin main --tags
+    ```
+
+    Github workflow will build the app for each OS and attach them as artifacts to a draft release.
+
+1. Manually edit the release once the builds are done, update the release notes, and publish.
