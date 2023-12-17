@@ -84,29 +84,27 @@ fn start_watching_folder(
     std::thread::spawn(move || {
         let mut watcher = notify::recommended_watcher(
             move |res: Result<notify::Event, notify::Error>| match res {
-                Ok(event) => {
-                    println!("watch event: {event:?}");
-
-                    match event.kind {
-                        EventKind::Create(_) => {
-                            tx.send(FolderChangeEvent {
-                                kind: "create".to_string(),
-                                paths: event.paths,
-                            })
-                            .unwrap();
-                        }
-                        EventKind::Modify(_) => {
-                            tx.send(FolderChangeEvent {
-                                kind: "modified".to_string(),
-                                paths: event.paths,
-                            })
-                            .unwrap();
-                        }
-                        _ => {
-                            println!("other event");
-                        }
+                Ok(event) => match event.kind {
+                    EventKind::Create(_) => {
+                        println!("CREATE event: {event:?}");
+                        tx.send(FolderChangeEvent {
+                            kind: "create".to_string(),
+                            paths: event.paths,
+                        })
+                        .unwrap();
                     }
-                }
+                    EventKind::Modify(_) => {
+                        println!("MODIFIED event: {event:?}");
+                        tx.send(FolderChangeEvent {
+                            kind: "modified".to_string(),
+                            paths: event.paths,
+                        })
+                        .unwrap();
+                    }
+                    _ => {
+                        println!("other event: {event:?}");
+                    }
+                },
                 Err(e) => {
                     println!("watch error: {e:?}");
                 }
