@@ -8,7 +8,7 @@ const routes = [
   { path: "/", component: Home },
   { path: "/broadcasts", component: Broadcasts },
   { path: "/settings", component: Settings },
-  { path: "/round", component: Round, name: "round" },
+  { path: "/round/:id", component: Round, name: "round" },
 ];
 
 export const router = createRouter({

@@ -46,8 +46,8 @@ const relativeTime = computed<string>(() => {
 function openRound(broadcastRoundId: string) {
   router.push({
     name: 'round',
-    query: {
-      broadcastRoundId,
+    params: {
+      id: broadcastRoundId,
     }
   })
 }
