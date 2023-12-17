@@ -1,6 +1,5 @@
 {
   "name": "pgn-broadcaster",
-  "private": true,
   "version": "0.0.0",
   "type": "module",
   "scripts": {
@@ -23,7 +22,7 @@
     "@digitak/esrun": "^3.2.26",
     "@faker-js/faker": "^8.3.1",
     "@tauri-apps/cli": "^1.5.8",
-    "@types/node": "^20.10.4",
+    "@types/node": "^20.10.5",
     "@vitejs/plugin-vue": "^4.5.2",
     "autoprefixer": "^10.4.16",
     "chess.js": "1.0.0-beta.6",
