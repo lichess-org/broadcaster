@@ -93,7 +93,7 @@ fn start_watching_folder(
         let mut watcher = notify::recommended_watcher(
             move |res: Result<notify::Event, notify::Error>| match res {
                 Ok(event) => match event.kind {
-                    EventKind::Modify(_) => {
+                    EventKind::Create(_) | EventKind::Modify(_) => {
                         tx.send(FileChangeEvent { paths: event.paths }).unwrap();
                     }
                     _ => {}
