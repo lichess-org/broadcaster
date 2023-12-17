@@ -30,7 +30,12 @@ async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
     }
   })
 
-  return new Promise(async (resolve) => {
+  return new Promise(async (resolve, reject) => {
+    if (!response.ok) {
+      reject(`${response.status} ${response.statusText}`)
+      return
+    }
+
     let reader = response.body!.getReader();
     let gen = ndjson(reader)
 
@@ -57,7 +62,7 @@ function refresh() {
 
   getBroadcasts((value) => {
     broadcasts.value.push(value)
-  }).then(() => {
+  }).finally(() => {
     isLoading.value = false
   })
 }
