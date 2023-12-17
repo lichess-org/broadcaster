@@ -8,6 +8,8 @@ interface Log {
 
 export const useLogStore = defineStore("logs", () => {
   const logs = ref<Log[]>([]);
+  const files = ref<Set<string>>(new Set());
+  const moveCount = ref(0);
 
   const add = (message: string) => {
     logs.value.push({
@@ -18,6 +20,8 @@ export const useLogStore = defineStore("logs", () => {
 
   return {
     logs,
+    files,
+    moveCount,
     add,
   };
 });

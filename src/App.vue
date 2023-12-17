@@ -23,6 +23,8 @@ listen<FolderContentsChangedEvent>('folder_contents_changed', (event) => {
 
 listen<PgnUploadedEvent>('pgn_uploaded_event', (event) => {
   logs.add(`Uploaded: ${event.payload.response.moves} moves from ${event.payload.path}`)
+  logs.files.add(event.payload.path)
+  logs.moveCount += event.payload.response.moves
 });
 </script>
 
