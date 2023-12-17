@@ -28,8 +28,16 @@ interface Study {
 }
 
 export interface FolderContentsChangedEvent {
-  kind: string;
   paths: string[];
+}
+
+export interface PgnUploadedEvent {
+  path: string;
+  response: PgnUploadResponse;
+}
+
+interface PgnUploadResponse {
+  moves: number;
 }
 
 export interface AccessTokenResponse {

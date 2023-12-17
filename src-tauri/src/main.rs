@@ -36,14 +36,19 @@ struct Round {
     url: String,
 }
 
-#[derive(Serialize, Deserialize, Debug)]
+#[derive(Serialize, Deserialize, Debug, Clone)]
 struct PgnUploadResponse {
-    ok: String,
+    moves: u32,
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-struct FolderChangeEvent {
-    kind: String,
+struct PgnUploadResponseEvent {
+    response: PgnUploadResponse,
+    path: String,
+}
+
+#[derive(Serialize, Deserialize, Debug, Clone)]
+struct FileChangeEvent {
     paths: Vec<PathBuf>,
 }
 
@@ -85,25 +90,10 @@ fn start_watching_folder(
         let mut watcher = notify::recommended_watcher(
             move |res: Result<notify::Event, notify::Error>| match res {
                 Ok(event) => match event.kind {
-                    EventKind::Create(_) => {
-                        println!("CREATE event: {event:?}");
-                        tx.send(FolderChangeEvent {
-                            kind: "create".to_string(),
-                            paths: event.paths,
-                        })
-                        .unwrap();
-                    }
                     EventKind::Modify(_) => {
-                        println!("MODIFIED event: {event:?}");
-                        tx.send(FolderChangeEvent {
-                            kind: "modified".to_string(),
-                            paths: event.paths,
-                        })
-                        .unwrap();
+                        tx.send(FileChangeEvent { paths: event.paths }).unwrap();
                     }
-                    _ => {
-                        println!("other event: {event:?}");
-                    }
+                    _ => {}
                 },
                 Err(e) => {
                     println!("watch error: {e:?}");
@@ -127,10 +117,19 @@ fn start_watching_folder(
     std::thread::spawn(move || {
         while let Ok(event) = rx.recv() {
             println!("rx: {event:?}");
-            window.emit("folder-contents-changed", &event).unwrap();
+            window.emit("folder_contents_changed", &event).unwrap();
 
             for path in event.paths {
-                post_pgn_to_lichess(&lichess_url2, &api_token2, &round2, path);
+                let response = post_pgn_to_lichess(&lichess_url2, &api_token2, &round2, &path);
+                window
+                    .emit(
+                        "pgn_uploaded_event",
+                        PgnUploadResponseEvent {
+                            response,
+                            path: path.to_str().unwrap().to_string(),
+                        },
+                    )
+                    .unwrap();
             }
         }
     });
@@ -140,10 +139,8 @@ fn post_pgn_to_lichess(
     lichess_url: &str,
     token: &str,
     round: &str,
-    path: PathBuf,
+    path: &PathBuf,
 ) -> PgnUploadResponse {
-    println!("posting pgn to lichess: {path:?}");
-
     let client = reqwest::blocking::Client::new();
     client
         .post(format!("{lichess_url}/broadcast/round/{round}/push"))

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import { useUserStore } from "./stores/user";
 import { listen } from '@tauri-apps/api/event';
-import { AccessTokenResponse } from "./types";
+import { AccessTokenResponse, FolderContentsChangedEvent, PgnUploadedEvent } from "./types";
 import { useSettingsStore } from "./stores/settings";
+import { useLogStore } from "./stores/logs";
 
+const logs = useLogStore()
 const user = useUserStore()
 const settings = useSettingsStore()
 
@@ -15,11 +17,13 @@ listen<string>('update_lichess_url', (event) => {
   settings.lichessUrl = event.payload
 })
 
-// listen<FolderContentsChangedEvent>('folder-contents-changed', (event) => {
-//   let currentTime = new Date().toLocaleTimeString();
-//   let entry = `[${currentTime}] ${event.payload.kind} ${event.payload.paths}`;
-//   logs.value.push(entry);
-// });
+listen<FolderContentsChangedEvent>('folder_contents_changed', (event) => {
+  logs.add(`Modified: ${event.payload.paths.join(', ')}`)
+});
+
+listen<PgnUploadedEvent>('pgn_uploaded_event', (event) => {
+  logs.add(`Uploaded: ${event.payload.response.moves} moves from ${event.payload.path}`)
+});
 </script>
 
 <template>

@@ -1,4 +1,8 @@
 <script setup lang="ts">
+import { useLogStore } from '../stores/logs';
+
+
+const logs = useLogStore()
 </script>
 
 <template>
@@ -33,6 +37,9 @@
         </div>
     </div>
     <div class="bg-gray-50 mt-4 p-4 text-sm font-mono">
-        [logs here]
+        <div v-for="log in logs.logs">
+            {{ log.date.toISOString() }}:
+            {{ log.message }}
+        </div>
     </div>
 </template>
