@@ -17,6 +17,7 @@ interface Round {
   name: string;
   slug: string;
   url: string;
+  delay?: number;
   finished?: boolean;
   ongoing?: boolean;
   startsAt?: number;

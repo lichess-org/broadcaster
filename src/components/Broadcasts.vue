@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import ndjson from 'fetch-ndjson'
 import { invoke } from "@tauri-apps/api/tauri";
+import Broadcast from './Broadcast.vue';
 import { LichessBroadcast } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
@@ -53,7 +54,7 @@ getBroadcasts((value) => {
 </script>
 
 <template>
-  <div class="md:flex md:items-center md:justify-between">
+  <div class="md:flex md:items-center md:justify-between mb-4">
     <div class="min-w-0 flex-1">
       <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Your Broadcasts</h2>
     </div>
@@ -67,36 +68,7 @@ getBroadcasts((value) => {
     </div>
   </div>
 
-  <table class="text-white w-full">
-    <thead>
-      <tr>
-        <th>Round</th>
-        <th>Date</th>
-        <th>Status</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="broadcast in broadcasts">
-        <td>
-          {{ broadcast.round.name }}
-          <div class="ml-4">{{ broadcast.tour.name }}</div>
-        </td>
-        <td>
-          <template v-if="broadcast.round.startsAt">
-            <!-- {{ broadcast.round.startsAt.toLocaleDateString(undefined, {
-              weekday: 'long',
-              year: 'numeric',
-              month: 'numeric',
-              day: 'numeric',
-              hour: 'numeric',
-              minute: 'numeric',
-            }) }} -->
-          </template>
-        </td>
-        <td>
-          <span v-if="broadcast.round.finished" class="">Completed</span>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <ul role="list" class="divide-y divide-white/5">
+    <Broadcast v-for="broadcast in broadcasts" :broadcast="broadcast" />
+  </ul>
 </template>
