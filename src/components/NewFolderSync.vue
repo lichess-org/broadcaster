@@ -4,6 +4,7 @@ import { invoke } from "@tauri-apps/api/tauri";
 import { open } from "@tauri-apps/api/dialog";
 import { useUserStore } from "../stores/user";
 import { useSettingsStore } from "../stores/settings";
+import { router } from "../router";
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -31,6 +32,8 @@ async function startWatchingFolder() {
     broadcastRoundId: props.broadcastRoundId,
     folder: pgnFolder.value,
   });
+
+  router.push('/');
 }
 </script>
 
