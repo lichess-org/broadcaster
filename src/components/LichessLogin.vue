@@ -13,7 +13,7 @@ async function loginWithLichess() {
 
 <template>
   <div class="text-center mt-20">
-    <h3 class="mt-2 text-xl font-semibold text-gray-200">Welcome to the Lichess PGN Uploader app</h3>
+    <h3 class="mt-2 text-xl font-semibold text-gray-200">Welcome to the Lichess PGN Broadcaster app</h3>
     <p class="mt-1 text-sm text-gray-300">Get started by logging in with your Lichess account.</p>
     <div class="mt-6">
       <button type="button" @click="loginWithLichess"
