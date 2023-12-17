@@ -22,7 +22,7 @@ const pgnDate = `${date.getFullYear()}.${
 
 const games = new Map<number, Chess>();
 
-for (let i = 1; i <= 8; i++) {
+for (let i = 1; i <= 6; i++) {
   const game = new Chess();
 
   game.header("Event", eventName);
