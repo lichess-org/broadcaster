@@ -81,7 +81,10 @@ fn start_watching_folder(
     broadcast_round_id: &str,
     folder: &str,
 ) {
-    println!("started watching folder: {folder:?}");
+    window
+        .emit("started_broadcast_thread", broadcast_round_id)
+        .unwrap();
+
     let (tx, rx) = std::sync::mpsc::channel();
 
     let folder_to_watch = folder.to_string();
@@ -106,6 +109,7 @@ fn start_watching_folder(
             .watch(Path::new(&folder_to_watch), RecursiveMode::Recursive)
             .expect("Failed to watch folder");
 
+        println!("started watching folder: {folder_to_watch:?}");
         loop {
             std::thread::sleep(std::time::Duration::from_secs(1));
         }

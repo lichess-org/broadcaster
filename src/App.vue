@@ -26,6 +26,10 @@ listen<PgnUploadedEvent>('pgn_uploaded_event', (event) => {
   logs.files.add(event.payload.path)
   logs.moveCount += event.payload.response.moves
 });
+
+listen<string>('started_broadcast_thread', (event) => {
+  logs.currentBroadcastThreads.add(event.payload)
+});
 </script>
 
 <template>
