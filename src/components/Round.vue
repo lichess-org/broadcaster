@@ -74,8 +74,8 @@ const isBroadcasting = computed<boolean>(() => {
         </div>
       </div>
     </div>
-    <div v-else>
-      <h3 class="text-white text-xl mt-4">
+    <div v-else class="border-gray-700 border-2 p-6 m-8">
+      <h3 class="text-white text-xl mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="inline-block w-4 h-4">
           <path stroke-linecap="round" stroke-linejoin="round"
@@ -83,7 +83,8 @@ const isBroadcasting = computed<boolean>(() => {
         </svg>
         Upload PGN
       </h3>
-      <p class="text-gray-200">Monitor a local folder and automatically upload PGN files to Lichess.</p>
+      <p class="text-gray-300">As game PGNs are written to a folder, they can be automatically be uploaded to Lichess.
+      </p>
       <NewFolderSync :broadcast-round-id="round.id" />
     </div>
 

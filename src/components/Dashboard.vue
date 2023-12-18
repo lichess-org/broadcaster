@@ -47,7 +47,7 @@ const status = computed<Status>(() => {
             </div>
         </div>
     </div>
-    <div v-if="logs.logs.length" class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono overflow-y-scroll h-1/2">
+    <div v-if="logs.logs.length" class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono h-1/2">
         <div v-for="log in logs.logs">
             {{ log.date.toLocaleTimeString() }}:
             {{ log.message }}
