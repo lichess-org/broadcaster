@@ -16,40 +16,38 @@ const status = computed<Status>(() => {
 </script>
 
 <template>
-    <div class="bg-gray-900">
-        <div class="mx-auto max-w-7xl">
-            <div class="grid grid-cols-4 gap-px bg-white/5 ">
-                <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8" :class="{
-                    'bg-green-900': status === 'Broadcasting'
-                }">
-                    <p class="text-sm font-medium leading-6 text-gray-400">Status</p>
-                    <p class="mt-2 flex items-baseline gap-x-2">
-                        <span class="text-2xl font-semibold tracking-tight text-white">{{ status }}</span>
-                    </p>
-                </div>
-                <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
-                    <p class="text-sm font-medium leading-6 text-gray-400">Rounds</p>
-                    <p class="mt-2 flex items-baseline gap-x-2">
-                        <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.currentBroadcastThreads.size
-                        }}</span>
-                    </p>
-                </div>
-                <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
-                    <p class="text-sm font-medium leading-6 text-gray-400">Games</p>
-                    <p class="mt-2 flex items-baseline gap-x-2">
-                        <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.files.size }}</span>
-                    </p>
-                </div>
-                <div class="bg-gray-900 px-4 py-6 sm:px-6 lg:px-8">
-                    <p class="text-sm font-medium leading-6 text-gray-400">Moves</p>
-                    <p class="mt-2 flex items-baseline gap-x-2">
-                        <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.moveCount }}</span>
-                    </p>
-                </div>
+    <div class="mx-auto max-w-7xl">
+        <div class="grid grid-cols-4 gap-px bg-white/5 ">
+            <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8" :class="{
+                'bg-green-900': status === 'Broadcasting'
+            }">
+                <p class="text-sm font-medium leading-6 text-gray-400">Status</p>
+                <p class="mt-2 flex items-baseline gap-x-2">
+                    <span class="text-2xl font-semibold tracking-tight text-white">{{ status }}</span>
+                </p>
+            </div>
+            <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
+                <p class="text-sm font-medium leading-6 text-gray-400">Rounds</p>
+                <p class="mt-2 flex items-baseline gap-x-2">
+                    <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.currentBroadcastThreads.size
+                    }}</span>
+                </p>
+            </div>
+            <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
+                <p class="text-sm font-medium leading-6 text-gray-400">Games</p>
+                <p class="mt-2 flex items-baseline gap-x-2">
+                    <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.files.size }}</span>
+                </p>
+            </div>
+            <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
+                <p class="text-sm font-medium leading-6 text-gray-400">Moves</p>
+                <p class="mt-2 flex items-baseline gap-x-2">
+                    <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.moveCount }}</span>
+                </p>
             </div>
         </div>
     </div>
-    <div v-if="logs.logs.length" class="bg-gray-50 mt-4 p-4 text-sm font-mono">
+    <div v-if="logs.logs.length" class="bg-gray-700 text-gray-100 mt-4 p-4 text-sm font-mono">
         <div v-for="log in logs.logs">
             {{ log.date.toISOString() }}:
             {{ log.message }}

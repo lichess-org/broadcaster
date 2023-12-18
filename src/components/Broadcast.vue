@@ -58,7 +58,8 @@ const isBroadcasting = computed<boolean>(() => {
 </script>
 
 <template>
-  <li class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8" @click="openRound(broadcast.round.id)">
+  <li class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
+    @click="openRound(broadcast.round.id)">
     <div class="min-w-0 flex-auto">
       <div class="flex items-center gap-x-3">
         <div class="flex-none rounded-full p-1 text-gray-500 bg-gray-100/10" :class="{
