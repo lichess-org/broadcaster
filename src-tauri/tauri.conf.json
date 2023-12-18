@@ -39,8 +39,8 @@
         "fullscreen": false,
         "resizable": true,
         "title": "Lichess PGN Broadcaster",
-        "width": 800,
-        "height": 600
+        "width": 1200,
+        "height": 800
       }
     ]
   }
