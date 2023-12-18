@@ -33,7 +33,6 @@ async function save() {
         <p class="mt-1 text-sm leading-6 text-gray-400">For development purposes</p>
       </div>
 
-
       <form class="md:col-span-2" @submit.prevent="save">
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full">

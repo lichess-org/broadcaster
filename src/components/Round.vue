@@ -6,9 +6,11 @@ import { RoundResponse } from '../types';
 import { useUserStore } from '../stores/user';
 import NewFolderSync from './NewFolderSync.vue';
 import { openBrowser, timestampToLocalDatetime } from "../utils";
+import { useLogStore } from '../stores/logs';
 
 const settings = useSettingsStore();
 const user = useUserStore();
+const logs = useLogStore()
 
 const round = ref<RoundResponse | null>(null);
 
@@ -34,6 +36,14 @@ function refresh() {
 const startsAt = computed<string>(() => {
   return timestampToLocalDatetime(round.value?.startsAt)
 })
+
+const isBroadcasting = computed<boolean>(() => {
+  if (!round.value) {
+    return false;
+  }
+
+  return logs.currentBroadcastThreads.has(round.value?.id)
+})
 </script>
 
 <template>
@@ -53,29 +63,41 @@ const startsAt = computed<string>(() => {
       </div>
     </div>
 
-    <h3 class="text-white text-xl mt-4">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-        class="inline-block w-4 h-4">
-        <path stroke-linecap="round" stroke-linejoin="round"
-          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
-      </svg>
-      Upload PGN
-    </h3>
-    <p class="text-gray-200">Monitor a local folder and automatically upload PGN files to Lichess.</p>
-    <NewFolderSync :broadcast-round-id="round.id" />
-
-    <h3 class="text-white text-xl my-4">Games</h3>
-
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <div v-for="game in round.games"
-        class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
-        <div class="min-w-0 flex-1">
-          <a href="#" class="focus:outline-none" @click="openBrowser(game.url)">
-            <p class="text-sm font-medium text-gray-900">{{ game.name }}</p>
-            <p class="truncate text-sm text-gray-500">{{ game.res }}</p>
-          </a>
+    <div v-if="isBroadcasting">
+      <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4">
+        <div class="flex">
+          <div class="ml-3">
+            <p class="text-sm text-yellow-700">
+              This round is currently being broadcasted.
+            </p>
+          </div>
         </div>
       </div>
+    </div>
+    <div v-else>
+      <h3 class="text-white text-xl mt-4">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+          class="inline-block w-4 h-4">
+          <path stroke-linecap="round" stroke-linejoin="round"
+            d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+        </svg>
+        Upload PGN
+      </h3>
+      <p class="text-gray-200">Monitor a local folder and automatically upload PGN files to Lichess.</p>
+      <NewFolderSync :broadcast-round-id="round.id" />
+    </div>
+
+    <h3 class="text-white text-xl my-4">
+      Games
+      <span class="text-gray-400">({{ round.games.length }})</span>
+    </h3>
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+      <a v-for="game in round.games" href="#" @click="openBrowser(game.url)"
+        class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
+        :class="{ 'bg-green-800 hover:bg-green-700': game.ongoing }">
+        {{ game.name }}
+        <span class="float-right">{{ game.res }}</span>
+      </a>
     </div>
   </template>
 </template>

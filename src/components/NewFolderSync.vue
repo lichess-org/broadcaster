@@ -38,9 +38,9 @@ async function startWatchingFolder() {
 </script>
 
 <template>
-  <form class="">
+  <form class="mt-2" @submit.prevent="startWatchingFolder">
     <button @click="selectPgnFolder"
-      class="flex-shrink-0 bg-teal-500 hover:bg-teal-700 border-teal-500 hover:border-teal-700 text-sm border-4 text-white py-1 px-2 rounded mt-4"
+      class="rounded-md bg-teal-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
       type="button">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
         class="inline-block w-4 h-4">
@@ -49,12 +49,17 @@ async function startWatchingFolder() {
       </svg>
       Select Folder
     </button>
-    <p class="font-mono text-white text-sm">{{ pgnFolder }}</p>
+    <span class="ml-3 font-mono text-white text-sm">{{ pgnFolder }}</span>
 
-    <button @click="startWatchingFolder" v-if="pgnFolder"
-      class="flex-shrink-0 bg-teal-600 hover:bg-teal-700 border-teal-600 hover:border-teal-700 border-4 text-white py-1 px-2 rounded mt-4"
-      type="button">
-      Start Watching
+    <button v-if="pgnFolder"
+      class="ml-4 rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+      type="submit">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+        class="inline-block w-4 h-4">
+        <path stroke-linecap="round" stroke-linejoin="round"
+          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+      </svg>
+      Start
     </button>
   </form>
 </template>
