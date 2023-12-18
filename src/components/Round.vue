@@ -34,7 +34,7 @@ function refresh() {
 }
 
 const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(round.value?.startsAt)
+  return timestampToLocalDatetime(round.value?.round.startsAt)
 })
 
 const isBroadcasting = computed<boolean>(() => {
@@ -42,7 +42,7 @@ const isBroadcasting = computed<boolean>(() => {
     return false;
   }
 
-  return logs.currentBroadcastThreads.has(round.value?.id)
+  return logs.currentBroadcastThreads.has(round.value?.round.id)
 })
 </script>
 
@@ -50,14 +50,17 @@ const isBroadcasting = computed<boolean>(() => {
   <template v-if="round">
     <div class="md:flex md:items-center md:justify-between mb-4">
       <div class="min-w-0 flex-1">
-        <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">{{ round.name }}
+        <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
+          {{ round.round.name }}
+          <span class="ml-2 text-gray-400">/ {{ round.tour.name }}</span>
         </h2>
+        <p class="text-gray-200">{{ round.tour.description }}</p>
         <p class="text-gray-200">{{ startsAt }}</p>
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
         <button type="button" @click="refresh"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">Refresh</button>
-        <button type="button" @click="openBrowser(round.url)"
+        <button type="button" @click="openBrowser(round.round.url)"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">View
           on Lichess</button>
       </div>
@@ -85,7 +88,7 @@ const isBroadcasting = computed<boolean>(() => {
       </h3>
       <p class="text-gray-300">As game PGNs are written to a folder, they can be automatically be uploaded to Lichess.
       </p>
-      <NewFolderSync :broadcast-round-id="round.id" />
+      <NewFolderSync :broadcast-round-id="round.round.id" />
     </div>
 
     <h3 class="text-white text-xl my-4">

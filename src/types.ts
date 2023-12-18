@@ -51,11 +51,9 @@ export interface LichessUser {
 }
 
 export interface RoundResponse {
-  id: string;
-  name: string;
-  slug: string;
-  startsAt: number;
-  url: string;
+  round: Round;
+  tour: Tournament;
+  study: Study;
   games: Game[];
 }
 
