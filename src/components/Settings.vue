@@ -2,8 +2,8 @@
 import { ref } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { getVersion } from "@tauri-apps/api/app";
-import { invoke } from "@tauri-apps/api/tauri";
 import { useUserStore } from "../stores/user";
+import { openBrowser } from "../utils";
 
 const settings = useSettingsStore()
 const user = useUserStore()
@@ -20,10 +20,6 @@ const form = ref<{ lichessUrl: string }>({
 async function save() {
   settings.setLichessUrl(form.value.lichessUrl)
   form.value.lichessUrl = settings.lichessUrl
-}
-
-async function openBrowser(url: string) {
-  await invoke("open_browser", { url });
 }
 </script>
 

@@ -4,8 +4,8 @@ import { router } from '../router';
 import { useSettingsStore } from '../stores/settings';
 import { RoundResponse } from '../types';
 import { useUserStore } from '../stores/user';
-import { invoke } from '@tauri-apps/api';
 import NewFolderSync from './NewFolderSync.vue';
+import { openBrowser } from "../utils";
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -29,12 +29,6 @@ getRound();
 
 function refresh() {
   getRound();
-}
-
-async function openOnLichess(url: string) {
-  await invoke("open_browser", {
-    url,
-  });
 }
 
 const startsAt = computed<string>(() => {
@@ -66,7 +60,7 @@ const startsAt = computed<string>(() => {
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
         <button type="button" @click="refresh"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">Refresh</button>
-        <button type="button" @click="openOnLichess(round.url)"
+        <button type="button" @click="openBrowser(round.url)"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">View
           on Lichess</button>
       </div>
@@ -89,7 +83,7 @@ const startsAt = computed<string>(() => {
       <div v-for="game in round.games"
         class="relative flex items-center space-x-3 rounded-lg border border-gray-300 bg-white px-6 py-5 shadow-sm focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-400">
         <div class="min-w-0 flex-1">
-          <a href="#" class="focus:outline-none" @click="openOnLichess(game.url)">
+          <a href="#" class="focus:outline-none" @click="openBrowser(game.url)">
             <p class="text-sm font-medium text-gray-900">{{ game.name }}</p>
             <p class="truncate text-sm text-gray-500">{{ game.res }}</p>
           </a>
