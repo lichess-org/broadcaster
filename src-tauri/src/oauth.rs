@@ -5,8 +5,6 @@ use serde::{Deserialize, Serialize};
 use tauri::Window;
 use tauri_plugin_oauth::OauthConfig;
 
-use crate::utils::open_path;
-
 const OAUTH_CLIENT_ID: &str = "github.com/fitztrev/pgn-broadcaster";
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
@@ -54,12 +52,14 @@ pub fn start_oauth_flow(window: Window, lichess_url: String) {
     let redirect_url = format!("http://localhost:{port}/");
     println!("Local server started: {redirect_url}");
 
-    open_path(format!(
+    let url = format!(
         "{}/oauth?response_type=code&client_id={}&redirect_uri={}&code_challenge_method=S256&code_challenge={}&scope={}",
         lichess_url_copy,
         OAUTH_CLIENT_ID,
         redirect_url,
         code_challenge.as_str(),
         ["study:read", "study:write"].join(" ")
-    ));
+    );
+
+    open::that_detached(url).expect("failed to open url");
 }

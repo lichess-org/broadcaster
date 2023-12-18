@@ -8,10 +8,8 @@ use notify::{EventKind, RecursiveMode, Watcher};
 use oauth::start_oauth_flow;
 use serde::{Deserialize, Serialize};
 use tauri::Window;
-use utils::open_path;
 
 mod oauth;
-mod utils;
 
 #[derive(Serialize, Deserialize, Debug)]
 struct BroadcastResponse {
@@ -65,7 +63,7 @@ fn main() {
 
 #[tauri::command]
 fn open_browser(url: String) {
-    open_path(url);
+    open::that_detached(url).expect("failed to open url");
 }
 
 #[tauri::command]
