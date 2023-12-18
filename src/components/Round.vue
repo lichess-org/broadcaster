@@ -5,7 +5,7 @@ import { useSettingsStore } from '../stores/settings';
 import { RoundResponse } from '../types';
 import { useUserStore } from '../stores/user';
 import NewFolderSync from './NewFolderSync.vue';
-import { openBrowser } from "../utils";
+import { openBrowser, timestampToLocalDatetime } from "../utils";
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -32,20 +32,7 @@ function refresh() {
 }
 
 const startsAt = computed<string>(() => {
-  if (!round.value?.startsAt) {
-    return ''
-  }
-
-  let date = new Date(round.value.startsAt)
-
-  return date.toLocaleDateString(undefined, {
-    weekday: 'long',
-    year: '2-digit',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  })
+  return timestampToLocalDatetime(round.value?.startsAt)
 })
 </script>
 

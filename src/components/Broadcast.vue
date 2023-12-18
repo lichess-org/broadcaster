@@ -3,6 +3,7 @@ import { computed } from 'vue';
 import { LichessBroadcast } from '../types';
 import { router } from '../router';
 import { useLogStore } from '../stores/logs';
+import { relativeTimeDisplay, timestampToLocalDatetime } from '../utils';
 
 const logs = useLogStore()
 
@@ -11,36 +12,11 @@ const props = defineProps<{
 }>()
 
 const startsAt = computed<string>(() => {
-  if (!props.broadcast.round.startsAt) {
-    return ''
-  }
-
-  let date = new Date(props.broadcast.round.startsAt)
-
-  return date.toLocaleDateString(undefined, {
-    weekday: 'long',
-    year: '2-digit',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  })
+  return timestampToLocalDatetime(props.broadcast.round.startsAt)
 })
 
 const relativeTime = computed<string>(() => {
-  if (!props.broadcast.round.startsAt) {
-    return ''
-  }
-
-  const then = new Date(props.broadcast.round.startsAt).getTime();
-  const deltaSeconds = Math.round((then - Date.now()) / 1000);
-
-  const cutoffs = [60, 3600, 86400, 86400 * 7, 86400 * 30, 86400 * 365, Infinity];
-  const units: Intl.RelativeTimeFormatUnit[] = ["second", "minute", "hour", "day", "week", "month", "year"];
-  const unitIndex = cutoffs.findIndex(cutoff => cutoff > Math.abs(deltaSeconds));
-  const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
-  return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
+  return relativeTimeDisplay(props.broadcast.round.startsAt)
 })
 
 function openRound(broadcastRoundId: string) {
