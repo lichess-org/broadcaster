@@ -39,12 +39,11 @@ pub fn start_watching_folder(
     std::thread::spawn(move || {
         let mut watcher = notify::recommended_watcher(
             move |res: Result<notify::Event, notify::Error>| match res {
-                Ok(event) => match event.kind {
-                    EventKind::Access(_) => {
+                Ok(event) => {
+                    if let EventKind::Access(_) = event.kind {
                         tx.send(FileChangeEvent { paths: event.paths }).unwrap();
                     }
-                    _ => {}
-                },
+                }
                 Err(e) => {
                     println!("watch error: {e:?}");
                 }
