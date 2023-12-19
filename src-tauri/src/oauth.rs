@@ -14,10 +14,11 @@ struct AccessTokenResponse {
     expires_in: i32,
 }
 
-pub fn start_oauth_flow(window: Window, lichess_url: String) {
+#[tauri::command]
+pub fn start_oauth_flow(window: Window, url: &str) {
     let (code_challenge, code_verify) = oauth2::PkceCodeChallenge::new_random_sha256();
 
-    let lichess_url_copy = lichess_url.clone();
+    let url_copy = url.to_string();
 
     let port = tauri_plugin_oauth::start_with_config(
         OauthConfig {
@@ -29,7 +30,7 @@ pub fn start_oauth_flow(window: Window, lichess_url: String) {
             let code = url.query_pairs().find(|(key, _)| key == "code").unwrap().1;
 
             let access_token = reqwest::blocking::Client::new()
-                .post(format!("{lichess_url}/api/token"))
+                .post(format!("{url}/api/token"))
                 .form(&[
                     ("grant_type", "authorization_code"),
                     ("client_id", OAUTH_CLIENT_ID),
@@ -54,7 +55,7 @@ pub fn start_oauth_flow(window: Window, lichess_url: String) {
 
     let url = format!(
         "{}/oauth?response_type=code&client_id={}&redirect_uri={}&code_challenge_method=S256&code_challenge={}&scope={}",
-        lichess_url_copy,
+        url_copy,
         OAUTH_CLIENT_ID,
         redirect_url,
         code_challenge.as_str(),

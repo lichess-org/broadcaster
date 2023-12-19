@@ -4,9 +4,9 @@ import { useSettingsStore } from '../stores/settings';
 
 const settings = useSettingsStore()
 
-async function loginWithLichess() {
-  await invoke('login_with_lichess', {
-    lichessUrl: settings.lichessUrl,
+async function login() {
+  await invoke('start_oauth_flow', {
+    url: settings.lichessUrl,
   })
 }
 </script>
@@ -16,7 +16,7 @@ async function loginWithLichess() {
     <h3 class="mt-2 text-xl font-semibold text-gray-200">Welcome to the Lichess PGN Broadcaster app</h3>
     <p class="mt-1 text-sm text-gray-300">Get started by logging in with your Lichess account.</p>
     <div class="mt-6">
-      <button type="button" @click="loginWithLichess"
+      <button type="button" @click="login"
         class="inline-flex items-center rounded-md bg-indigo-600 px-8 py-3 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="-ml-0.5 mr-1.5 h-5 w-5">
