@@ -13,7 +13,7 @@ const pgnFolder = ref<string | null>(null);
 
 const props = defineProps<{
   broadcastRoundId: string;
-}>()
+}>();
 
 async function selectPgnFolder() {
   const selected = await open({ directory: true });
@@ -33,7 +33,7 @@ async function startWatchingFolder() {
     folder: pgnFolder.value,
   });
 
-  router.push('/');
+  router.push("/");
 }
 </script>
 

@@ -1,30 +1,37 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
-import { router } from '../router';
-import { useSettingsStore } from '../stores/settings';
-import { RoundResponse } from '../types';
-import { useUserStore } from '../stores/user';
-import NewFolderSync from './NewFolderSync.vue';
-import { openBrowser, relativeTimeDisplay, timestampToLocalDatetime } from "../utils";
-import { useLogStore } from '../stores/logs';
+import { computed, ref } from "vue";
+import { router } from "../router";
+import { useSettingsStore } from "../stores/settings";
+import { RoundResponse } from "../types";
+import { useUserStore } from "../stores/user";
+import NewFolderSync from "./NewFolderSync.vue";
+import {
+  openBrowser,
+  relativeTimeDisplay,
+  timestampToLocalDatetime,
+} from "../utils";
+import { useLogStore } from "../stores/logs";
 
 const settings = useSettingsStore();
 const user = useUserStore();
-const logs = useLogStore()
+const logs = useLogStore();
 
 const round = ref<RoundResponse | null>(null);
 
 function getRound() {
-  fetch(`${settings.lichessUrl}/api/broadcast/-/-/${router.currentRoute.value.params.id}`, {
-    headers: {
-      'Accept': 'application/json',
-      'Authorization': `Bearer ${user.accessToken?.access_token}`,
-    }
-  })
-    .then(response => response.json() as Promise<RoundResponse>)
-    .then(data => {
+  fetch(
+    `${settings.lichessUrl}/api/broadcast/-/-/${router.currentRoute.value.params.id}`,
+    {
+      headers: {
+        Accept: "application/json",
+        Authorization: `Bearer ${user.accessToken?.access_token}`,
+      },
+    },
+  )
+    .then((response) => response.json() as Promise<RoundResponse>)
+    .then((data) => {
       round.value = data;
-    })
+    });
 }
 
 getRound();
@@ -34,36 +41,42 @@ function refresh() {
 }
 
 const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(round.value?.round.startsAt)
-})
+  return timestampToLocalDatetime(round.value?.round.startsAt);
+});
 
 const relativeTime = computed<string>(() => {
-  return relativeTimeDisplay(round.value?.round.startsAt)
-})
+  return relativeTimeDisplay(round.value?.round.startsAt);
+});
 
 const delay = computed<string>(() => {
   if (!round.value?.round.delay) {
-    return '';
+    return "";
   }
 
-  return [{
-    value: Math.floor(round.value.round.delay / 60),
-    label: 'minute',
-  }, {
-    value: round.value.round.delay % 60,
-    label: 'second',
-  }].filter(({ value }) => value > 0).map(({ value, label }) => {
-    return `${value} ${label}${value > 1 ? 's' : ''}`;
-  }).join(' ');
-})
+  return [
+    {
+      value: Math.floor(round.value.round.delay / 60),
+      label: "minute",
+    },
+    {
+      value: round.value.round.delay % 60,
+      label: "second",
+    },
+  ]
+    .filter(({ value }) => value > 0)
+    .map(({ value, label }) => {
+      return `${value} ${label}${value > 1 ? "s" : ""}`;
+    })
+    .join(" ");
+});
 
 const isBroadcasting = computed<boolean>(() => {
   if (!round.value) {
     return false;
   }
 
-  return logs.currentBroadcastThreads.has(round.value?.round.id)
-})
+  return logs.currentBroadcastThreads.has(round.value?.round.id);
+});
 </script>
 
 <template>
@@ -91,10 +104,13 @@ const isBroadcasting = computed<boolean>(() => {
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
         <button type="button" @click="refresh"
-          class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">Refresh</button>
+          class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
+          Refresh
+        </button>
         <button type="button" @click="openBrowser(round.round.url)"
-          class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">View
-          on Lichess</button>
+          class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
+          View on Lichess
+        </button>
       </div>
     </div>
 
@@ -118,7 +134,9 @@ const isBroadcasting = computed<boolean>(() => {
         </svg>
         Upload PGN
       </h3>
-      <p class="text-gray-300">As game PGNs are written to a folder, they can be automatically be uploaded to Lichess.
+      <p class="text-gray-300">
+        As game PGNs are written to a folder, they can be automatically be
+        uploaded to Lichess.
       </p>
 
       <NewFolderSync v-if="round.study.writeable" :broadcast-round-id="round.round.id" />
@@ -128,8 +146,8 @@ const isBroadcasting = computed<boolean>(() => {
             d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
             clip-rule="evenodd" />
         </svg>
-        You do not have Contributor access to this study so you can't
-        upload PGN.
+        You do not have Contributor access to this study so you can't upload
+        PGN.
       </div>
     </div>
 

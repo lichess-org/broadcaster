@@ -1,79 +1,87 @@
 <script setup lang="ts">
-import ndjson from 'fetch-ndjson'
-import Broadcast from './Broadcast.vue';
-import { LichessBroadcast } from '../types';
-import { useSettingsStore } from '../stores/settings';
-import { useUserStore } from '../stores/user';
-import { computed, ref } from 'vue';
-import { openBrowser } from '../utils';
+import ndjson from "fetch-ndjson";
+import Broadcast from "./Broadcast.vue";
+import { LichessBroadcast } from "../types";
+import { useSettingsStore } from "../stores/settings";
+import { useUserStore } from "../stores/user";
+import { computed, ref } from "vue";
+import { openBrowser } from "../utils";
 
 const settings = useSettingsStore();
 const user = useUserStore();
 
-const isLoading = ref<boolean>(true)
-const broadcasts = ref<LichessBroadcast[]>([])
+const isLoading = ref<boolean>(true);
+const broadcasts = ref<LichessBroadcast[]>([]);
 
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
   let response = await fetch(`${settings.lichessUrl}/api/broadcast/my-rounds`, {
     headers: {
-      'Authorization': `Bearer ${user.accessToken?.access_token}`,
-    }
-  })
+      Authorization: `Bearer ${user.accessToken?.access_token}`,
+    },
+  });
 
   return new Promise(async (resolve, reject) => {
     if (!response.ok) {
-      reject(`${response.status} ${response.statusText}`)
-      return
+      reject(`${response.status} ${response.statusText}`);
+      return;
     }
 
     let reader = response.body!.getReader();
-    let gen = ndjson(reader)
+    let gen = ndjson(reader);
 
     while (true) {
       let { done, value } = await gen.next();
 
       if (done) {
-        resolve(true)
-        return
+        resolve(true);
+        return;
       }
 
-      callback(value)
+      callback(value);
     }
-  })
+  });
 }
 
 const hasBroadcasts = computed<boolean>(() => {
-  return broadcasts.value.length > 0
-})
+  return broadcasts.value.length > 0;
+});
 
 function refresh() {
-  broadcasts.value = []
-  isLoading.value = true
+  broadcasts.value = [];
+  isLoading.value = true;
 
   getBroadcasts((value) => {
-    broadcasts.value.push(value)
+    broadcasts.value.push(value);
   }).finally(() => {
-    isLoading.value = false
-  })
+    isLoading.value = false;
+  });
 }
 
-refresh()
+refresh();
 </script>
 
 <template>
   <div class="md:flex md:items-center md:justify-between mb-4">
     <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Your Broadcasts</h2>
+      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
+        Your Broadcasts
+      </h2>
     </div>
     <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
       <button type="button" @click="refresh"
-        class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">Refresh</button>
-      <button type="button" @click="openBrowser(`${settings.lichessUrl}/broadcast/by/${user.username}`)"
-        class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">View
-        on Lichess</button>
+        class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
+        Refresh
+      </button>
+      <button type="button" @click="
+        openBrowser(`${settings.lichessUrl}/broadcast/by/${user.username}`)
+        "
+        class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
+        View on Lichess
+      </button>
       <button type="button" @click="openBrowser(`${settings.lichessUrl}/broadcast/new`)" v-if="hasBroadcasts"
-        class="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">&plus;
-        New Broadcast</button>
+        class="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+        &plus; New Broadcast
+      </button>
     </div>
   </div>
 
@@ -89,7 +97,9 @@ refresh()
     </svg>
 
     <h3 class="mt-2 text-sm font-semibold text-gray-200">No broadcasts</h3>
-    <p class="mt-1 text-sm text-gray-300">Get started by creating a new broadcast.</p>
+    <p class="mt-1 text-sm text-gray-300">
+      Get started by creating a new broadcast.
+    </p>
     <div class="mt-6">
       <button type="button" @click="openBrowser(`${settings.lichessUrl}/broadcast/new`)"
         class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">

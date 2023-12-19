@@ -5,41 +5,45 @@ import { getVersion } from "@tauri-apps/api/app";
 import { useUserStore } from "../stores/user";
 import { openBrowser } from "../utils";
 
-const settings = useSettingsStore()
-const user = useUserStore()
+const settings = useSettingsStore();
+const user = useUserStore();
 
-const appVersion = ref('')
+const appVersion = ref("");
 getVersion().then((version) => {
-  appVersion.value = version
-})
+  appVersion.value = version;
+});
 
 const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
-})
+});
 
 const usingDevSite = computed<boolean>(() => {
-  return settings.lichessUrl !== 'https://lichess.org'
-})
+  return settings.lichessUrl !== "https://lichess.org";
+});
 
 async function save() {
-  settings.setLichessUrl(form.value.lichessUrl)
-  form.value.lichessUrl = settings.lichessUrl
+  settings.setLichessUrl(form.value.lichessUrl);
+  form.value.lichessUrl = settings.lichessUrl;
 }
 
 function clearAllData() {
-  localStorage.clear()
-  location.reload()
+  localStorage.clear();
+  location.reload();
 }
 </script>
 
 <template>
-  <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
+  <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
+    Settings
+  </h2>
 
   <div class="divide-y divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7 text-white">Advanced</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">For development purposes</p>
+        <p class="mt-1 text-sm leading-6 text-gray-400">
+          For development purposes
+        </p>
       </div>
 
       <form class="md:col-span-2" @submit.prevent="save">
@@ -51,7 +55,7 @@ function clearAllData() {
                 class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
                 <input type="text" id="lichessUrl" autocomplete="false"
                   class="flex-1 border-0 bg-transparent py-1.5 px-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
-                  v-model="form.lichessUrl">
+                  v-model="form.lichessUrl" />
               </div>
             </div>
           </div>
@@ -59,7 +63,9 @@ function clearAllData() {
 
         <div class="mt-8 flex">
           <button type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">Save</button>
+            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+            Save
+          </button>
         </div>
       </form>
     </div>
@@ -71,17 +77,22 @@ function clearAllData() {
       </div>
 
       <div>
-        <p class="mb-2 text-sm leading-6 text-gray-400">You are logged in as <strong>{{ user.username }}</strong></p>
+        <p class="mb-2 text-sm leading-6 text-gray-400">
+          You are logged in as <strong>{{ user.username }}</strong>
+        </p>
         <form class="flex items-start md:col-span-2" @submit.prevent="user.logout()">
           <button type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400">Logout</button>
+            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400">
+            Logout
+          </button>
         </form>
 
         <div v-if="usingDevSite" class="mt-2">
           <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
             <button type="submit"
-              class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">Clear
-              all local data + reset app settings to default</button>
+              class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">
+              Clear all local data + reset app settings to default
+            </button>
           </form>
         </div>
       </div>
@@ -89,16 +100,20 @@ function clearAllData() {
 
     <div v-if="usingDevSite" class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Development Settings</h2>
+        <h2 class="text-base font-semibold leading-7 text-white">
+          Development Settings
+        </h2>
       </div>
 
       <div class="md:col-span-2">
-        <p class="mb-2 text-sm leading-6 text-gray-400">Clear
-          all local data + reset app settings to their defaults</p>
+        <p class="mb-2 text-sm leading-6 text-gray-400">
+          Clear all local data + reset app settings to their defaults
+        </p>
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
           <button type="submit"
-            class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">Clear
-            app data</button>
+            class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">
+            Clear app data
+          </button>
         </form>
       </div>
     </div>
@@ -114,14 +129,19 @@ function clearAllData() {
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           See the source and contribute to this
-          <a href="#" class="underline" @click.prevent="openBrowser('https://github.com/fitztrev/pgn-broadcaster')">app on
-            GitHub</a>
+          <a href="#" class="underline" @click.prevent="
+            openBrowser('https://github.com/fitztrev/pgn-broadcaster')
+            ">app on GitHub</a>
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please
-          <a href="#" class="underline"
-            @click.prevent="openBrowser('https://discord.com/channels/1094189632691904573/1122545040686858340')">
-            post to <code>#broadcast-errors</code> on the Lichess Content Discord</a>.
+          <a href="#" class="underline" @click.prevent="
+            openBrowser(
+              'https://discord.com/channels/1094189632691904573/1122545040686858340',
+            )
+            ">
+            post to <code>#broadcast-errors</code> on the Lichess Content
+            Discord</a>.
         </p>
       </div>
     </div>

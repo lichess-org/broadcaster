@@ -14,6 +14,7 @@
     "fetch-ndjson": "^1.1.7",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
+    "prettier": "^3.1.1",
     "vue": "^3.3.13",
     "vue-router": "^4.2.5"
   },
@@ -27,7 +28,7 @@
     "autoprefixer": "^10.4.16",
     "chess.js": "1.0.0-beta.6",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.3.7",
+    "tailwindcss": "^3.4.0",
     "typescript": "^5.3.3",
     "vite": "^4.5.1",
     "vue-tsc": "^1.8.25"

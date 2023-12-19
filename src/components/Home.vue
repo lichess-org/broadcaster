@@ -3,7 +3,7 @@ import { useUserStore } from "../stores/user";
 import LichessLogin from "./LichessLogin.vue";
 import Dashboard from "./Dashboard.vue";
 
-const user = useUserStore()
+const user = useUserStore();
 </script>
 
 <template>

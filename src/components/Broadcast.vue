@@ -1,36 +1,36 @@
 <script setup lang="ts">
-import { computed } from 'vue';
-import { LichessBroadcast } from '../types';
-import { router } from '../router';
-import { useLogStore } from '../stores/logs';
-import { relativeTimeDisplay, timestampToLocalDatetime } from '../utils';
+import { computed } from "vue";
+import { LichessBroadcast } from "../types";
+import { router } from "../router";
+import { useLogStore } from "../stores/logs";
+import { relativeTimeDisplay, timestampToLocalDatetime } from "../utils";
 
-const logs = useLogStore()
+const logs = useLogStore();
 
 const props = defineProps<{
-  broadcast: LichessBroadcast
-}>()
+  broadcast: LichessBroadcast;
+}>();
 
 const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(props.broadcast.round.startsAt)
-})
+  return timestampToLocalDatetime(props.broadcast.round.startsAt);
+});
 
 const relativeTime = computed<string>(() => {
-  return relativeTimeDisplay(props.broadcast.round.startsAt)
-})
+  return relativeTimeDisplay(props.broadcast.round.startsAt);
+});
 
 function openRound(broadcastRoundId: string) {
   router.push({
-    name: 'round',
+    name: "round",
     params: {
       id: broadcastRoundId,
-    }
-  })
+    },
+  });
 }
 
 const isBroadcasting = computed<boolean>(() => {
-  return logs.currentBroadcastThreads.has(props.broadcast.round.id)
-})
+  return logs.currentBroadcastThreads.has(props.broadcast.round.id);
+});
 </script>
 
 <template>
@@ -39,7 +39,7 @@ const isBroadcasting = computed<boolean>(() => {
     <div class="min-w-0 flex-auto">
       <div class="flex items-center gap-x-3">
         <div class="flex-none rounded-full p-1 text-gray-500 bg-gray-100/10" :class="{
-          'text-green-400 bg-green-400/10': isBroadcasting
+          'text-green-400 bg-green-400/10': isBroadcasting,
         }">
           <div class="h-2 w-2 rounded-full bg-current"></div>
         </div>

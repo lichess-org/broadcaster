@@ -1,20 +1,24 @@
 <script setup lang="ts">
-import { invoke } from '@tauri-apps/api/tauri'
-import { useSettingsStore } from '../stores/settings';
+import { invoke } from "@tauri-apps/api/tauri";
+import { useSettingsStore } from "../stores/settings";
 
-const settings = useSettingsStore()
+const settings = useSettingsStore();
 
 async function login() {
-  await invoke('start_oauth_flow', {
+  await invoke("start_oauth_flow", {
     lichessUrl: settings.lichessUrl,
-  })
+  });
 }
 </script>
 
 <template>
   <div class="text-center mt-20">
-    <h3 class="mt-2 text-xl font-semibold text-gray-200">Welcome to the Lichess PGN Broadcaster app</h3>
-    <p class="mt-1 text-sm text-gray-300">Get started by logging in with your Lichess account.</p>
+    <h3 class="mt-2 text-xl font-semibold text-gray-200">
+      Welcome to the Lichess PGN Broadcaster app
+    </h3>
+    <p class="mt-1 text-sm text-gray-300">
+      Get started by logging in with your Lichess account.
+    </p>
     <div class="mt-6">
       <button type="button" @click="login"
         class="inline-flex items-center rounded-md bg-indigo-600 px-8 py-3 font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
