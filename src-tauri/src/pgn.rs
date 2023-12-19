@@ -70,6 +70,10 @@ pub fn start_watching_folder(
             window.emit("folder_contents_changed", &event).unwrap();
 
             for path in event.paths {
+                if !should_upload(&path) {
+                    continue;
+                }
+
                 let response = post_pgn_to_lichess(&lichess_url2, &api_token2, &round2, &path);
                 window
                     .emit(
@@ -100,4 +104,28 @@ fn post_pgn_to_lichess(
         .unwrap()
         .json::<PgnUploadResponse>()
         .unwrap()
+}
+
+fn should_upload(path: &PathBuf) -> bool {
+    // ignore the "games.json" file which is a multi-game pgn file
+    // we only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
+    path.file_name().unwrap_or_default() != "games.pgn"
+        && path.extension().unwrap_or_default() == "pgn"
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_should_upload() {
+        assert!(should_upload(&PathBuf::from("game-1.pgn")));
+        assert!(should_upload(&PathBuf::from("path/to/game-1.pgn")));
+    }
+
+    #[test]
+    fn test_should_not_upload() {
+        assert!(!should_upload(&PathBuf::from("games.pgn")));
+        assert!(!should_upload(&PathBuf::from("index.html")));
+    }
 }
