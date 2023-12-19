@@ -11,8 +11,8 @@ use crate::pgn::start_watching_folder;
 fn main() {
     tauri::Builder::default()
         .invoke_handler(tauri::generate_handler![
-            start_oauth_flow,
             open_browser,
+            start_oauth_flow,
             start_watching_folder
         ])
         .run(tauri::generate_context!())
