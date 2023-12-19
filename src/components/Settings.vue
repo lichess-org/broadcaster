@@ -36,10 +36,7 @@ function clearAllData() {
   <div class="divide-y divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Development Settings</h2>
-        <p class="mt-1 text-sm leading-6 text-gray-400">
-          Advanced configuration
-        </p>
+        <h2 class="text-base font-semibold leading-7 text-white">Configuration</h2>
       </div>
 
       <div class="md:col-span-2">
@@ -104,20 +101,17 @@ function clearAllData() {
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please
+          post to <code class="font-bold">#broadcast-errors</code> on the
           <a href="#" class="underline" @click.prevent="
-            openBrowser(
-              'https://discord.com/channels/1094189632691904573/1122545040686858340',
-            )
-            ">
-            post to <code>#broadcast-errors</code> on the Lichess Content
-            Discord</a>.
+            openBrowser('https://discord.gg/7cP5enqEuN')">
+            Lichess Content Discord</a>.
         </p>
 
         <div class="mt-8">
           <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
             <button type="submit"
               class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500">
-              Reset all Settings
+              Reset All Settings
             </button>
           </form>
           <p class="mt-2 text-sm leading-6 text-gray-400">
