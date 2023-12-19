@@ -63,6 +63,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a4668cab20f66d8d020e1fbc0ebe47217433c1b6c8f2040faf858554e394ace6"
 
 [[package]]
+name = "ascii"
+version = "1.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "d92bec98840b8f03a5ff5413de5293bfcd8bf96467cf5452609f939ec6f5de16"
+
+[[package]]
 name = "atk"
 version = "0.15.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -300,6 +306,12 @@ dependencies = [
  "wasm-bindgen",
  "windows-targets 0.48.5",
 ]
+
+[[package]]
+name = "chunked_transfer"
+version = "1.5.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "6e4de3bc4ea267985becf712dc6d9eed8b04c953b3fcfb339ebc87acd9804901"
 
 [[package]]
 name = "cocoa"
@@ -2140,9 +2152,11 @@ dependencies = [
  "reqwest",
  "serde",
  "serde_json",
+ "serde_urlencoded",
  "tauri",
  "tauri-build",
- "tauri-plugin-oauth",
+ "tiny_http",
+ "url",
 ]
 
 [[package]]
@@ -3337,18 +3351,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tauri-plugin-oauth"
-version = "0.0.0-alpha.0"
-source = "git+https://github.com/FabianLars/tauri-plugin-oauth#50dadbf4a81cba51f625587b7722892f0b4316a6"
-dependencies = [
- "httparse",
- "log",
- "serde",
- "tauri",
- "url",
-]
-
-[[package]]
 name = "tauri-runtime"
 version = "0.14.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3516,6 +3518,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "4ad70d68dba9e1f8aceda7aa6711965dfec1cac869f311a51bd08b3a2ccbce20"
 dependencies = [
  "time-core",
+]
+
+[[package]]
+name = "tiny_http"
+version = "0.12.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "389915df6413a2e74fb181895f933386023c71110878cd0825588928e64cdc82"
+dependencies = [
+ "ascii",
+ "chunked_transfer",
+ "httpdate",
+ "log",
 ]
 
 [[package]]

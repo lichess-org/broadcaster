@@ -1,67 +1,60 @@
-use std::borrow::Cow;
-
-use reqwest::Url;
-use serde::{Deserialize, Serialize};
+use oauth2::{
+    basic::BasicClient, reqwest::http_client, AuthUrl, AuthorizationCode, ClientId, CsrfToken,
+    PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
+};
 use tauri::Window;
-use tauri_plugin_oauth::OauthConfig;
+use tiny_http::Server;
 
 const OAUTH_CLIENT_ID: &str = "github.com/fitztrev/pgn-broadcaster";
 
-#[derive(Serialize, Deserialize, Debug, Clone)]
-struct AccessTokenResponse {
-    token_type: String,
-    access_token: String,
-    expires_in: i32,
-}
-
 #[tauri::command]
 pub fn start_oauth_flow(window: Window, lichess_url: &str) {
-    let (code_challenge, code_verify) = oauth2::PkceCodeChallenge::new_random_sha256();
+    let server = Server::http("0.0.0.0:0").unwrap();
+    let port = server.server_addr().to_ip().unwrap().port();
+    let localhost_url = format!("http://localhost:{port}/");
+    println!("Local server started: {localhost_url}");
 
-    let lichess_url_copy = lichess_url.to_string();
-
-    let port = tauri_plugin_oauth::start_with_config(
-        OauthConfig {
-            ports: None,
-            response: Some(Cow::Borrowed(include_str!("../public/oauth_response.html"))),
-        },
-        move |url| {
-            let url = Url::parse(&url).unwrap();
-
-            let code = url.query_pairs().find(|(key, _)| key == "code").unwrap().1;
-
-            let access_token = reqwest::blocking::Client::new()
-                .post(format!("{lichess_url_copy}/api/token"))
-                .form(&[
-                    ("grant_type", "authorization_code"),
-                    ("client_id", OAUTH_CLIENT_ID),
-                    ("code", code.to_string().as_str()),
-                    (
-                        "redirect_uri",
-                        format!("http://localhost:{}/", url.port().unwrap()).as_str(),
-                    ),
-                    ("code_verifier", code_verify.secret()),
-                ])
-                .send()
-                .unwrap()
-                .json::<AccessTokenResponse>()
-                .unwrap();
-            window.emit("update_access_token", access_token).unwrap();
-        },
+    let client = BasicClient::new(
+        ClientId::new(OAUTH_CLIENT_ID.to_string()),
+        None,
+        AuthUrl::new(format!("{lichess_url}/oauth")).unwrap(),
+        Some(TokenUrl::new(format!("{lichess_url}/api/token")).unwrap()),
     )
-    .unwrap();
+    .set_redirect_uri(RedirectUrl::new(localhost_url).unwrap());
 
-    let redirect_url = format!("http://localhost:{port}/");
-    println!("Local server started: {redirect_url}");
+    let (code_challenge, code_verify) = PkceCodeChallenge::new_random_sha256();
 
-    let url = format!(
-        "{}/oauth?response_type=code&client_id={}&redirect_uri={}&code_challenge_method=S256&code_challenge={}&scope={}",
-        lichess_url,
-        OAUTH_CLIENT_ID,
-        redirect_url,
-        code_challenge.as_str(),
-        ["study:read", "study:write"].join(" ")
-    );
+    let (authorize_url, _) = client
+        .authorize_url(CsrfToken::new_random)
+        .add_scope(Scope::new("study:read".to_string()))
+        .add_scope(Scope::new("study:write".to_string()))
+        .set_pkce_challenge(code_challenge)
+        .url();
 
-    open::that_detached(url).expect("failed to open url");
+    open::that_detached(authorize_url.to_string()).expect("failed to open url");
+
+    std::thread::spawn(move || {
+        if let Some(request) = server.incoming_requests().next() {
+            let path = request.url().to_string();
+            let parts = serde_urlencoded::from_str::<Vec<(String, String)>>(&path[2..]).unwrap();
+            let code = parts
+                .iter()
+                .find(|(key, _)| key == "code")
+                .unwrap()
+                .1
+                .to_string();
+
+            let access_token = client
+                .exchange_code(AuthorizationCode::new(code.to_string()))
+                .set_pkce_verifier(code_verify)
+                .request(http_client)
+                .unwrap();
+
+            window.emit("update_access_token", access_token).unwrap();
+
+            let _ = request.respond(tiny_http::Response::from_string(
+                "Thanks! You may now close this window and return to the app.",
+            ));
+        }
+    });
 }
