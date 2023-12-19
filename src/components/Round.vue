@@ -120,7 +120,17 @@ const isBroadcasting = computed<boolean>(() => {
       </h3>
       <p class="text-gray-300">As game PGNs are written to a folder, they can be automatically be uploaded to Lichess.
       </p>
-      <NewFolderSync :broadcast-round-id="round.round.id" />
+
+      <NewFolderSync v-if="round.study.writeable" :broadcast-round-id="round.round.id" />
+      <div v-else class="mt-4 bg-yellow-50 text-yellow-800 py-4 px-4">
+        <svg class="inline h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+          <path fill-rule="evenodd"
+            d="M8.485 2.495c.673-1.167 2.357-1.167 3.03 0l6.28 10.875c.673 1.167-.17 2.625-1.516 2.625H3.72c-1.347 0-2.189-1.458-1.515-2.625L8.485 2.495zM10 5a.75.75 0 01.75.75v3.5a.75.75 0 01-1.5 0v-3.5A.75.75 0 0110 5zm0 9a1 1 0 100-2 1 1 0 000 2z"
+            clip-rule="evenodd" />
+        </svg>
+        You do not have Contributor access to this study so you can't
+        upload PGN.
+      </div>
     </div>
 
     <h3 class="text-white text-xl my-4">
