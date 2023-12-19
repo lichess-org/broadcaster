@@ -41,6 +41,22 @@ const relativeTime = computed<string>(() => {
   return relativeTimeDisplay(round.value?.round.startsAt)
 })
 
+const delay = computed<string>(() => {
+  if (!round.value?.round.delay) {
+    return '';
+  }
+
+  return [{
+    value: Math.floor(round.value.round.delay / 60),
+    label: 'minute',
+  }, {
+    value: round.value.round.delay % 60,
+    label: 'second',
+  }].filter(({ value }) => value > 0).map(({ value, label }) => {
+    return `${value} ${label}${value > 1 ? 's' : ''}`;
+  }).join(' ');
+})
+
 const isBroadcasting = computed<boolean>(() => {
   if (!round.value) {
     return false;
@@ -65,6 +81,12 @@ const isBroadcasting = computed<boolean>(() => {
             <circle cx="1" cy="1" r="1" />
           </svg>
           <p class="whitespace-nowrap">{{ relativeTime }}</p>
+          <template v-if="delay">
+            <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
+              <circle cx="1" cy="1" r="1" />
+            </svg>
+            <p class="whitespace-nowrap">Move Delay: {{ delay }}</p>
+          </template>
         </div>
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
