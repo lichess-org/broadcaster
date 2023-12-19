@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from "vue";
+import { ref } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { getVersion } from "@tauri-apps/api/app";
 import { useUserStore } from "../stores/user";
@@ -15,10 +15,6 @@ getVersion().then((version) => {
 
 const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
-});
-
-const usingDevSite = computed<boolean>(() => {
-  return settings.lichessUrl !== "https://lichess.org";
 });
 
 async function save() {
@@ -40,34 +36,36 @@ function clearAllData() {
   <div class="divide-y divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Advanced</h2>
+        <h2 class="text-base font-semibold leading-7 text-white">Development Settings</h2>
         <p class="mt-1 text-sm leading-6 text-gray-400">
-          For development purposes
+          Advanced configuration
         </p>
       </div>
 
-      <form class="md:col-span-2" @submit.prevent="save">
-        <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-          <div class="col-span-full">
-            <label for="lichessUrl" class="block text-sm font-medium leading-6 text-white">Lichess URL</label>
-            <div class="mt-2">
-              <div
-                class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
-                <input type="text" id="lichessUrl" autocomplete="false"
-                  class="flex-1 border-0 bg-transparent py-1.5 px-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
-                  v-model="form.lichessUrl" />
+      <div class="md:col-span-2">
+        <form @submit.prevent="save">
+          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
+            <div class="col-span-full">
+              <label for="lichessUrl" class="block text-sm font-medium leading-6 text-white">Lichess URL</label>
+              <div class="mt-2">
+                <div
+                  class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500">
+                  <input type="text" id="lichessUrl" autocomplete="false"
+                    class="flex-1 border-0 bg-transparent py-1.5 px-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
+                    v-model="form.lichessUrl" />
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="mt-8 flex">
-          <button type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
-            Save
-          </button>
-        </div>
-      </form>
+          <div class="mt-4 flex">
+            <button type="submit"
+              class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500">
+              Save
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
 
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
@@ -84,35 +82,6 @@ function clearAllData() {
           <button type="submit"
             class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400">
             Logout
-          </button>
-        </form>
-
-        <div v-if="usingDevSite" class="mt-2">
-          <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
-            <button type="submit"
-              class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">
-              Clear all local data + reset app settings to default
-            </button>
-          </form>
-        </div>
-      </div>
-    </div>
-
-    <div v-if="usingDevSite" class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-white">
-          Development Settings
-        </h2>
-      </div>
-
-      <div class="md:col-span-2">
-        <p class="mb-2 text-sm leading-6 text-gray-400">
-          Clear all local data + reset app settings to their defaults
-        </p>
-        <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
-          <button type="submit"
-            class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">
-            Clear app data
           </button>
         </form>
       </div>
@@ -143,6 +112,18 @@ function clearAllData() {
             post to <code>#broadcast-errors</code> on the Lichess Content
             Discord</a>.
         </p>
+
+        <div class="mt-8">
+          <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
+            <button type="submit"
+              class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500">
+              Reset all Settings
+            </button>
+          </form>
+          <p class="mt-2 text-sm leading-6 text-gray-400">
+            Clear all local data + reset app settings to their defaults
+          </p>
+        </div>
       </div>
     </div>
   </div>
