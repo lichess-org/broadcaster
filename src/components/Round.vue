@@ -6,17 +6,38 @@ import { RoundResponse } from "../types";
 import { useUserStore } from "../stores/user";
 import NewFolderSync from "./NewFolderSync.vue";
 import {
+  delayDisplay,
   openBrowser,
   relativeTimeDisplay,
   timestampToLocalDatetime,
 } from "../utils";
 import { useLogStore } from "../stores/logs";
 
+const logs = useLogStore();
 const settings = useSettingsStore();
 const user = useUserStore();
-const logs = useLogStore();
 
 const round = ref<RoundResponse | null>(null);
+
+const delay = computed<string>(() => {
+  return delayDisplay(round.value?.round.delay);
+});
+
+const isBroadcasting = computed<boolean>(() => {
+  if (!round.value) {
+    return false;
+  }
+
+  return logs.currentBroadcastThreads.has(round.value?.round.id);
+});
+
+const relativeTime = computed<string>(() => {
+  return relativeTimeDisplay(round.value?.round.startsAt);
+});
+
+const startsAt = computed<string>(() => {
+  return timestampToLocalDatetime(round.value?.round.startsAt);
+});
 
 function getRound() {
   fetch(
@@ -35,48 +56,6 @@ function getRound() {
 }
 
 getRound();
-
-function refresh() {
-  getRound();
-}
-
-const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(round.value?.round.startsAt);
-});
-
-const relativeTime = computed<string>(() => {
-  return relativeTimeDisplay(round.value?.round.startsAt);
-});
-
-const delay = computed<string>(() => {
-  if (!round.value?.round.delay) {
-    return "";
-  }
-
-  return [
-    {
-      value: Math.floor(round.value.round.delay / 60),
-      label: "minute",
-    },
-    {
-      value: round.value.round.delay % 60,
-      label: "second",
-    },
-  ]
-    .filter(({ value }) => value > 0)
-    .map(({ value, label }) => {
-      return `${value} ${label}${value > 1 ? "s" : ""}`;
-    })
-    .join(" ");
-});
-
-const isBroadcasting = computed<boolean>(() => {
-  if (!round.value) {
-    return false;
-  }
-
-  return logs.currentBroadcastThreads.has(round.value?.round.id);
-});
 </script>
 
 <template>
@@ -103,7 +82,7 @@ const isBroadcasting = computed<boolean>(() => {
         </div>
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
-        <button type="button" @click="refresh"
+        <button type="button" @click="getRound"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
           Refresh
         </button>

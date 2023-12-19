@@ -11,12 +11,16 @@ const props = defineProps<{
   broadcast: LichessBroadcast;
 }>();
 
-const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(props.broadcast.round.startsAt);
+const isBroadcasting = computed<boolean>(() => {
+  return logs.currentBroadcastThreads.has(props.broadcast.round.id);
 });
 
 const relativeTime = computed<string>(() => {
   return relativeTimeDisplay(props.broadcast.round.startsAt);
+});
+
+const startsAt = computed<string>(() => {
+  return timestampToLocalDatetime(props.broadcast.round.startsAt);
 });
 
 function openRound(broadcastRoundId: string) {
@@ -27,10 +31,6 @@ function openRound(broadcastRoundId: string) {
     },
   });
 }
-
-const isBroadcasting = computed<boolean>(() => {
-  return logs.currentBroadcastThreads.has(props.broadcast.round.id);
-});
 </script>
 
 <template>

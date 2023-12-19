@@ -54,3 +54,25 @@ export function relativeTimeDisplay(timestamp?: number) {
   const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
+
+export function delayDisplay(delay?: number): string {
+  if (!delay) {
+    return "";
+  }
+
+  return [
+    {
+      value: Math.floor(delay / 60),
+      label: "minute",
+    },
+    {
+      value: delay % 60,
+      label: "second",
+    },
+  ]
+    .filter(({ value }) => value > 0)
+    .map(({ value, label }) => {
+      return `${value} ${label}${value > 1 ? "s" : ""}`;
+    })
+    .join(" ");
+}

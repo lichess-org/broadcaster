@@ -13,6 +13,10 @@ const user = useUserStore();
 const isLoading = ref<boolean>(true);
 const broadcasts = ref<LichessBroadcast[]>([]);
 
+const hasBroadcasts = computed<boolean>(() => {
+  return broadcasts.value.length > 0;
+});
+
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
   let response = await fetch(`${settings.lichessUrl}/api/broadcast/my-rounds`, {
     headers: {
@@ -41,10 +45,6 @@ async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
     }
   });
 }
-
-const hasBroadcasts = computed<boolean>(() => {
-  return broadcasts.value.length > 0;
-});
 
 function refresh() {
   broadcasts.value = [];
