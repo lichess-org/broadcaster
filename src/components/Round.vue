@@ -5,7 +5,7 @@ import { useSettingsStore } from '../stores/settings';
 import { RoundResponse } from '../types';
 import { useUserStore } from '../stores/user';
 import NewFolderSync from './NewFolderSync.vue';
-import { openBrowser, timestampToLocalDatetime } from "../utils";
+import { openBrowser, relativeTimeDisplay, timestampToLocalDatetime } from "../utils";
 import { useLogStore } from '../stores/logs';
 
 const settings = useSettingsStore();
@@ -37,6 +37,10 @@ const startsAt = computed<string>(() => {
   return timestampToLocalDatetime(round.value?.round.startsAt)
 })
 
+const relativeTime = computed<string>(() => {
+  return relativeTimeDisplay(round.value?.round.startsAt)
+})
+
 const isBroadcasting = computed<boolean>(() => {
   if (!round.value) {
     return false;
@@ -54,8 +58,14 @@ const isBroadcasting = computed<boolean>(() => {
           {{ round.round.name }}
           <span class="ml-2 text-gray-400">/ {{ round.tour.name }}</span>
         </h2>
-        <p class="text-gray-200">{{ round.tour.description }}</p>
-        <p class="text-gray-200">{{ startsAt }}</p>
+        <p class="text-gray-200 text-xl">{{ round.tour.description }}</p>
+        <div v-if="startsAt" class="mt-3 flex items-center gap-x-2.5 text-xs leading-5 text-gray-400">
+          <p class="truncate">{{ startsAt }}</p>
+          <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
+            <circle cx="1" cy="1" r="1" />
+          </svg>
+          <p class="whitespace-nowrap">{{ relativeTime }}</p>
+        </div>
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
         <button type="button" @click="refresh"
@@ -77,7 +87,7 @@ const isBroadcasting = computed<boolean>(() => {
         </div>
       </div>
     </div>
-    <div v-else class="border-gray-700 border-2 p-6 m-8">
+    <div v-else class="border-gray-700 border-2 p-6 my-4">
       <h3 class="text-white text-xl mb-2">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
           class="inline-block w-4 h-4">
