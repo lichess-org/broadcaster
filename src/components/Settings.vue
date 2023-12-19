@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { getVersion } from "@tauri-apps/api/app";
 import { useUserStore } from "../stores/user";
@@ -17,9 +17,18 @@ const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
 })
 
+const usingDevSite = computed<boolean>(() => {
+  return settings.lichessUrl !== 'https://lichess.org'
+})
+
 async function save() {
   settings.setLichessUrl(form.value.lichessUrl)
   form.value.lichessUrl = settings.lichessUrl
+}
+
+function clearAllData() {
+  localStorage.clear()
+  location.reload()
 }
 </script>
 
@@ -66,6 +75,30 @@ async function save() {
         <form class="flex items-start md:col-span-2" @submit.prevent="user.logout()">
           <button type="submit"
             class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400">Logout</button>
+        </form>
+
+        <div v-if="usingDevSite" class="mt-2">
+          <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
+            <button type="submit"
+              class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">Clear
+              all local data + reset app settings to default</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div v-if="usingDevSite" class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-base font-semibold leading-7 text-white">Development Settings</h2>
+      </div>
+
+      <div class="md:col-span-2">
+        <p class="mb-2 text-sm leading-6 text-gray-400">Clear
+          all local data + reset app settings to their defaults</p>
+        <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
+          <button type="submit"
+            class="rounded-md bg-red-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-400">Clear
+            app data</button>
         </form>
       </div>
     </div>
