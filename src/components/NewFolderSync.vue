@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { open } from "@tauri-apps/api/dialog";
 import { useUserStore } from "../stores/user";
 import { useSettingsStore } from "../stores/settings";
-import { watch } from "tauri-plugin-fs-watch-api";
+import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
 import { readTextFile } from "@tauri-apps/api/fs";
 import { PgnPushResponse } from "../types";
 import { useLogStore } from "../stores/logs";
@@ -33,10 +33,9 @@ async function startWatchingFolder() {
     throw new Error("No folder selected");
   }
 
-  // @ts-ignore - pending fix https://github.com/tauri-apps/plugins-workspace/pull/840
   const stopWatching = await watch(pgnFolder.value, handleFolderChange, {
     recursive: true,
-    debounce: 1000,
+    delayMs: 1000,
   });
 
   logs.watchProcesses.set(props.broadcastRoundId, {
@@ -44,10 +43,6 @@ async function startWatchingFolder() {
     unlisten: stopWatching,
   });
 }
-
-type DebouncedEvent =
-  | { kind: "Any"; path: string }[]
-  | { kind: "AnyContinuous"; path: string }[];
 
 function handleFolderChange(events: DebouncedEvent) {
   events.forEach((event) => {

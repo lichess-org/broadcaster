@@ -22,7 +22,7 @@ dependencies:
     version: 3.1.1
   tauri-plugin-fs-watch-api:
     specifier: github:tauri-apps/tauri-plugin-fs-watch#v1
-    version: github.com/tauri-apps/tauri-plugin-fs-watch/d2e3e6da1f64c012c88c1a76d1ddc4949f5301bf
+    version: github.com/tauri-apps/tauri-plugin-fs-watch/0d5e194271cd9a74b84e27f2bc4e33fae0fc2c5b
   vue:
     specifier: ^3.3.13
     version: 3.3.13(typescript@5.3.3)
@@ -1719,8 +1719,8 @@ packages:
     engines: {node: '>= 14'}
     dev: true
 
-  github.com/tauri-apps/tauri-plugin-fs-watch/d2e3e6da1f64c012c88c1a76d1ddc4949f5301bf:
-    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-fs-watch/tar.gz/d2e3e6da1f64c012c88c1a76d1ddc4949f5301bf}
+  github.com/tauri-apps/tauri-plugin-fs-watch/0d5e194271cd9a74b84e27f2bc4e33fae0fc2c5b:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-fs-watch/tar.gz/0d5e194271cd9a74b84e27f2bc4e33fae0fc2c5b}
     name: tauri-plugin-fs-watch-api
     version: 0.0.0
     dependencies:
