@@ -56,6 +56,11 @@ function getRound() {
 }
 
 getRound();
+
+function stopWatching() {
+  logs.watchProcesses.get(round.value!.round.id)?.unlisten();
+  logs.watchProcesses.delete(round.value!.round.id);
+}
 </script>
 
 <template>
@@ -99,6 +104,13 @@ getRound();
           <div class="ml-3">
             <p>This round is currently being broadcasted.</p>
             <p>Currently watching folder: <a class="underline" href="" @click.prevent="openPath(watchedFolder)">{{ watchedFolder }}</a></p>
+            
+            <div class="mt-4">
+              <button type="button" @click="stopWatching"
+                class="rounded-md bg-red-900 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-red-800">
+                Stop watching this folder
+              </button>
+            </div>
           </div>
         </div>
       </div>
