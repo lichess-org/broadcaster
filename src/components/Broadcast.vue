@@ -12,7 +12,7 @@ const props = defineProps<{
 }>();
 
 const isBroadcasting = computed<boolean>(() => {
-  return logs.currentBroadcastThreads.has(props.broadcast.round.id);
+  return logs.watchProcesses.has(props.broadcast.round.id);
 });
 
 const relativeTime = computed<string>(() => {

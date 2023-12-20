@@ -1,7 +1,7 @@
 [package]
 name = "pgn-broadcaster"
 version = "0.0.0"
-description = "Lichess PGN Broadcaster"
+description = "Lichess Broadcaster"
 authors = ["you"]
 license = ""
 repository = ""
@@ -13,16 +13,12 @@ edition = "2021"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
-tauri = { version = "1.5", features = [ "shell-open", "dialog-open", "reqwest-native-tls-vendored"] }
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-reqwest = { version = "0.11.22", features = ["json", "blocking"] }
-notify = "6.1.1"
 oauth2 = "4.4.2"
 open = "5.0.1"
-tiny_http = "0.12.0"
-url = "2.5.0"
 serde_urlencoded = "0.7.1"
+tauri = { version = "1.5", features = [ "fs-read-file", "shell-open", "dialog-open", "reqwest-native-tls-vendored"] }
+tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tiny_http = "0.12.0"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem

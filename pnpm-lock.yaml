@@ -20,6 +20,9 @@ dependencies:
   prettier:
     specifier: ^3.1.1
     version: 3.1.1
+  tauri-plugin-fs-watch-api:
+    specifier: github:tauri-apps/tauri-plugin-fs-watch#v1
+    version: github.com/tauri-apps/tauri-plugin-fs-watch/d2e3e6da1f64c012c88c1a76d1ddc4949f5301bf
   vue:
     specifier: ^3.3.13
     version: 3.3.13(typescript@5.3.3)
@@ -630,6 +633,11 @@ packages:
       '@nodelib/fs.scandir': 2.1.5
       fastq: 1.16.0
     dev: true
+
+  /@tauri-apps/api@1.5.1:
+    resolution: {integrity: sha512-6unsZDOdlXTmauU3NhWhn+Cx0rODV+rvNvTdvolE5Kls5ybA6cqndQENDt1+FS0tF7ozCP66jwWoH6a5h90BrA==}
+    engines: {node: '>= 14.6.0', npm: '>= 6.6.0', yarn: '>= 1.19.1'}
+    dev: false
 
   /@tauri-apps/api@1.5.2:
     resolution: {integrity: sha512-tZK3XJiIUnUdHN7rGqA+j57dvT3/7z2bEiPfWmO3uAymv2JMBJrfGwbyDWLjGue37UVhh0gLYSkA9wV+/bASwA==}
@@ -1710,3 +1718,11 @@ packages:
     resolution: {integrity: sha512-8aAvwVUSHpfEqTQ4w/KMlf3HcRdt50E5ODIQJBw1fQ5RL34xabzxtUlzTXVqc4rkZsPbvrXKWnABCD7kWSmocA==}
     engines: {node: '>= 14'}
     dev: true
+
+  github.com/tauri-apps/tauri-plugin-fs-watch/d2e3e6da1f64c012c88c1a76d1ddc4949f5301bf:
+    resolution: {tarball: https://codeload.github.com/tauri-apps/tauri-plugin-fs-watch/tar.gz/d2e3e6da1f64c012c88c1a76d1ddc4949f5301bf}
+    name: tauri-plugin-fs-watch-api
+    version: 0.0.0
+    dependencies:
+      '@tauri-apps/api': 1.5.1
+    dev: false

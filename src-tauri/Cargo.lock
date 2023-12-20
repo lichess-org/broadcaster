@@ -1812,8 +1812,21 @@ dependencies = [
  "libc",
  "log",
  "mio",
+ "serde",
  "walkdir",
  "windows-sys 0.48.0",
+]
+
+[[package]]
+name = "notify-debouncer-mini"
+version = "0.4.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5d40b221972a1fc5ef4d858a2f671fb34c75983eb385463dff3780eeff6a9d43"
+dependencies = [
+ "crossbeam-channel",
+ "log",
+ "notify",
+ "serde",
 ]
 
 [[package]]
@@ -2106,17 +2119,13 @@ checksum = "e3148f5046208a5d56bcfc03053e3ca6334e51da8dfb19b6cdc8b306fae3283e"
 name = "pgn-broadcaster"
 version = "0.0.0"
 dependencies = [
- "notify",
  "oauth2",
  "open 5.0.1",
- "reqwest",
- "serde",
- "serde_json",
  "serde_urlencoded",
  "tauri",
  "tauri-build",
+ "tauri-plugin-fs-watch",
  "tiny_http",
- "url",
 ]
 
 [[package]]
@@ -3308,6 +3317,20 @@ dependencies = [
  "syn 1.0.109",
  "tauri-codegen",
  "tauri-utils",
+]
+
+[[package]]
+name = "tauri-plugin-fs-watch"
+version = "0.0.0"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#563ca73de0f49e5ca50fba8168f350b8b6a9219b"
+dependencies = [
+ "log",
+ "notify",
+ "notify-debouncer-mini",
+ "serde",
+ "serde_json",
+ "tauri",
+ "thiserror",
 ]
 
 [[package]]

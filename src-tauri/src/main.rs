@@ -3,18 +3,13 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod oauth;
-mod pgn;
 
 use crate::oauth::start_oauth_flow;
-use crate::pgn::start_watching_folder;
 
 fn main() {
     tauri::Builder::default()
-        .invoke_handler(tauri::generate_handler![
-            open_browser,
-            start_oauth_flow,
-            start_watching_folder
-        ])
+        .invoke_handler(tauri::generate_handler![open_browser, start_oauth_flow,])
+        .plugin(tauri_plugin_fs_watch::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

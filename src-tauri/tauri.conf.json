@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "Lichess PGN Broadcaster",
+    "productName": "Lichess Broadcaster",
     "version": "0.0.0"
   },
   "tauri": {
@@ -18,6 +18,9 @@
       },
       "dialog": {
         "open": true
+      },
+      "fs": {
+        "readFile": true
       }
     },
     "bundle": {
@@ -38,7 +41,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Lichess PGN Broadcaster",
+        "title": "Lichess Broadcaster",
         "width": 1200,
         "height": 800
       }

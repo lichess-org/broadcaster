@@ -14,7 +14,7 @@ async function login() {
 <template>
   <div class="text-center mt-20">
     <h3 class="mt-2 text-xl font-semibold text-gray-200">
-      Welcome to the Lichess PGN Broadcaster app
+      Welcome to the Lichess Broadcaster app
     </h3>
     <p class="mt-1 text-sm text-gray-300">
       Get started by logging in with your Lichess account.

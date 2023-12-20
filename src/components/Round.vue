@@ -28,7 +28,7 @@ const isBroadcasting = computed<boolean>(() => {
     return false;
   }
 
-  return logs.currentBroadcastThreads.has(round.value?.round.id);
+  return logs.watchProcesses.has(round.value?.round.id);
 });
 
 const relativeTime = computed<string>(() => {

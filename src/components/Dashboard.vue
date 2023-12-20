@@ -6,8 +6,12 @@ const logs = useLogStore();
 
 type Status = "Idle" | "Broadcasting";
 
+const broadcastingCount = computed<number>(() => {
+  return logs.watchProcesses.size;
+});
+
 const status = computed<Status>(() => {
-  if (logs.currentBroadcastThreads.size > 0) {
+  if (broadcastingCount.value > 0) {
     return "Broadcasting";
   }
 
@@ -31,9 +35,7 @@ const status = computed<Status>(() => {
       <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
         <p class="text-sm font-medium leading-6 text-gray-400">Rounds</p>
         <p class="mt-2 flex items-baseline gap-x-2">
-          <span class="text-4xl font-semibold tracking-tight text-white">{{
-            logs.currentBroadcastThreads.size
-          }}</span>
+          <span class="text-4xl font-semibold tracking-tight text-white">{{ broadcastingCount }}</span>
         </p>
       </div>
       <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
@@ -56,7 +58,7 @@ const status = computed<Status>(() => {
   </div>
   <div v-if="logs.logs.length" class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono h-1/2">
     <div v-for="log in logs.logs">
-      {{ log.date.toLocaleTimeString() }}:
+      {{ log.date.toLocaleTimeString() }} -
       {{ log.message }}
     </div>
   </div>

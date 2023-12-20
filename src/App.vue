@@ -1,35 +1,17 @@
 <script setup lang="ts">
 import { useUserStore } from "./stores/user";
 import { listen } from '@tauri-apps/api/event';
-import { AccessTokenResponse, FolderContentsChangedEvent, PgnUploadedEvent } from "./types";
-import { useSettingsStore } from "./stores/settings";
-import { useLogStore } from "./stores/logs";
+import { AccessTokenResponse } from "./types";
 
-const logs = useLogStore()
 const user = useUserStore()
-const settings = useSettingsStore()
 
 listen<AccessTokenResponse>('update_access_token', (event) => {
   user.setAccessToken(event.payload)
 })
 
-listen<string>('update_lichess_url', (event) => {
-  settings.lichessUrl = event.payload
-})
-
-listen<FolderContentsChangedEvent>('folder_contents_changed', (event) => {
-  logs.add(`Modified: ${event.payload.paths.join(', ')}`)
-});
-
-listen<PgnUploadedEvent>('pgn_uploaded_event', (event) => {
-  logs.add(`Uploaded: ${event.payload.response.moves} moves from ${event.payload.path}`)
-  logs.files.add(event.payload.path)
-  logs.moveCount += event.payload.response.moves
-});
-
-listen<string>('started_broadcast_thread', (event) => {
-  logs.currentBroadcastThreads.add(event.payload)
-});
+// listen<string>('started_broadcast_thread', (event) => {
+//   logs.currentBroadcastThreads.add(event.payload)
+// });
 </script>
 
 <template>

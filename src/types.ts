@@ -27,19 +27,6 @@ interface Study {
   writeable: boolean;
 }
 
-export interface FolderContentsChangedEvent {
-  paths: string[];
-}
-
-export interface PgnUploadedEvent {
-  path: string;
-  response: PgnUploadResponse;
-}
-
-interface PgnUploadResponse {
-  moves: number;
-}
-
 export interface AccessTokenResponse {
   token_type: string;
   access_token: string;
@@ -63,4 +50,8 @@ interface Game {
   ongoing?: boolean;
   res?: string;
   url: string;
+}
+
+export interface PgnPushResponse {
+  moves: number;
 }
