@@ -106,7 +106,7 @@ fn post_pgn_to_lichess(
         .unwrap()
 }
 
-fn should_upload(path: &PathBuf) -> bool {
+fn should_upload(path: &Path) -> bool {
     // ignore the "games.json" file which is a multi-game pgn file
     // we only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
     path.file_name().unwrap_or_default() != "games.pgn"
