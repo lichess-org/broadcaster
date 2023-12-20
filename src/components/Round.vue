@@ -7,7 +7,7 @@ import { useUserStore } from "../stores/user";
 import NewFolderSync from "./NewFolderSync.vue";
 import {
   delayDisplay,
-  openBrowser,
+  openPath,
   relativeTimeDisplay,
   timestampToLocalDatetime,
 } from "../utils";
@@ -23,12 +23,12 @@ const delay = computed<string>(() => {
   return delayDisplay(round.value?.round.delay);
 });
 
-const isBroadcasting = computed<boolean>(() => {
+const watchedFolder = computed<string>(() => {
   if (!round.value) {
-    return false;
+    return "";
   }
 
-  return logs.watchProcesses.has(round.value?.round.id);
+  return logs.watchProcesses.get(round.value.round.id)?.folder ?? "";
 });
 
 const relativeTime = computed<string>(() => {
@@ -86,20 +86,19 @@ getRound();
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
           Refresh
         </button>
-        <button type="button" @click="openBrowser(round.round.url)"
+        <button type="button" @click="openPath(round.round.url)"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20">
           View on Lichess
         </button>
       </div>
     </div>
 
-    <div v-if="isBroadcasting">
-      <div class="border-l-4 border-yellow-400 bg-yellow-50 p-4">
+    <div v-if="watchedFolder">
+      <div class="border-l-8 border-green-900 bg-green-800 text-gray-50 p-4">
         <div class="flex">
           <div class="ml-3">
-            <p class="text-sm text-yellow-700">
-              This round is currently being broadcasted.
-            </p>
+            <p>This round is currently being broadcasted.</p>
+            <p>Currently watching folder: <a class="underline" href="" @click.prevent="openPath(watchedFolder)">{{ watchedFolder }}</a></p>
           </div>
         </div>
       </div>
@@ -135,9 +134,9 @@ getRound();
       <span class="text-gray-400">({{ round.games.length }})</span>
     </h3>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <a v-for="game in round.games" href="#" @click="openBrowser(game.url)"
+      <a v-for="game in round.games" href="#" @click="openPath(game.url)"
         class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
-        :class="{ 'bg-green-800 hover:bg-green-700': game.ongoing }">
+        :class="{ 'bg-cyan-900 hover:bg-cyan-800': game.ongoing }">
         {{ game.name }}
         <span class="float-right">{{ game.res }}</span>
       </a>

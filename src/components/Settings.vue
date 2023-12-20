@@ -3,7 +3,7 @@ import { ref } from "vue";
 import { useSettingsStore } from "../stores/settings";
 import { getVersion } from "@tauri-apps/api/app";
 import { useUserStore } from "../stores/user";
-import { openBrowser } from "../utils";
+import { openPath } from "../utils";
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -96,14 +96,14 @@ function clearAllData() {
         <p class="mb-2 text-sm leading-6 text-gray-400">
           See the source and contribute to this
           <a href="#" class="underline" @click.prevent="
-            openBrowser('https://github.com/fitztrev/pgn-broadcaster')
+            openPath('https://github.com/fitztrev/pgn-broadcaster')
             ">app on GitHub</a>
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please
           post to <code class="font-bold">#broadcast-errors</code> on the
           <a href="#" class="underline" @click.prevent="
-            openBrowser('https://discord.gg/7cP5enqEuN')">
+            openPath('https://discord.gg/7cP5enqEuN')">
             Lichess Content Discord</a>.
         </p>
 

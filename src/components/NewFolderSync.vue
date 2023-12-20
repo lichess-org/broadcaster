@@ -39,7 +39,10 @@ async function startWatchingFolder() {
     debounce: 1000,
   });
 
-  logs.watchProcesses.set(props.broadcastRoundId, stopWatching)
+  logs.watchProcesses.set(props.broadcastRoundId, {
+    folder: pgnFolder.value,
+    unlisten: stopWatching,
+  })
 }
 
 type DebouncedEvent =

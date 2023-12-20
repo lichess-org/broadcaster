@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api";
 
-export async function openBrowser(url: string) {
-  await invoke("open_browser", { url });
+export async function openPath(path: string) {
+  await invoke("open_path", { path });
 }
 
 export function timestampToLocalDatetime(timestamp?: number) {
