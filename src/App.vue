@@ -8,10 +8,6 @@ const user = useUserStore();
 listen<AccessTokenResponse>("update_access_token", (event) => {
   user.setAccessToken(event.payload);
 });
-
-// listen<string>('started_broadcast_thread', (event) => {
-//   logs.currentBroadcastThreads.add(event.payload)
-// });
 </script>
 
 <template>
