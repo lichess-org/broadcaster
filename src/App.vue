@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useUserStore } from "./stores/user";
-import { listen } from '@tauri-apps/api/event';
+import { listen } from "@tauri-apps/api/event";
 import { AccessTokenResponse } from "./types";
 
-const user = useUserStore()
+const user = useUserStore();
 
-listen<AccessTokenResponse>('update_access_token', (event) => {
-  user.setAccessToken(event.payload)
-})
+listen<AccessTokenResponse>("update_access_token", (event) => {
+  user.setAccessToken(event.payload);
+});
 
 // listen<string>('started_broadcast_thread', (event) => {
 //   logs.currentBroadcastThreads.add(event.payload)
@@ -17,7 +17,11 @@ listen<AccessTokenResponse>('update_access_token', (event) => {
 <template>
   <header class="mb-12 flex">
     <div class="">
-      <img src="./assets/lichess-white.svg" class="w-12 inline-block" alt="Lichess logo" />
+      <img
+        src="./assets/lichess-white.svg"
+        class="w-12 inline-block"
+        alt="Lichess logo"
+      />
     </div>
 
     <div class="grow">
@@ -26,7 +30,12 @@ listen<AccessTokenResponse>('update_access_token', (event) => {
           Home
         </router-link>
 
-        <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()">
+        <router-link
+          to="/broadcasts"
+          class="nav-item"
+          active-class="active"
+          v-if="user.isLoggedIn()"
+        >
           Broadcasts
         </router-link>
 

@@ -42,7 +42,7 @@ async function startWatchingFolder() {
   logs.watchProcesses.set(props.broadcastRoundId, {
     folder: pgnFolder.value,
     unlisten: stopWatching,
-  })
+  });
 }
 
 type DebouncedEvent =
@@ -81,7 +81,7 @@ async function uploadPgnToLichess(path: string) {
   )
     .then((response) => response.json() as Promise<PgnPushResponse>)
     .then((data) => {
-      console.log('PgnPushResponse', data);
+      console.log("PgnPushResponse", data);
 
       logs.add(`Uploaded: ${data.moves} moves from ${path}`);
       logs.files.add(path);

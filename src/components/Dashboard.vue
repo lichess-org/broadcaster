@@ -22,9 +22,12 @@ const status = computed<Status>(() => {
 <template>
   <div class="mx-auto max-w-7xl">
     <div class="grid grid-cols-4 gap-px bg-white/5">
-      <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8" :class="{
-        'bg-green-800': status === 'Broadcasting',
-      }">
+      <div
+        class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8"
+        :class="{
+          'bg-green-800': status === 'Broadcasting',
+        }"
+      >
         <p class="text-sm font-medium leading-6 text-gray-400">Status</p>
         <p class="mt-2 flex items-baseline gap-x-2">
           <span class="text-2xl font-semibold tracking-tight text-white">{{
@@ -35,7 +38,9 @@ const status = computed<Status>(() => {
       <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
         <p class="text-sm font-medium leading-6 text-gray-400">Rounds</p>
         <p class="mt-2 flex items-baseline gap-x-2">
-          <span class="text-4xl font-semibold tracking-tight text-white">{{ broadcastingCount }}</span>
+          <span class="text-4xl font-semibold tracking-tight text-white">{{
+            broadcastingCount
+          }}</span>
         </p>
       </div>
       <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
@@ -56,7 +61,10 @@ const status = computed<Status>(() => {
       </div>
     </div>
   </div>
-  <div v-if="logs.logs.length" class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono h-1/2">
+  <div
+    v-if="logs.logs.length"
+    class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono h-1/2"
+  >
     <div v-for="log in logs.logs">
       {{ log.date.toLocaleTimeString() }} -
       {{ log.message }}
