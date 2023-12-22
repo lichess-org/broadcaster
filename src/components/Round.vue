@@ -128,7 +128,7 @@ function stopWatching() {
               <button
                 type="button"
                 @click="stopWatching"
-                class="rounded-md bg-orange-800 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-orange-700"
+                class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400"
               >
                 Stop watching this folder
               </button>
