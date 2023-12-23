@@ -45,20 +45,19 @@ async function startWatchingFolder() {
 }
 
 function handleFolderChange(events: DebouncedEvent) {
-  events.forEach((event) => {
-    // ignore the "games.json" file which is a multi-game pgn file
-    // we only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
-    if (
-      event.kind === "Any" &&
-      event.path.endsWith(".pgn") &&
-      !event.path.endsWith("games.pgn")
-    ) {
+  events
+    .filter((event) => event.kind === "Any" && event.path.endsWith(".pgn"))
+    .filter((event) => {
+      // ignore the "games.json" file which is a multi-game pgn file
+      // we only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
+      return !event.path.endsWith("games.pgn");
+    })
+    .forEach((event) => {
       console.log("File modified", event.path);
       logs.add(`Modified: ${event.path}`);
 
       uploadPgnToLichess(event.path);
-    }
-  });
+    });
 }
 
 async function uploadPgnToLichess(path: string) {
