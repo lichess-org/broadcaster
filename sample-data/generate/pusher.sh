@@ -2,13 +2,13 @@
 
 LICHESS_URL="http://localhost:8080"
 API_TOKEN="lip_bobby" # with study:write permission
-BROADCAST_ROUND_ID="arE9Jvdb"
+BROADCAST_ROUND_ID="ayAPBpLr"
 
 ######
 
 # Push 10 games individually
 # 1.e4 for all
-for i in {1..10}
+for i in {1..3}
 do
     echo '
     [White "Player A'$i'"]
@@ -27,7 +27,7 @@ done
 
 # Update each game individually with a 2nd move
 # 1...e5 for all
-for i in {1..10}
+for i in {1..3}
 do
     echo '
     [White "Player A'$i'"]
