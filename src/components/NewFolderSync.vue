@@ -64,7 +64,7 @@ async function uploadPgnToLichess(path: string) {
   const pgn = await readTextFile(path);
 
   fetch(
-    `${settings.lichessUrl}/broadcast/round/${props.broadcastRoundId}/push`,
+    `${settings.lichessUrl}/api/broadcast/round/${props.broadcastRoundId}/push`,
     {
       method: "POST",
       headers: {
