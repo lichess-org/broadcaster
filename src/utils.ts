@@ -3,10 +3,10 @@ import { useLogStore } from "./stores/logs";
 import { useSettingsStore } from "./stores/settings";
 import { useUserStore } from "./stores/user";
 
-export async function lichessFetch<T>(
+export async function lichessFetch(
   path: string,
   options?: object,
-): Promise<T> {
+): Promise<Response> {
   const settings = useSettingsStore();
   const user = useUserStore();
 
@@ -22,7 +22,7 @@ export async function lichessFetch<T>(
       throw new Error(`${response.status} ${response.statusText}`);
     }
 
-    return response.json();
+    return response;
   });
 }
 

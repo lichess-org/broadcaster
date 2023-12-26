@@ -37,11 +37,11 @@ const startsAt = computed<string>(() => {
 });
 
 function getRound() {
-  lichessFetch<RoundResponse>(
-    `/api/broadcast/-/-/${router.currentRoute.value.params.id}`,
-  ).then((data) => {
-    round.value = data;
-  });
+  lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
+    .then((response) => response.json() as Promise<RoundResponse>)
+    .then((data) => {
+      round.value = data;
+    });
 }
 
 getRound();

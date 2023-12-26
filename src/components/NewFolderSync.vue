@@ -60,19 +60,18 @@ function handleFolderChange(events: DebouncedEvent) {
 async function uploadPgnToLichess(path: string) {
   const pgn = await readTextFile(path);
 
-  lichessFetch<PgnPushResponse>(
-    `/api/broadcast/round/${props.broadcastRoundId}/push`,
-    {
-      method: "POST",
-      body: pgn,
-    },
-  ).then((data) => {
-    console.log("PgnPushResponse", data);
+  lichessFetch(`/api/broadcast/round/${props.broadcastRoundId}/push`, {
+    method: "POST",
+    body: pgn,
+  })
+    .then((response) => response.json() as Promise<PgnPushResponse>)
+    .then((data) => {
+      console.log("PgnPushResponse", data);
 
-    logs.add(`Uploaded: ${data.moves} moves from ${path}`);
-    logs.files.add(path);
-    logs.moveCount += data.moves;
-  });
+      logs.add(`Uploaded: ${data.moves} moves from ${path}`);
+      logs.files.add(path);
+      logs.moveCount += data.moves;
+    });
 }
 </script>
 

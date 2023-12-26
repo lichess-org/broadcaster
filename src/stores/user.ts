@@ -18,9 +18,11 @@ export const useUserStore = defineStore(
     }
 
     function updateUser() {
-      lichessFetch<LichessUser>("/api/account").then((data) => {
-        username.value = data.username;
-      });
+      lichessFetch("/api/account")
+        .then((response) => response.json() as Promise<LichessUser>)
+        .then((data) => {
+          username.value = data.username;
+        });
     }
 
     function validateToken() {
@@ -43,11 +45,11 @@ export const useUserStore = defineStore(
     function logout() {
       lichessFetch("/api/token", {
         method: "DELETE",
-      }).then(() => {
-        accessToken.value = null;
-        expiresAt.value = null;
-        username.value = null;
       });
+
+      accessToken.value = null;
+      expiresAt.value = null;
+      username.value = null;
     }
 
     return {
