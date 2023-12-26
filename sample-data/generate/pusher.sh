@@ -22,7 +22,7 @@ do
     time curl -X POST \
         -H "Authorization: Bearer $API_TOKEN" \
         -d @output/game-$i.pgn \
-        http://localhost:8080/api/broadcast/round/$BROADCAST_ROUND_ID/push
+        $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push
 done
 
 # Update each game individually with a 2nd move
@@ -41,5 +41,5 @@ do
     time curl -X POST \
         -H "Authorization: Bearer $API_TOKEN" \
         -d @output/game-$i.pgn \
-        http://localhost:8080/api/broadcast/round/$BROADCAST_ROUND_ID/push
+        $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push
 done
