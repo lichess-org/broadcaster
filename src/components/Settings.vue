@@ -134,13 +134,13 @@ function clearAllData() {
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please post to
-          <code class="font-bold">#broadcast-errors</code> on the
+          <code class="font-bold">#support</code> on the
           <a
             href="#"
             class="underline"
-            @click.prevent="openPath('https://discord.gg/7cP5enqEuN')"
+            @click.prevent="openPath('https://discord.gg/lichess')"
           >
-            Lichess Content Discord</a
+            Lichess Discord</a
           >.
         </p>
 
