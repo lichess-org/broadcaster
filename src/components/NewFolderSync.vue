@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ref } from "vue";
 import { open } from "@tauri-apps/api/dialog";
 import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
 import { readTextFile } from "@tauri-apps/api/fs";
@@ -9,34 +8,28 @@ import { lichessFetch } from "../utils";
 
 const logs = useLogStore();
 
-const pgnFolder = ref<string | null>(null);
-
 const props = defineProps<{
   broadcastRoundId: string;
 }>();
 
 async function selectPgnFolder() {
-  const selected = await open({ directory: true });
+  open({ directory: true }).then((selected) => {
+    if (typeof selected !== "string") {
+      throw new Error("Expected a single folder to be selected");
+    }
 
-  if (Array.isArray(selected)) {
-    throw new Error("Expected a single folder to be selected");
-  } else if (selected) {
-    pgnFolder.value = selected;
-  }
+    startWatchingFolder(selected);
+  });
 }
 
-async function startWatchingFolder() {
-  if (!pgnFolder.value) {
-    throw new Error("No folder selected");
-  }
-
-  const stopWatching = await watch(pgnFolder.value, handleFolderChange, {
+async function startWatchingFolder(path: string) {
+  const stopWatching = await watch(path, handleFolderChange, {
     recursive: true,
     delayMs: 1000,
   });
 
   logs.watchProcesses.set(props.broadcastRoundId, {
-    folder: pgnFolder.value,
+    folder: path,
     unlisten: stopWatching,
   });
 }
@@ -76,7 +69,7 @@ async function uploadPgnToLichess(path: string) {
 </script>
 
 <template>
-  <form class="mt-2" @submit.prevent="startWatchingFolder">
+  <form class="mt-2">
     <button
       @click="selectPgnFolder"
       class="rounded-md bg-teal-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
@@ -97,29 +90,6 @@ async function uploadPgnToLichess(path: string) {
         />
       </svg>
       Select Folder
-    </button>
-    <span class="ml-3 font-mono text-white text-sm">{{ pgnFolder }}</span>
-
-    <button
-      v-if="pgnFolder"
-      class="ml-4 rounded-md bg-green-700 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-800"
-      type="submit"
-    >
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke-width="1.5"
-        stroke="currentColor"
-        class="inline-block w-4 h-4"
-      >
-        <path
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-        />
-      </svg>
-      Start Upload
     </button>
   </form>
 </template>
