@@ -16,14 +16,22 @@ export async function lichessFetch(
     },
     ...options,
   }).then((response) => {
-    if (!response.ok) {
-      const logs = useLogStore();
-      logs.add(`Error: ${response.status} ${response.statusText}`);
-      throw new Error(`${response.status} ${response.statusText}`);
-    }
+    if (!response.ok) handleFetchError(response);
 
     return response;
   });
+}
+
+function handleFetchError(response: Response) {
+  const logs = useLogStore();
+
+  if (response.status === 401) {
+    logs.add("Error: Invalid session. Please log out and log back in.");
+  } else {
+    logs.add(`Error: ${response.status} ${response.statusText}`);
+  }
+
+  throw new Error(`${response.status} ${response.statusText}`);
 }
 
 export async function openPath(path: string) {
