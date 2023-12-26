@@ -1,4 +1,41 @@
 import { invoke } from "@tauri-apps/api";
+import { useLogStore } from "./stores/logs";
+import { useSettingsStore } from "./stores/settings";
+import { useUserStore } from "./stores/user";
+
+export async function lichessFetch(
+  path: string,
+  options?: object,
+): Promise<Response> {
+  const settings = useSettingsStore();
+  const user = useUserStore();
+
+  return fetch(`${settings.lichessUrl}${path}`, {
+    headers: {
+      Authorization: `Bearer ${user.accessToken?.access_token}`,
+    },
+    ...options,
+  }).then((response) => {
+    if (!response.ok) handleFetchError(response);
+
+    return response;
+  });
+}
+
+function handleFetchError(response: Response) {
+  const logs = useLogStore();
+
+  if (response.status === 401) {
+    logs.add(
+      "Error: Invalid/expired session. Please log out and log back in.",
+      "error",
+    );
+  } else {
+    logs.add(`Error: ${response.status} ${response.statusText}`, "error");
+  }
+
+  throw new Error(`${response.status} ${response.statusText}`);
+}
 
 export async function openPath(path: string) {
   await invoke("open_path", { path });

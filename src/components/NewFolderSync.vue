@@ -1,16 +1,13 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { open } from "@tauri-apps/api/dialog";
-import { useUserStore } from "../stores/user";
-import { useSettingsStore } from "../stores/settings";
 import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
 import { readTextFile } from "@tauri-apps/api/fs";
 import { PgnPushResponse } from "../types";
 import { useLogStore } from "../stores/logs";
+import { lichessFetch } from "../utils";
 
 const logs = useLogStore();
-const settings = useSettingsStore();
-const user = useUserStore();
 
 const pgnFolder = ref<string | null>(null);
 
@@ -63,16 +60,10 @@ function handleFolderChange(events: DebouncedEvent) {
 async function uploadPgnToLichess(path: string) {
   const pgn = await readTextFile(path);
 
-  fetch(
-    `${settings.lichessUrl}/api/broadcast/round/${props.broadcastRoundId}/push`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${user.accessToken?.access_token}`,
-      },
-      body: pgn,
-    },
-  )
+  lichessFetch(`/api/broadcast/round/${props.broadcastRoundId}/push`, {
+    method: "POST",
+    body: pgn,
+  })
     .then((response) => response.json() as Promise<PgnPushResponse>)
     .then((data) => {
       console.log("PgnPushResponse", data);

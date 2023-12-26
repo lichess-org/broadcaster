@@ -5,7 +5,7 @@ import { LichessBroadcast } from "../types";
 import { useSettingsStore } from "../stores/settings";
 import { useUserStore } from "../stores/user";
 import { computed, ref } from "vue";
-import { openPath } from "../utils";
+import { lichessFetch, openPath } from "../utils";
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -18,18 +18,9 @@ const hasBroadcasts = computed<boolean>(() => {
 });
 
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
-  let response = await fetch(`${settings.lichessUrl}/api/broadcast/my-rounds`, {
-    headers: {
-      Authorization: `Bearer ${user.accessToken?.access_token}`,
-    },
-  });
+  let response = await lichessFetch(`/api/broadcast/my-rounds`);
 
-  return new Promise(async (resolve, reject) => {
-    if (!response.ok) {
-      reject(`${response.status} ${response.statusText}`);
-      return;
-    }
-
+  return new Promise(async (resolve) => {
     let reader = response.body!.getReader();
     let gen = ndjson(reader);
 

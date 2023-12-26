@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { AccessTokenResponse, LichessUser } from "../types";
-import { useSettingsStore } from "./settings";
+import { lichessFetch } from "../utils";
 
 export const useUserStore = defineStore(
   "user",
@@ -9,8 +9,6 @@ export const useUserStore = defineStore(
     const accessToken = ref<AccessTokenResponse | null>(null);
     const expiresAt = ref<number | null>(null);
     const username = ref<string | null>(null);
-
-    const settings = useSettingsStore();
 
     function setAccessToken(token: AccessTokenResponse) {
       accessToken.value = token;
@@ -20,42 +18,45 @@ export const useUserStore = defineStore(
     }
 
     function updateUser() {
-      fetch(`${settings.lichessUrl}/api/account`, {
-        headers: {
-          Authorization: `Bearer ${accessToken.value?.access_token}`,
-        },
-      })
+      lichessFetch("/api/account")
         .then((response) => response.json() as Promise<LichessUser>)
         .then((data) => {
           username.value = data.username;
         });
     }
 
-    function tokenIsNotExpired(): boolean {
-      return expiresAt.value !== null && expiresAt.value > new Date().getTime();
+    function validateToken() {
+      updateUser();
+    }
+
+    function tokenHasExpired(): boolean {
+      const oneMonthFromNow = new Date();
+      oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 11);
+
+      return (
+        expiresAt.value === null || expiresAt.value < oneMonthFromNow.getTime()
+      );
     }
 
     function isLoggedIn(): boolean {
-      return tokenIsNotExpired();
+      return !tokenHasExpired();
     }
 
     function logout() {
-      fetch(`${settings.lichessUrl}/api/token`, {
+      lichessFetch("/api/token", {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken.value?.access_token}`,
-        },
-      }).then(() => {
-        accessToken.value = null;
-        expiresAt.value = null;
-        username.value = null;
       });
+
+      accessToken.value = null;
+      expiresAt.value = null;
+      username.value = null;
     }
 
     return {
       accessToken,
       expiresAt,
       username,
+      validateToken,
       setAccessToken,
       isLoggedIn,
       logout,
