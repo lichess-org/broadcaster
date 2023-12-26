@@ -7,6 +7,7 @@ import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
 import { readTextFile } from "@tauri-apps/api/fs";
 import { PgnPushResponse } from "../types";
 import { useLogStore } from "../stores/logs";
+import { checkForErrors } from "../utils";
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -73,7 +74,10 @@ async function uploadPgnToLichess(path: string) {
       body: pgn,
     },
   )
-    .then((response) => response.json() as Promise<PgnPushResponse>)
+    .then((response) => {
+      checkForErrors(response);
+      return response.json() as Promise<PgnPushResponse>;
+    })
     .then((data) => {
       console.log("PgnPushResponse", data);
 

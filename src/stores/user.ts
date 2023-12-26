@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { AccessTokenResponse, LichessUser } from "../types";
+import { checkForErrors } from "../utils";
 import { useSettingsStore } from "./settings";
 
 export const useUserStore = defineStore(
@@ -25,18 +26,30 @@ export const useUserStore = defineStore(
           Authorization: `Bearer ${accessToken.value?.access_token}`,
         },
       })
-        .then((response) => response.json() as Promise<LichessUser>)
+        .then((response) => {
+          checkForErrors(response);
+          return response.json() as Promise<LichessUser>;
+        })
         .then((data) => {
           username.value = data.username;
         });
     }
 
-    function tokenIsNotExpired(): boolean {
-      return expiresAt.value !== null && expiresAt.value > new Date().getTime();
+    function validateToken() {
+      updateUser();
+    }
+
+    function tokenHasExpired(): boolean {
+      const oneMonthFromNow = new Date();
+      oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 11);
+
+      return (
+        expiresAt.value === null || expiresAt.value < oneMonthFromNow.getTime()
+      );
     }
 
     function isLoggedIn(): boolean {
-      return tokenIsNotExpired();
+      return !tokenHasExpired();
     }
 
     function logout() {
@@ -56,6 +69,7 @@ export const useUserStore = defineStore(
       accessToken,
       expiresAt,
       username,
+      validateToken,
       setAccessToken,
       isLoggedIn,
       logout,

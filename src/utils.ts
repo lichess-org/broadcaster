@@ -1,4 +1,15 @@
 import { invoke } from "@tauri-apps/api";
+import { useLogStore } from "./stores/logs";
+
+export function checkForErrors(response: Response): void {
+  if (!response.ok) {
+    const logs = useLogStore();
+    logs.add(
+      `Error: ${response.status} ${response.statusText}. Try logging out and back in.`,
+    );
+    throw new Error(`${response.status} ${response.statusText}`);
+  }
+}
 
 export async function openPath(path: string) {
   await invoke("open_path", { path });

@@ -6,6 +6,7 @@ import { RoundResponse } from "../types";
 import { useUserStore } from "../stores/user";
 import NewFolderSync from "./NewFolderSync.vue";
 import {
+  checkForErrors,
   delayDisplay,
   openPath,
   relativeTimeDisplay,
@@ -49,7 +50,10 @@ function getRound() {
       },
     },
   )
-    .then((response) => response.json() as Promise<RoundResponse>)
+    .then((response) => {
+      checkForErrors(response);
+      return response.json() as Promise<RoundResponse>;
+    })
     .then((data) => {
       round.value = data;
     });
