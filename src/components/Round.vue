@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { router } from "../router";
-import { useSettingsStore } from "../stores/settings";
 import { RoundResponse } from "../types";
-import { useUserStore } from "../stores/user";
 import NewFolderSync from "./NewFolderSync.vue";
 import {
-  checkForErrors,
   delayDisplay,
+  lichessFetch,
   openPath,
   relativeTimeDisplay,
   timestampToLocalDatetime,
@@ -15,8 +13,6 @@ import {
 import { useLogStore } from "../stores/logs";
 
 const logs = useLogStore();
-const settings = useSettingsStore();
-const user = useUserStore();
 
 const round = ref<RoundResponse | null>(null);
 
@@ -41,22 +37,11 @@ const startsAt = computed<string>(() => {
 });
 
 function getRound() {
-  fetch(
-    `${settings.lichessUrl}/api/broadcast/-/-/${router.currentRoute.value.params.id}`,
-    {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Bearer ${user.accessToken?.access_token}`,
-      },
-    },
-  )
-    .then((response) => {
-      checkForErrors(response);
-      return response.json() as Promise<RoundResponse>;
-    })
-    .then((data) => {
-      round.value = data;
-    });
+  lichessFetch<RoundResponse>(
+    `/api/broadcast/-/-/${router.currentRoute.value.params.id}`,
+  ).then((data) => {
+    round.value = data;
+  });
 }
 
 getRound();

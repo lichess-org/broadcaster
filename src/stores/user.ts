@@ -1,8 +1,7 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
 import { AccessTokenResponse, LichessUser } from "../types";
-import { checkForErrors } from "../utils";
-import { useSettingsStore } from "./settings";
+import { lichessFetch } from "../utils";
 
 export const useUserStore = defineStore(
   "user",
@@ -10,8 +9,6 @@ export const useUserStore = defineStore(
     const accessToken = ref<AccessTokenResponse | null>(null);
     const expiresAt = ref<number | null>(null);
     const username = ref<string | null>(null);
-
-    const settings = useSettingsStore();
 
     function setAccessToken(token: AccessTokenResponse) {
       accessToken.value = token;
@@ -21,18 +18,9 @@ export const useUserStore = defineStore(
     }
 
     function updateUser() {
-      fetch(`${settings.lichessUrl}/api/account`, {
-        headers: {
-          Authorization: `Bearer ${accessToken.value?.access_token}`,
-        },
-      })
-        .then((response) => {
-          checkForErrors(response);
-          return response.json() as Promise<LichessUser>;
-        })
-        .then((data) => {
-          username.value = data.username;
-        });
+      lichessFetch<LichessUser>("/api/account").then((data) => {
+        username.value = data.username;
+      });
     }
 
     function validateToken() {
@@ -53,11 +41,8 @@ export const useUserStore = defineStore(
     }
 
     function logout() {
-      fetch(`${settings.lichessUrl}/api/token`, {
+      lichessFetch("/api/token", {
         method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${accessToken.value?.access_token}`,
-        },
       }).then(() => {
         accessToken.value = null;
         expiresAt.value = null;

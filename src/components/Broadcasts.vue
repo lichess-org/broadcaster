@@ -5,7 +5,7 @@ import { LichessBroadcast } from "../types";
 import { useSettingsStore } from "../stores/settings";
 import { useUserStore } from "../stores/user";
 import { computed, ref } from "vue";
-import { checkForErrors, openPath } from "../utils";
+import { openPath } from "../utils";
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -23,8 +23,6 @@ async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
       Authorization: `Bearer ${user.accessToken?.access_token}`,
     },
   });
-
-  checkForErrors(response);
 
   return new Promise(async (resolve, reject) => {
     if (!response.ok) {

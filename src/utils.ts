@@ -1,14 +1,29 @@
 import { invoke } from "@tauri-apps/api";
 import { useLogStore } from "./stores/logs";
+import { useSettingsStore } from "./stores/settings";
+import { useUserStore } from "./stores/user";
 
-export function checkForErrors(response: Response): void {
-  if (!response.ok) {
-    const logs = useLogStore();
-    logs.add(
-      `Error: ${response.status} ${response.statusText}. Try logging out and back in.`,
-    );
-    throw new Error(`${response.status} ${response.statusText}`);
-  }
+export async function lichessFetch<T>(
+  path: string,
+  options?: object,
+): Promise<T> {
+  const settings = useSettingsStore();
+  const user = useUserStore();
+
+  return fetch(`${settings.lichessUrl}${path}`, {
+    headers: {
+      Authorization: `Bearer ${user.accessToken?.access_token}`,
+    },
+    ...options,
+  }).then((response) => {
+    if (!response.ok) {
+      const logs = useLogStore();
+      logs.add(`Error: ${response.status} ${response.statusText}`);
+      throw new Error(`${response.status} ${response.statusText}`);
+    }
+
+    return response.json();
+  });
 }
 
 export async function openPath(path: string) {
