@@ -2,8 +2,11 @@ import { UnlistenFn } from "@tauri-apps/api/event";
 import { defineStore } from "pinia";
 import { ref } from "vue";
 
+type LogType = "info" | "error";
+
 interface Log {
   date: Date;
+  type: LogType;
   message: string;
 }
 
@@ -19,9 +22,10 @@ export const useLogStore = defineStore("logs", () => {
 
   const watchProcesses = ref<Map<string, WatchProcess>>(new Map());
 
-  const add = (message: string) => {
+  const add = (message: string, type: LogType = "info") => {
     logs.value.push({
       date: new Date(),
+      type,
       message,
     });
   };
