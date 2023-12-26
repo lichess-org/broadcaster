@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { router } from "../router";
 import { RoundResponse } from "../types";
-import NewFolderSync from "./NewFolderSync.vue";
+import FolderWatcher from "./FolderWatcher.vue";
 import {
   delayDisplay,
   lichessFetch,
@@ -149,7 +149,7 @@ function stopWatching() {
         uploaded to Lichess.
       </p>
 
-      <NewFolderSync
+      <FolderWatcher
         v-if="round.study.writeable"
         :broadcast-round-id="round.round.id"
       />
