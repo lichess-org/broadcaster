@@ -9,7 +9,9 @@ listen<AccessTokenResponse>("update_access_token", (event) => {
   user.setAccessToken(event.payload);
 });
 
-user.validateToken();
+if (user.isLoggedIn()) {
+  user.validateToken();
+}
 </script>
 
 <template>

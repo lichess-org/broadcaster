@@ -30,11 +30,16 @@ export const useLogStore = defineStore("logs", () => {
     });
   };
 
+  const clear = () => {
+    logs.value = [];
+  };
+
   return {
     logs,
     files,
     moveCount,
     watchProcesses,
     add,
+    clear,
   };
 });

@@ -4,7 +4,9 @@ import { useSettingsStore } from "../stores/settings";
 import { getVersion } from "@tauri-apps/api/app";
 import { useUserStore } from "../stores/user";
 import { openPath } from "../utils";
+import { useLogStore } from "../stores/logs";
 
+const logs = useLogStore();
 const settings = useSettingsStore();
 const user = useUserStore();
 
@@ -25,6 +27,11 @@ async function save() {
 function clearAllData() {
   localStorage.clear();
   location.reload();
+}
+
+function logout() {
+  user.logout();
+  logs.clear();
 }
 </script>
 
@@ -96,10 +103,7 @@ function clearAllData() {
         <p class="mb-2 text-sm leading-6 text-gray-400">
           You are logged in as <strong>{{ user.username }}</strong>
         </p>
-        <form
-          class="flex items-start md:col-span-2"
-          @submit.prevent="user.logout()"
-        >
+        <form class="flex items-start md:col-span-2" @submit.prevent="logout()">
           <button
             type="submit"
             class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
