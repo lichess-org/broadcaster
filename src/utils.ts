@@ -11,9 +11,10 @@ export async function lichessFetch(
   const user = useUserStore();
 
   return fetch(`${settings.lichessUrl}${path}`, {
-    headers: {
+    headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
-    },
+      // "User-Agent": `${system.uaPrefix()} as:${user.username?.toLowerCase() ?? "anon"}`,
+    }),
     ...options,
   }).then((response) => {
     if (!response.ok) handleFetchError(response);

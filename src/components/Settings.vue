@@ -1,19 +1,15 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useSettingsStore } from "../stores/settings";
-import { getVersion } from "@tauri-apps/api/app";
 import { useUserStore } from "../stores/user";
 import { openPath } from "../utils";
 import { useLogStore } from "../stores/logs";
+import { useSystemStore } from "../stores/system";
 
 const logs = useLogStore();
 const settings = useSettingsStore();
+const system = useSystemStore();
 const user = useUserStore();
-
-const appVersion = ref("");
-getVersion().then((version) => {
-  appVersion.value = version;
-});
 
 const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
@@ -123,7 +119,7 @@ function logout() {
 
       <div class="md:col-span-2">
         <p class="mb-2 text-sm leading-6 text-gray-400">
-          You are using version v<strong>{{ appVersion }}</strong>
+          You are using version v<strong>{{ system.appVersion }}</strong>
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           See the source and contribute to this
