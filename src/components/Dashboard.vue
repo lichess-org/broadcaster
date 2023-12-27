@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useLogStore } from "../stores/logs";
+import LogViewer from "./LogViewer.vue";
 
 const logs = useLogStore();
 
@@ -61,18 +62,5 @@ const status = computed<Status>(() => {
       </div>
     </div>
   </div>
-  <div
-    v-if="logs.logs.length"
-    class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono h-1/2"
-  >
-    <div
-      v-for="log in logs.logs"
-      :class="{
-        'text-red-400': log.type === 'error',
-      }"
-    >
-      {{ log.date.toLocaleTimeString() }} -
-      {{ log.message }}
-    </div>
-  </div>
+  <LogViewer />
 </template>
