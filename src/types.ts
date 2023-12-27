@@ -8,6 +8,7 @@ interface Tournament {
   id: string;
   name: string;
   slug: string;
+  createdAt: number;
   description: string;
   official?: boolean;
 }
@@ -17,6 +18,7 @@ interface Round {
   name: string;
   slug: string;
   url: string;
+  createdAt: number;
   delay?: number;
   finished?: boolean;
   ongoing?: boolean;
