@@ -8,8 +8,8 @@ const logs = useLogStore();
 const user = useUserStore();
 
 listen<AccessTokenResponse>("update_access_token", (event) => {
-  user.setAccessToken(event.payload);
   logs.clear();
+  user.setAccessToken(event.payload);
 });
 
 if (user.isLoggedIn()) {
