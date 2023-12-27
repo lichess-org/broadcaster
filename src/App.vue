@@ -2,11 +2,14 @@
 import { useUserStore } from "./stores/user";
 import { listen } from "@tauri-apps/api/event";
 import { AccessTokenResponse } from "./types";
+import { useLogStore } from "./stores/logs";
 
+const logs = useLogStore();
 const user = useUserStore();
 
 listen<AccessTokenResponse>("update_access_token", (event) => {
   user.setAccessToken(event.payload);
+  logs.clear();
 });
 
 if (user.isLoggedIn()) {
