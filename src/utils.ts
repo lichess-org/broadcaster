@@ -31,7 +31,7 @@ function handleFetchError(response: Response) {
       "Error: Invalid/expired session. Please log out and log back in.",
     );
   } else {
-    logs.error(`Error: ${response.status} ${response.statusText}`);
+    logs.error(`Error: ${response.status} ${response.statusText} - ${response.body}`);
   }
 
   throw new Error(`${response.status} ${response.statusText}`);
