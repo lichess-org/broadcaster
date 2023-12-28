@@ -1,5 +1,5 @@
 [package]
-name = "pgn-broadcaster"
+name = "broadcaster"
 version = "0.0.0"
 description = "Lichess Broadcaster"
 authors = ["you"]

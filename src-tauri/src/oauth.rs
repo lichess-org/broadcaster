@@ -5,7 +5,7 @@ use oauth2::{
 use tauri::Window;
 use tiny_http::Server;
 
-const OAUTH_CLIENT_ID: &str = "github.com/fitztrev/pgn-broadcaster";
+const OAUTH_CLIENT_ID: &str = "github.com/fitztrev/broadcaster";
 
 #[tauri::command]
 pub fn start_oauth_flow(window: Window, lichess_url: &str) {

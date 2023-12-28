@@ -1,5 +1,5 @@
 {
-  "name": "pgn-broadcaster",
+  "name": "broadcaster",
   "version": "0.0.4",
   "type": "module",
   "scripts": {

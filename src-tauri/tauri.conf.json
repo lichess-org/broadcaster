@@ -29,7 +29,7 @@
     "bundle": {
       "active": true,
       "targets": "all",
-      "identifier": "org.lichess.pgn-broadcaster",
+      "identifier": "org.lichess.broadcaster",
       "icon": [
         "icons/128x128.png",
         "icons/128x128@2x.png",

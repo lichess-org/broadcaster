@@ -127,7 +127,7 @@ function logout() {
             href="#"
             class="underline"
             @click.prevent="
-              openPath('https://github.com/fitztrev/pgn-broadcaster')
+              openPath('https://github.com/fitztrev/broadcaster')
             "
             >app on GitHub</a
           >
