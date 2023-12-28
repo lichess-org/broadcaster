@@ -6,15 +6,16 @@ import { useSettingsStore } from "../stores/settings";
 import { useUserStore } from "../stores/user";
 import { computed, ref } from "vue";
 import { lichessFetch, openPath } from "../utils";
+import { useBroadcastsStore } from "../stores/broadcasts";
 
+const broadcasts = useBroadcastsStore();
 const settings = useSettingsStore();
 const user = useUserStore();
 
 const isLoading = ref<boolean>(true);
-const broadcasts = ref<LichessBroadcast[]>([]);
 
 const hasBroadcasts = computed<boolean>(() => {
-  return broadcasts.value.length > 0;
+  return broadcasts.broadcasts.length > 0;
 });
 
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
@@ -38,17 +39,19 @@ async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
 }
 
 function refresh() {
-  broadcasts.value = [];
+  broadcasts.clear();
   isLoading.value = true;
 
   getBroadcasts((value) => {
-    broadcasts.value.push(value);
+    broadcasts.add(value);
   }).finally(() => {
     isLoading.value = false;
   });
 }
 
-refresh();
+if (!hasBroadcasts.value) {
+  refresh();
+}
 </script>
 
 <template>
@@ -90,7 +93,10 @@ refresh();
 
   <div v-if="hasBroadcasts" class="h-96 overflow-scroll">
     <ul role="list" class="divide-y divide-white/5">
-      <Broadcast v-for="broadcast in broadcasts" :broadcast="broadcast" />
+      <Broadcast
+        v-for="broadcast in broadcasts.broadcasts"
+        :broadcast="broadcast"
+      />
     </ul>
   </div>
 

@@ -17,7 +17,7 @@ if (user.isLoggedIn()) {
   user.validateToken();
 }
 
-requestNotificationPermission()
+requestNotificationPermission();
 </script>
 
 <template>
