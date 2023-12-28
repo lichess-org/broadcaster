@@ -88,9 +88,11 @@ refresh();
     </div>
   </div>
 
-  <ul v-if="hasBroadcasts" role="list" class="divide-y divide-white/5">
-    <Broadcast v-for="broadcast in broadcasts" :broadcast="broadcast" />
-  </ul>
+  <div v-if="hasBroadcasts" class="h-96 overflow-scroll">
+    <ul role="list" class="divide-y divide-white/5">
+      <Broadcast v-for="broadcast in broadcasts" :broadcast="broadcast" />
+    </ul>
+  </div>
 
   <div v-if="!hasBroadcasts && !isLoading" class="text-center mt-12">
     <svg
