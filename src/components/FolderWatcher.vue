@@ -14,6 +14,10 @@ const props = defineProps<{
 
 async function selectPgnFolder() {
   open({ directory: true }).then((selected) => {
+    if (selected === null) {
+      return;
+    }
+
     if (typeof selected !== "string") {
       throw new Error("Expected a single folder to be selected");
     }
@@ -44,7 +48,7 @@ function handleFolderChange(events: DebouncedEvent) {
     })
     .forEach((event) => {
       console.log("File modified", event.path);
-      logs.add(`Modified: ${event.path}`);
+      logs.info(`Modified: ${event.path}`);
 
       uploadPgnToLichess(event.path);
     });
@@ -61,7 +65,7 @@ async function uploadPgnToLichess(path: string) {
     .then((data) => {
       console.log("PgnPushResponse", data);
 
-      logs.add(`Uploaded: ${data.moves} moves from ${path}`);
+      logs.info(`Uploaded: ${data.moves} moves from ${path}`);
       logs.files.add(path);
       logs.moveCount += data.moves;
     });

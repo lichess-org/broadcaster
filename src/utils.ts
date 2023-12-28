@@ -27,12 +27,11 @@ function handleFetchError(response: Response) {
   const logs = useLogStore();
 
   if (response.status === 401) {
-    logs.add(
+    logs.error(
       "Error: Invalid/expired session. Please log out and log back in.",
-      "error",
     );
   } else {
-    logs.add(`Error: ${response.status} ${response.statusText}`, "error");
+    logs.error(`Error: ${response.status} ${response.statusText}`);
   }
 
   throw new Error(`${response.status} ${response.statusText}`);

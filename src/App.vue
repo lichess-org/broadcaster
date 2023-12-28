@@ -3,6 +3,7 @@ import { useUserStore } from "./stores/user";
 import { listen } from "@tauri-apps/api/event";
 import { AccessTokenResponse } from "./types";
 import { useLogStore } from "./stores/logs";
+import { requestNotificationPermission } from "./notify";
 
 const logs = useLogStore();
 const user = useUserStore();
@@ -15,6 +16,8 @@ listen<AccessTokenResponse>("update_access_token", (event) => {
 if (user.isLoggedIn()) {
   user.validateToken();
 }
+
+requestNotificationPermission()
 </script>
 
 <template>

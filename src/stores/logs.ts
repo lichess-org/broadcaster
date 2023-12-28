@@ -1,6 +1,7 @@
 import { UnlistenFn } from "@tauri-apps/api/event";
 import { defineStore } from "pinia";
 import { ref } from "vue";
+import { notify } from "../notify";
 
 type LogType = "info" | "error";
 
@@ -30,6 +31,15 @@ export const useLogStore = defineStore("logs", () => {
     });
   };
 
+  const info = (message: string) => {
+    add(message, "info");
+  };
+
+  const error = (message: string) => {
+    add(message, "error");
+    notify("Error", message);
+  };
+
   const clear = () => {
     logs.value = [];
   };
@@ -39,7 +49,8 @@ export const useLogStore = defineStore("logs", () => {
     files,
     moveCount,
     watchProcesses,
-    add,
+    info,
+    error,
     clear,
   };
 });

@@ -21,6 +21,9 @@
       },
       "fs": {
         "readFile": true
+      },
+      "notification": {
+        "all": true
       }
     },
     "bundle": {
