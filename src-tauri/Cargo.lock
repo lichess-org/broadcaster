@@ -381,9 +381,9 @@ dependencies = [
 
 [[package]]
 name = "bstr"
-version = "1.8.0"
+version = "1.9.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "542f33a8835a0884b006a0c3df3dadd99c0c3f296ed26c2fdc8028e01ad6230c"
+checksum = "c48f0051a4b4c5e0b6d365cd04af53aeaa209e3cc15ec2cdb69e73cc87fbd0dc"
 dependencies = [
  "memchr",
  "serde",
@@ -2049,9 +2049,9 @@ checksum = "2532096657941c2fea9c289d370a250971c689d4f143798ff67113ec042024a5"
 
 [[package]]
 name = "memchr"
-version = "2.6.4"
+version = "2.7.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f665ee40bc4a3c5590afb1e9677db74a508659dfd71e126420da8274909a0167"
+checksum = "523dc4f511e55ab87b694dc30d0f820d60906ef06413f93d4d7a1385599cc149"
 
 [[package]]
 name = "memoffset"
@@ -3811,7 +3811,7 @@ dependencies = [
 [[package]]
 name = "tauri-plugin-fs-watch"
 version = "0.0.0"
-source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#7c442019e1abc8b0378c838a6001b86616b5855f"
+source = "git+https://github.com/tauri-apps/plugins-workspace?branch=v1#71d755f5f528f1687aad8ef9ba014fb3b67644ab"
 dependencies = [
  "log",
  "notify",
