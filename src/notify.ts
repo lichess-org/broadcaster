@@ -8,12 +8,15 @@ async function canNotify() {
   return isPermissionGranted();
 }
 
-export async function requestNotificationPermission() {
-  let permissionGranted = await isPermissionGranted();
-  if (!permissionGranted) {
-    const permission = await requestPermission();
-    permissionGranted = permission === "granted";
+export async function requestNotificationPermission(): Promise<boolean> {
+  const permissionGranted = await isPermissionGranted();
+
+  if (permissionGranted) {
+    return true;
   }
+
+  const permission = await requestPermission();
+  return permission === "granted";
 }
 
 export async function notify(title: string, body: string) {
