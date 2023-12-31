@@ -1,13 +1,16 @@
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import { useLogStore } from "../stores/logs";
 
 const logs = useLogStore();
+const logViewer = ref<HTMLElement | null>(null);
 
 function isScrolledToBottom(): boolean {
-  const logViewer = document.querySelector("#log-viewer");
-  if (logViewer) {
+  if (logViewer.value) {
     return (
-      logViewer.scrollHeight - logViewer.scrollTop - logViewer.clientHeight <
+      logViewer.value.scrollHeight -
+        logViewer.value.scrollTop -
+        logViewer.value.clientHeight <
       100
     );
   }
@@ -16,27 +19,22 @@ function isScrolledToBottom(): boolean {
 }
 
 function scrollToBottom(): void {
-  const logViewer = document.querySelector("#log-viewer");
-  if (logViewer) {
-    logViewer.scrollTop = logViewer.scrollHeight;
+  if (logViewer.value) {
+    logViewer.value.scrollTop = logViewer.value.scrollHeight;
   }
 }
 
-setTimeout(() => {
+onMounted(() => {
   scrollToBottom();
-}, 100);
-
-logs.$subscribe(() => {
-  if (isScrolledToBottom()) {
-    scrollToBottom();
-  }
 });
+
+logs.$subscribe(() => isScrolledToBottom() && scrollToBottom());
 </script>
 
 <template>
   <ol
+    ref="logViewer"
     v-if="logs.logs.length"
-    id="log-viewer"
     class="bg-gray-700 mt-4 p-2 text-sm font-mono flex flex-col overflow-auto"
   >
     <li
