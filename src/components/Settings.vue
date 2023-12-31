@@ -126,9 +126,7 @@ function logout() {
           <a
             href="#"
             class="underline"
-            @click.prevent="
-              openPath('https://github.com/fitztrev/broadcaster')
-            "
+            @click.prevent="openPath('https://github.com/fitztrev/broadcaster')"
             >app on GitHub</a
           >
         </p>

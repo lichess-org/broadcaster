@@ -21,7 +21,7 @@ const status = computed<Status>(() => {
 </script>
 
 <template>
-  <div class="mx-auto max-w-7xl">
+  <div>
     <div class="grid grid-cols-4 gap-px bg-white/5">
       <div
         class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8"

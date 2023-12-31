@@ -91,7 +91,7 @@ if (!hasBroadcasts.value) {
     </div>
   </div>
 
-  <div v-if="hasBroadcasts" class="h-96 overflow-scroll">
+  <div v-if="hasBroadcasts" class="overflow-scroll">
     <ul role="list" class="divide-y divide-white/5">
       <Broadcast
         v-for="broadcast in broadcasts.broadcasts"
