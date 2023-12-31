@@ -9,7 +9,7 @@ import { lichessFetch } from "../utils";
 const logs = useLogStore();
 
 const props = defineProps<{
-  broadcastRoundId: string;
+  roundId: string;
 }>();
 
 async function selectPgnFolder() {
@@ -32,7 +32,7 @@ async function startWatchingFolder(path: string) {
     delayMs: 1000,
   });
 
-  logs.watchProcesses.set(props.broadcastRoundId, {
+  logs.watchProcesses.set(props.roundId, {
     folder: path,
     unlisten: stopWatching,
   });
@@ -57,7 +57,7 @@ function handleFolderChange(events: DebouncedEvent) {
 async function uploadPgnToLichess(path: string) {
   const pgn = await readTextFile(path);
 
-  lichessFetch(`/api/broadcast/round/${props.broadcastRoundId}/push`, {
+  lichessFetch(`/api/broadcast/round/${props.roundId}/push`, {
     method: "POST",
     body: pgn,
   })
@@ -65,7 +65,7 @@ async function uploadPgnToLichess(path: string) {
     .then((data) => {
       console.log("PgnPushResponse", data);
 
-      logs.info(`Uploaded: ${data.moves} moves from ${path}`, "green");
+      logs.info(`Uploaded: ${data.moves} moves from ${path}`, "blue");
       logs.files.add(path);
       logs.moveCount += data.moves;
     });

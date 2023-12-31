@@ -4,7 +4,7 @@ import { ref } from "vue";
 import { notify } from "../notify";
 
 type LogType = "info" | "error";
-type LogColor = "white" | "red" | "green";
+type LogColor = "white" | "red" | "green" | "blue";
 
 interface Log {
   date: Date;

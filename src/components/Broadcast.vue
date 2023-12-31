@@ -23,11 +23,11 @@ const startsAt = computed<string>(() => {
   return timestampToLocalDatetime(props.broadcast.round.startsAt);
 });
 
-function openRound(broadcastRoundId: string) {
+function openRound(id: string) {
   router.push({
     name: "round",
     params: {
-      id: broadcastRoundId,
+      id,
     },
   });
 }

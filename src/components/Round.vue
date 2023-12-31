@@ -151,7 +151,7 @@ function stopWatching() {
 
       <FolderWatcher
         v-if="round.study.writeable"
-        :broadcast-round-id="round.round.id"
+        :round-id="round.round.id"
       />
       <div v-else class="mt-4 bg-yellow-50 text-yellow-800 py-4 px-4">
         <svg
