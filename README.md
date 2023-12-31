@@ -19,7 +19,8 @@ pnpm tauri dev
 
 ##### Simulate boards writing PGN to a folder:
 
-Once you start a folder watch in the app, you can run this to automatically write a bunch of PGN to the folder.
+1. In the app, select a Round and start a folder watch.
+2. Run this to automatically write a bunch of PGN to the folder:
 
 ```bash
 pnpm esrun sample-data/generate/index.ts sample-data/tournaments/simulated
