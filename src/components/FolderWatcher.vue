@@ -65,7 +65,7 @@ async function uploadPgnToLichess(path: string) {
     .then((data) => {
       console.log("PgnPushResponse", data);
 
-      logs.info(`Uploaded: ${data.moves} moves from ${path}`);
+      logs.info(`Uploaded: ${data.moves} moves from ${path}`, "green");
       logs.files.add(path);
       logs.moveCount += data.moves;
     });

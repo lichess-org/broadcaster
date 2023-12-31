@@ -37,12 +37,14 @@ logs.$subscribe(() => {
   <ol
     v-if="logs.logs.length"
     id="log-viewer"
-    class="bg-gray-700 text-gray-100 mt-4 p-2 text-sm font-mono flex flex-col overflow-auto"
+    class="bg-gray-700 mt-4 p-2 text-sm font-mono flex flex-col overflow-auto"
   >
     <li
       v-for="log in logs.logs"
       :class="{
-        'text-red-400': log.type === 'error',
+        'text-gray-100': log.color === 'white',
+        'text-red-400': log.color === 'red',
+        'text-green-400': log.color === 'green',
       }"
     >
       {{ log.date.toLocaleTimeString() }} -
