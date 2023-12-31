@@ -36,6 +36,11 @@ const startsAt = computed<string>(() => {
   return timestampToLocalDatetime(round.value?.round.startsAt);
 });
 
+function stopWatching() {
+  logs.watchProcesses.get(round.value!.round.id)?.unlisten();
+  logs.watchProcesses.delete(round.value!.round.id);
+}
+
 function getRound() {
   lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
     .then((response) => response.json() as Promise<RoundResponse>)
@@ -45,11 +50,6 @@ function getRound() {
 }
 
 getRound();
-
-function stopWatching() {
-  logs.watchProcesses.get(round.value!.round.id)?.unlisten();
-  logs.watchProcesses.delete(round.value!.round.id);
-}
 </script>
 
 <template>
