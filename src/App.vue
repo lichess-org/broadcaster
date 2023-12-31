@@ -22,13 +22,13 @@ requestNotificationPermission();
 
 <template>
   <header class="mb-12 flex">
-    <div class="">
+    <router-link to="/">
       <img
         src="./assets/lichess-white.svg"
         class="w-12 inline-block"
         alt="Lichess logo"
       />
-    </div>
+    </router-link>
 
     <div class="grow">
       <nav class="flex space-x-4 justify-end">
