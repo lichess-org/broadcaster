@@ -2,53 +2,54 @@
 
 LICHESS_URL="http://localhost:8080"
 API_TOKEN="lip_bobby" # with study:write permission
-BROADCAST_ROUND_ID="ixuNxFcc"
+BROADCAST_ROUND_ID="q11ds71x"
 
-####################
+#### Part A ####
+echo "Pushing each game individually..."
 
-echo $LICHESS_URL/broadcast/-/-/$BROADCAST_ROUND_ID
-
-# Push games individually
-# 1.e4 for all
-for i in {1..2}
-do
-    echo "Pushing game $i, move 1..."
-    
-    http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< \
-'[White "Player '$i'W"]
-[Black "Player '$i'B"]
+http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< \
+'[White "White 1"]
+[Black "Black 1"]
 [Result "*"]
 
 1. e4'
-done
 
-# Update each game individually with a 2nd move
-# 1...e5 for all
-for i in {1..2}
-do
-    echo "Pushing game $i, move 2..."
+http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< \
+'[White "White 2"]
+[Black "Black 2"]
+[Result "*"]
 
-    http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< \
-'[White "Player '$i'W"]
-[Black "Player '$i'B"]
+1. e4'
+
+#### Part B ####
+echo "Pushing combined PGN..."
+
+http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< '
+[White "White 1"]
+[Black "Black 1"]
+[Result "*"]
+
+1. e4 e5
+
+[White "White 2"]
+[Black "Black 2"]
 [Result "*"]
 
 1. e4 e5'
-done
 
-####################
+#### Part C ####
+echo "Pushing each game individually..."
 
-echo "Pushing 3rd move to all games (combined PGN)..."
-
-http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< '
-[White "Player 1W"]
-[Black "Player 1B"]
+http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< \
+'[White "White 1"]
+[Black "Black 1"]
 [Result "*"]
 
-1. e4 e5 2. Nf3
+1. e4 e5 2. Nf3'
 
-[White "Player 2W"]
-[Black "Player 2B"]
+http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push <<< \
+'[White "White 2"]
+[Black "Black 2"]
 [Result "*"]
 
 1. e4 e5 2. Nf3'
