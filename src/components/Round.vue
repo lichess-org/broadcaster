@@ -8,11 +8,11 @@ import {
   isSingleGamePgn,
   lichessFetch,
   openPath,
+  recursiveFileList,
   relativeTimeDisplay,
   timestampToLocalDatetime,
 } from "../utils";
 import { useLogStore } from "../stores/logs";
-import { readDir } from "@tauri-apps/api/fs";
 import { useQueueStore } from "../stores/queue";
 
 const logs = useLogStore();
@@ -54,14 +54,10 @@ function getRound() {
 }
 
 async function uploadExistingFilesInFolder() {
-  let files = await readDir(watchedFolder.value, { recursive: true });
+  let files = await recursiveFileList(watchedFolder.value!);
+  files = files.filter((file) => isSingleGamePgn(file));
 
-  files = files.filter((file) => isSingleGamePgn(file.path));
-
-  queue.add(
-    round.value!.round.id,
-    files.map((file) => file.path),
-  );
+  queue.add(round.value!.round.id, files);
 
   router.push("/");
 }

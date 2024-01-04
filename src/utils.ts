@@ -1,4 +1,5 @@
 import { invoke } from "@tauri-apps/api";
+import { FileEntry, readDir } from "@tauri-apps/api/fs";
 import { useLogStore } from "./stores/logs";
 import { useSettingsStore } from "./stores/settings";
 import { useUserStore } from "./stores/user";
@@ -128,4 +129,23 @@ export function delayDisplay(delay?: number): string {
  */
 export function isSingleGamePgn(path: string): boolean {
   return path.endsWith(".pgn") && !path.endsWith("games.json");
+}
+
+export async function recursiveFileList(folder: string): Promise<string[]> {
+  const files: string[] = [];
+  const entries = await readDir(folder, { recursive: true });
+
+  const traverse = (entries: FileEntry[]) => {
+    for (const entry of entries) {
+      if (entry.children) {
+        traverse(entry.children);
+        continue;
+      }
+      files.push(entry.path);
+    }
+  };
+
+  traverse(entries);
+
+  return files.reverse();
 }

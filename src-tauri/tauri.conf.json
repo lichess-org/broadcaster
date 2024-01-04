@@ -21,7 +21,8 @@
       },
       "fs": {
         "readDir": true,
-        "readFile": true
+        "readFile": true,
+        "scope": ["*/**"]
       },
       "notification": {
         "all": true
