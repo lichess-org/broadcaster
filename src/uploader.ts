@@ -22,14 +22,16 @@ export async function startQueueWorker() {
 async function uploadPgnToLichess(roundId: string, path: string) {
   const pgn = await readTextFile(path);
 
+  const now = new Date();
   return lichessFetch(`/api/broadcast/round/${roundId}/push`, {
     method: "POST",
     body: pgn,
   })
     .then((response) => response.json() as Promise<PgnPushResponse>)
     .then((data) => {
+      const durationMs = new Date().getTime() - now.getTime();
       const logs = useLogStore();
-      logs.info(`Uploaded: ${data.moves} moves from ${path}`, "blue");
+      logs.info(`Uploaded: ${data.moves} moves in ${durationMs}ms from ${path}`, "blue");
       logs.files.add(path);
       logs.moveCount += data.moves;
     });
