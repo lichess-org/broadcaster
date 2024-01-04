@@ -3,6 +3,13 @@ import path from "path";
 import { faker } from "@faker-js/faker";
 import { Chess } from "chess.js";
 
+function writeToFile(filename: number, pgn: string) {
+  const filePath = path.join(outputFolder, `game-${filename}.pgn`);
+  fs.writeFile(filePath, pgn, () => {
+    console.log(`Wrote ${filePath}`);
+  });
+}
+
 const outputFolder = process.argv[2];
 if (!outputFolder) {
   console.log("Usage: pnpm esrun index.ts <output-folder>");
@@ -22,7 +29,7 @@ const pgnDate = `${date.getFullYear()}.${
 
 const games = new Map<number, Chess>();
 
-for (let i = 1; i <= 6; i++) {
+for (let i = 1; i <= 16; i++) {
   const game = new Chess();
 
   game.header("Event", eventName);
@@ -56,18 +63,21 @@ for (let i = 1; i <= 6; i++) {
   games.set(i, game);
 }
 
-while (games.size > 0) {
-  const i = faker.helpers.arrayElement(Array.from(games.keys()));
-  const game = games.get(i) as Chess;
+await Promise.all(
+  Array.from(games.keys()).map(async (i) => {
+    const game = games.get(i) as Chess;
 
-  const moves = game.moves();
-  const move = faker.helpers.arrayElement(moves);
-  game.move(move);
+    while (game.isGameOver() === false) {
+      const moves = game.moves();
+      const move = faker.helpers.arrayElement(moves);
+      game.move(move);
 
-  writeToFile(i, game.pgn());
-  await sleep(faker.number.int({ min: 100, max: 3000 }));
+      console.log(`Game ${i}: ${move}`);
 
-  if (game.isGameOver()) {
+      writeToFile(i, game.pgn());
+      await sleep(faker.number.int({ min: 1_000, max: 5_000 }));
+    }
+
     const result = game.isDraw()
       ? "1/2-1/2"
       : game.turn() === "w"
@@ -75,14 +85,7 @@ while (games.size > 0) {
         : "0-1";
     game.header("Result", result);
     writeToFile(i, game.pgn());
+  }),
+);
 
-    games.delete(i);
-  }
-}
-
-function writeToFile(filename: number, pgn: string) {
-  const filePath = path.join(outputFolder, `game-${filename}.pgn`);
-  fs.writeFile(filePath, pgn, () => {
-    console.log(`Wrote ${filePath}`);
-  });
-}
+console.log("Done");
