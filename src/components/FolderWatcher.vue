@@ -38,17 +38,19 @@ async function startWatchingFolder(path: string) {
 }
 
 function handleFolderChange(events: DebouncedEvent) {
-  events
+  const files = events
     .filter((event) => event.kind === "Any" && event.path.endsWith(".pgn"))
     .filter((event) => {
       // ignore the "games.json" file which is a multi-game pgn file
       // we only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
       return !event.path.endsWith("games.pgn");
     })
-    .forEach((event) => {
-      logs.info(`Modified: ${event.path}`);
-      queue.add(props.roundId, event.path);
-    });
+    .map((event) => event.path);
+
+  queue.add(props.roundId, files);
+
+  const paths = files.map((file) => file.split("/").pop());
+  logs.info(`Modified: ${paths.join(", ")}`);
 }
 </script>
 

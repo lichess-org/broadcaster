@@ -9,8 +9,10 @@ interface UploadQueue {
 export const useQueueStore = defineStore("queue", () => {
   const files = ref<Set<string>>(new Set());
 
-  const add = (roundId: string, path: string) => {
-    files.value.add(JSON.stringify({ roundId, path }));
+  const add = (roundId: string, paths: string[]) => {
+    for (const path of paths) {
+      files.value.add(JSON.stringify({ roundId, path }));
+    }
   };
 
   const remove = (item: UploadQueue) => {
