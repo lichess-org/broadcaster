@@ -69,7 +69,7 @@ await Promise.all(
 
     while (
       !game.isGameOver() &&
-      (game.history().length <= 100*2 || faker.datatype.boolean(0.9))
+      (game.history().length <= 100 * 2 || faker.datatype.boolean(0.9))
     ) {
       const moves = game.moves();
       if (moves.length === 0) break;

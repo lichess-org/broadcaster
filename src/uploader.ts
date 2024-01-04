@@ -31,7 +31,10 @@ async function uploadPgnToLichess(roundId: string, path: string) {
     .then((data) => {
       const durationMs = new Date().getTime() - now.getTime();
       const logs = useLogStore();
-      logs.info(`Uploaded: ${data.moves} moves in ${durationMs}ms from ${path}`, "blue");
+      logs.info(
+        `Uploaded: ${data.moves} moves in ${durationMs}ms from ${path}`,
+        "blue",
+      );
       logs.files.add(path);
       logs.moveCount += data.moves;
     });
