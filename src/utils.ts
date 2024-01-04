@@ -10,13 +10,18 @@ export async function lichessFetch(
   const settings = useSettingsStore();
   const user = useUserStore();
 
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 5_000);
+
   return fetch(`${settings.lichessUrl}${path}`, {
     headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
       // "User-Agent": `${system.uaPrefix()} as:${user.username?.toLowerCase() ?? "anon"}`,
     }),
+    signal: controller.signal,
     ...options,
   }).then((response) => {
+    clearTimeout(timeout);
     if (!response.ok) handleFetchError(response);
 
     return response;
