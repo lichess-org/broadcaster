@@ -11,8 +11,8 @@ export async function startQueueWorker() {
     const toUpload = queue.next();
 
     if (toUpload) {
-      await uploadPgnToLichess(toUpload.roundId, toUpload.path);
       queue.remove(toUpload);
+      await uploadPgnToLichess(toUpload.roundId, toUpload.path);
     } else {
       await new Promise((resolve) => setTimeout(resolve, 1000));
     }
