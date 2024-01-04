@@ -6,12 +6,13 @@ import { useUserStore } from "./stores/user";
 export async function lichessFetch(
   path: string,
   options?: object,
+  timeoutMs = 5_000,
 ): Promise<Response> {
   const settings = useSettingsStore();
   const user = useUserStore();
 
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 5_000);
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   return fetch(`${settings.lichessUrl}${path}`, {
     headers: new Headers({

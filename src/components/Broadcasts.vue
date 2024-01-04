@@ -19,7 +19,7 @@ const hasBroadcasts = computed<boolean>(() => {
 });
 
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
-  let response = await lichessFetch(`/api/broadcast/my-rounds`);
+  let response = await lichessFetch(`/api/broadcast/my-rounds`, {}, 60_000);
 
   return new Promise(async (resolve) => {
     let reader = response.body!.getReader();
