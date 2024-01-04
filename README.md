@@ -23,7 +23,7 @@ pnpm tauri dev
 2. Run this to automatically write a bunch of PGN to the folder:
 
 ```bash
-pnpm esrun sample-data/generate/index.ts sample-data/tournaments/simulated
+pnpm esrun sample-data/generate/index.ts path/to/selected/folder
 ```
 
 ## Formatting / Linting
