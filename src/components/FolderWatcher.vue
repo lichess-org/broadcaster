@@ -3,6 +3,7 @@ import { open } from "@tauri-apps/api/dialog";
 import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
 import { useLogStore } from "../stores/logs";
 import { useQueueStore } from "../stores/queue";
+import { isSingleGamePgn } from "../utils";
 
 const logs = useLogStore();
 const queue = useQueueStore();
@@ -39,12 +40,8 @@ async function startWatchingFolder(path: string) {
 
 function handleFolderChange(events: DebouncedEvent) {
   const files = events
-    .filter((event) => event.kind === "Any" && event.path.endsWith(".pgn"))
-    .filter((event) => {
-      // ignore the "games.json" file which is a multi-game pgn file
-      // we only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
-      return !event.path.endsWith("games.pgn");
-    })
+    .filter((event) => event.kind === "Any")
+    .filter((event) => isSingleGamePgn(event.path))
     .map((event) => event.path);
 
   queue.add(props.roundId, files);

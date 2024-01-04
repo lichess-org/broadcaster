@@ -5,14 +5,18 @@ import { RoundResponse } from "../types";
 import FolderWatcher from "./FolderWatcher.vue";
 import {
   delayDisplay,
+  isSingleGamePgn,
   lichessFetch,
   openPath,
   relativeTimeDisplay,
   timestampToLocalDatetime,
 } from "../utils";
 import { useLogStore } from "../stores/logs";
+import { readDir } from "@tauri-apps/api/fs";
+import { useQueueStore } from "../stores/queue";
 
 const logs = useLogStore();
+const queue = useQueueStore();
 
 const round = ref<RoundResponse | null>(null);
 
@@ -47,6 +51,17 @@ function getRound() {
     .then((data) => {
       round.value = data;
     });
+}
+
+async function uploadExistingFilesInFolder() {
+  let files = await readDir(watchedFolder.value, { recursive: true });
+
+  files = files.filter((file) => isSingleGamePgn(file.path));
+
+  queue.add(
+    round.value!.round.id,
+    files.map((file) => file.path),
+  );
 }
 
 getRound();
@@ -121,6 +136,20 @@ getRound();
               >
                 Stop watching this folder
               </button>
+            </div>
+
+            <div class="mt-6">
+              <button
+                type="button"
+                @click="uploadExistingFilesInFolder"
+                class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
+              >
+                Force upload PGN files in folder
+              </button>
+              <span class="text-sm">
+                Use this if some round's games have already started or completed
+                and you want to bulk upload them.
+              </span>
             </div>
           </div>
         </div>
