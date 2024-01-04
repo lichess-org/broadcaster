@@ -62,6 +62,8 @@ async function uploadExistingFilesInFolder() {
     round.value!.round.id,
     files.map((file) => file.path),
   );
+
+  router.push("/");
 }
 
 getRound();
