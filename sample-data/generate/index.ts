@@ -67,22 +67,27 @@ await Promise.all(
   Array.from(games.keys()).map(async (i) => {
     const game = games.get(i) as Chess;
 
-    while (game.isGameOver() === false) {
+    while (
+      !game.isGameOver() &&
+      (game.history().length <= 100*2 || faker.datatype.boolean(0.9))
+    ) {
       const moves = game.moves();
+      if (moves.length === 0) break;
+
       const move = faker.helpers.arrayElement(moves);
       game.move(move);
 
       console.log(`Game ${i}: ${move}`);
 
       writeToFile(i, game.pgn());
-      await sleep(faker.number.int({ min: 1_000, max: 5_000 }));
+      await sleep(faker.number.int({ min: 500, max: 2_000 }));
     }
 
     const result = game.isDraw()
       ? "1/2-1/2"
       : game.turn() === "w"
-        ? "1-0"
-        : "0-1";
+        ? "0-1"
+        : "1-0";
     game.header("Result", result);
     writeToFile(i, game.pgn());
   }),
