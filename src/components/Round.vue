@@ -149,10 +149,7 @@ getRound();
         uploaded to Lichess.
       </p>
 
-      <FolderWatcher
-        v-if="round.study.writeable"
-        :round-id="round.round.id"
-      />
+      <FolderWatcher v-if="round.study.writeable" :round-id="round.round.id" />
       <div v-else class="mt-4 bg-yellow-50 text-yellow-800 py-4 px-4">
         <svg
           class="inline h-5 w-5"

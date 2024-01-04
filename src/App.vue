@@ -4,6 +4,7 @@ import { listen } from "@tauri-apps/api/event";
 import { AccessTokenResponse } from "./types";
 import { useLogStore } from "./stores/logs";
 import { requestNotificationPermission } from "./notify";
+import { startQueueWorker } from "./uploader";
 
 const logs = useLogStore();
 const user = useUserStore();
@@ -18,6 +19,8 @@ if (user.isLoggedIn()) {
 }
 
 requestNotificationPermission();
+
+startQueueWorker();
 </script>
 
 <template>

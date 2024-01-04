@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { open } from "@tauri-apps/api/dialog";
 import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
-import { readTextFile } from "@tauri-apps/api/fs";
-import { PgnPushResponse } from "../types";
 import { useLogStore } from "../stores/logs";
-import { lichessFetch } from "../utils";
+import { useQueueStore } from "../stores/queue";
 
 const logs = useLogStore();
+const queue = useQueueStore();
 
 const props = defineProps<{
   roundId: string;
@@ -47,27 +46,8 @@ function handleFolderChange(events: DebouncedEvent) {
       return !event.path.endsWith("games.pgn");
     })
     .forEach((event) => {
-      console.log("File modified", event.path);
       logs.info(`Modified: ${event.path}`);
-
-      uploadPgnToLichess(event.path);
-    });
-}
-
-async function uploadPgnToLichess(path: string) {
-  const pgn = await readTextFile(path);
-
-  lichessFetch(`/api/broadcast/round/${props.roundId}/push`, {
-    method: "POST",
-    body: pgn,
-  })
-    .then((response) => response.json() as Promise<PgnPushResponse>)
-    .then((data) => {
-      console.log("PgnPushResponse", data);
-
-      logs.info(`Uploaded: ${data.moves} moves from ${path}`, "blue");
-      logs.files.add(path);
-      logs.moveCount += data.moves;
+      queue.add(props.roundId, event.path);
     });
 }
 </script>
