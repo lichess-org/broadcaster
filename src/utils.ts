@@ -15,7 +15,7 @@ export async function lichessFetch(
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
-  const url = `${settings.lichessUrl}${path}`
+  const url = `${settings.lichessUrl}${path}`;
   return fetch(url, {
     headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
@@ -34,15 +34,11 @@ export async function lichessFetch(
 function handleFetchError(url: string, response: Response) {
   const logs = useLogStore();
 
-  if (response.status === 401) {
-    logs.error(
-      "Error: Invalid/expired session. Please log out of this app on the Settings page and then log back in.",
-    );
-  } else {
-    logs.error(
-      `Error: ${response.status} ${response.statusText} - ${url}`,
-    );
-  }
+  logs.error(
+    response.status === 401
+      ? "Error: Invalid/expired session. Please log out of this app on the Settings page and then log back in."
+      : `Error: ${response.status} ${response.statusText} - ${url}`,
+  );
 
   throw new Error(`${response.status} ${response.statusText}`);
 }

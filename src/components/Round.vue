@@ -141,7 +141,11 @@ getRound();
             >
               If there are already ongoing games and PGN files in this directory
               that you want to bulk upload, click here:
-              <a class="underline" href="" @click.prevent="uploadExistingFilesInFolder">
+              <a
+                class="underline"
+                href=""
+                @click.prevent="uploadExistingFilesInFolder"
+              >
                 Upload PGN now
               </a>
             </div>
