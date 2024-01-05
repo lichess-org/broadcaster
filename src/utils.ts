@@ -23,12 +23,17 @@ export async function lichessFetch(
     }),
     signal: controller.signal,
     ...options,
-  }).then((response) => {
-    clearTimeout(timeout);
-    if (!response.ok) handleFetchError(url, response);
-
-    return response;
-  });
+  })
+    .then((response) => {
+      clearTimeout(timeout);
+      if (!response.ok) handleFetchError(url, response);
+      return response;
+    })
+    .catch((error: TypeError) => {
+      const logs = useLogStore();
+      logs.error(`Error: ${error.name} ${error.message} - ${url}`);
+      throw error;
+    });
 }
 
 function handleFetchError(url: string, response: Response) {
