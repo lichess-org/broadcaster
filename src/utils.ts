@@ -15,7 +15,8 @@ export async function lichessFetch(
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
-  return fetch(`${settings.lichessUrl}${path}`, {
+  const url = `${settings.lichessUrl}${path}`
+  return fetch(url, {
     headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
       // "User-Agent": `${system.uaPrefix()} as:${user.username?.toLowerCase() ?? "anon"}`,
@@ -24,22 +25,22 @@ export async function lichessFetch(
     ...options,
   }).then((response) => {
     clearTimeout(timeout);
-    if (!response.ok) handleFetchError(response);
+    if (!response.ok) handleFetchError(url, response);
 
     return response;
   });
 }
 
-function handleFetchError(response: Response) {
+function handleFetchError(url: string, response: Response) {
   const logs = useLogStore();
 
   if (response.status === 401) {
     logs.error(
-      "Error: Invalid/expired session. Please log out and log back in.",
+      "Error: Invalid/expired session. Please log out of this app on the Settings page and then log back in.",
     );
   } else {
     logs.error(
-      `Error: ${response.status} ${response.statusText} - ${response.body}`,
+      `Error: ${response.status} ${response.statusText} - ${url}`,
     );
   }
 
