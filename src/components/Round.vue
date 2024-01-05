@@ -63,6 +63,8 @@ async function uploadExistingFilesInFolder() {
 }
 
 getRound();
+
+setInterval(getRound, 60 * 1000);
 </script>
 
 <template>
@@ -115,7 +117,7 @@ getRound();
       <div class="border-l-8 border-green-900 bg-green-800 text-gray-50 p-4">
         <div class="flex">
           <div class="ml-3">
-            <p>This round is currently being broadcasted.</p>
+            <p class="font-bold">This round is currently being broadcasted.</p>
             <p>
               Currently watching folder:
               <a
@@ -136,18 +138,14 @@ getRound();
               </button>
             </div>
 
-            <div class="mt-6">
-              <button
-                type="button"
-                @click="uploadExistingFilesInFolder"
-                class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
-              >
-                Force upload PGN files in folder
-              </button>
-              <span class="text-sm">
-                Use this if some round's games have already started or completed
-                and you want to bulk upload them.
-              </span>
+            <div
+              class="mt-4 pt-2 border-t-2 border-t-green-900 text-green-100 text-sm"
+            >
+              If there are already ongoing games and PGN files in this directory
+              that you want to bulk upload, click here:
+              <a class="underline" href="" @click.prevent="uploadExistingFilesInFolder">
+                Upload PGN now
+              </a>
             </div>
           </div>
         </div>
