@@ -44,6 +44,10 @@ function handleFolderChange(events: DebouncedEvent) {
     .filter((event) => isSingleGamePgn(event.path))
     .map((event) => event.path);
 
+  if (files.length === 0) {
+    return;
+  }
+
   queue.add(props.roundId, files);
 
   const paths = files.map((file) => file.split("/").pop());
