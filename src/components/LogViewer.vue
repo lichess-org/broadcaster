@@ -35,7 +35,7 @@ logs.$subscribe(() => isScrolledToBottom() && scrollToBottom());
   <ol
     ref="logViewer"
     v-if="logs.logs.length"
-    class="bg-gray-700 mt-4 p-2 text-sm font-mono flex flex-col overflow-auto"
+    class="bg-gray-700 mt-4 p-2 text-sm font-mono flex flex-col overflow-y-auto"
   >
     <li
       v-for="log in logs.logs"
