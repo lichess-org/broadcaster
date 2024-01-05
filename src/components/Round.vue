@@ -63,8 +63,6 @@ async function uploadExistingFilesInFolder() {
 }
 
 getRound();
-
-setInterval(getRound, 60 * 1000);
 </script>
 
 <template>
