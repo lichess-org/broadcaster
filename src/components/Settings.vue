@@ -41,7 +41,11 @@ async function openTestAsync() {
 }
 
 async function openWithXdgOpen() {
-  await invoke("open_path", { path: "https://lichess.org" });
+  await invoke("open_with_xdg_open", { path: "https://lichess.org" });
+}
+
+async function openWithGio() {
+  await invoke("open_with_gio", { path: "https://lichess.org" });
 }
 </script>
 
@@ -148,6 +152,7 @@ async function openWithXdgOpen() {
           <a href="#" @click.prevent="openTest">test2</a>
           <a href="#" @click.prevent="openTestAsync">test3</a>
           <a href="#" @click.prevent="openWithXdgOpen">test4</a>
+          <a href="#" @click.prevent="openWithGio">test5</a>
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please post to
