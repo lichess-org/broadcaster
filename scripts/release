@@ -1,0 +1,23 @@
+#!/bin/bash -e
+
+git fetch
+
+LATEST_TAG=$(git describe --tags --abbrev=0)
+
+echo "Last tag: $LATEST_TAG"
+echo "Enter new tag: "
+read NEW_TAG
+
+# validate that $NEW_TAG is a valid semver in the format x.y.z
+if ! [[ $NEW_TAG =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+  echo "Invalid tag format. Must be in the format x.y.z"
+  exit 1
+fi
+
+git checkout main
+git pull --rebase
+
+npm version $NEW_TAG
+git push origin main --tags
+
+git fetch
