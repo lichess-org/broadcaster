@@ -5,6 +5,7 @@ import { useUserStore } from "../stores/user";
 import { openPath } from "../utils";
 import { useLogStore } from "../stores/logs";
 import { useSystemStore } from "../stores/system";
+import { open } from "@tauri-apps/api/shell";
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -28,6 +29,10 @@ function clearAllData() {
 function logout() {
   user.logout();
   logs.clear();
+}
+
+function openTest() {
+  open("https://lichess.org");
 }
 </script>
 
@@ -129,6 +134,10 @@ function logout() {
             @click.prevent="openPath('https://github.com/fitztrev/broadcaster')"
             >app on GitHub</a
           >
+
+          <a href="https://lichess.org" target="_blank">test1</a>
+
+          <a href="#" @click.prevent="openTest"> test2 </a>
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please post to

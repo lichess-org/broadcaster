@@ -16,7 +16,7 @@ tauri-build = { version = "1.5", features = [] }
 oauth2 = "4.4.2"
 open = "5.0.1"
 serde_urlencoded = "0.7.1"
-tauri = { version = "1.5", features = [ "fs-read-dir", "notification-all", "devtools", "fs-read-file", "shell-open", "dialog-open", "reqwest-native-tls-vendored" ] }
+tauri = { version = "1.5", features = [ "shell-all", "fs-read-dir", "notification-all", "devtools", "fs-read-file", "dialog-open", "reqwest-native-tls-vendored" ] }
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tiny_http = "0.12.0"
 
