@@ -126,11 +126,11 @@ export function delayDisplay(delay?: number): string {
 }
 
 /**
- * Ignore the "games.json" file which is a multi-game pgn file.
+ * Ignore the "games.pgn" file which is a multi-game pgn file.
  * We only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
  */
 export function isSingleGamePgn(path: string): boolean {
-  return path.endsWith(".pgn") && !path.endsWith("games.json");
+  return path.endsWith(".pgn") && !path.endsWith("games.pgn");
 }
 
 export async function recursiveFileList(folder: string): Promise<string[]> {
