@@ -6,6 +6,7 @@ import { openPath } from "../utils";
 import { useLogStore } from "../stores/logs";
 import { useSystemStore } from "../stores/system";
 import { open } from "@tauri-apps/api/shell";
+import { invoke } from "@tauri-apps/api";
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -33,6 +34,14 @@ function logout() {
 
 function openTest() {
   open("https://lichess.org");
+}
+
+async function openTestAsync() {
+  await open("https://lichess.org");
+}
+
+async function openWithXdgOpen() {
+  await invoke("open_path", { path: "https://lichess.org" });
 }
 </script>
 
@@ -136,8 +145,9 @@ function openTest() {
           >
 
           <a href="https://lichess.org" target="_blank">test1</a>
-
-          <a href="#" @click.prevent="openTest"> test2 </a>
+          <a href="#" @click.prevent="openTest">test2</a>
+          <a href="#" @click.prevent="openTestAsync">test3</a>
+          <a href="#" @click.prevent="openWithXdgOpen">test4</a>
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please post to
