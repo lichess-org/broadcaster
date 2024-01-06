@@ -16,5 +16,5 @@ fn main() {
 
 #[tauri::command]
 fn open_path(path: String) {
-    open::that_detached(path).expect("failed to open path");
+    open::that_in_background(path);
 }
