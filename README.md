@@ -49,7 +49,7 @@ pnpm tauri build
 
 Release artifacts are in `src-tauri/target/release/bundle/`
 
-## Release
+## Release (for maintainers)
 
 1. Tag the new version:
 
