@@ -22,6 +22,7 @@ export const useLogStore = defineStore("logs", () => {
   const logs = ref<Log[]>([]);
   const files = ref<Set<string>>(new Set());
   const moveCount = ref(0);
+  const queueSize = ref(0);
 
   const watchProcesses = ref<Map<string, WatchProcess>>(new Map());
 
@@ -55,6 +56,7 @@ export const useLogStore = defineStore("logs", () => {
     logs,
     files,
     moveCount,
+    queueSize,
     watchProcesses,
     info,
     error,

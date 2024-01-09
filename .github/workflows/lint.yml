@@ -1,11 +1,24 @@
-name: Code quality
+name: Linter
 
 on: [push, pull_request]
 
 jobs:
-  quality:
+  check-typescript:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: biomejs/setup-biome@v1
-      - run: biome ci .
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - run: pnpm install
+      - run: pnpm tsc
+
+  check-formatting:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - run: pnpm install
+      - run: pnpx prettier --check .

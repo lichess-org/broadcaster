@@ -1,0 +1,5 @@
+/dist
+/src-tauri/target
+
+/.pnpm-store
+/pnpm-lock.yaml

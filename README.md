@@ -6,7 +6,7 @@
 2. Install pnpm
    ```bash
     npm install -g pnpm
-    ```
+   ```
 
 ### Run
 
@@ -29,7 +29,7 @@ pnpm esrun sample-data/generate/index.ts path/to/selected/folder
 ## Formatting / Linting
 
 ```bash
-pnpm dlx @biomejs/biome ci .
+pnpm format
 pnpm tsc
 ```
 
@@ -53,12 +53,10 @@ Release artifacts are in `src-tauri/target/release/bundle/`
 
 1. Tag the new version:
 
-    ```bash
-    git checkout main
-    npm version 0.x.x
-    git push origin main --tags
-    ```
+   ```bash
+   git checkout main
+   npm version 0.x.x
+   git push origin main --tags
+   ```
 
-    Github workflow will build the app for each OS and attach them as artifacts to a draft release.
-
-1. Manually edit the release once the builds are done, update the release notes, and publish.
+1. Github workflow will build the app for each OS, create a release, and attach the artifacts.

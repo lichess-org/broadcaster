@@ -50,7 +50,9 @@ pub fn start_oauth_flow(window: Window, lichess_url: &str) {
                 .request(http_client)
                 .unwrap();
 
-            window.emit("update_access_token", access_token).unwrap();
+            window
+                .emit("event::update_access_token", access_token)
+                .unwrap();
 
             let _ = request.respond(tiny_http::Response::from_string(
                 "Thanks! You may now close this window and return to the app.",

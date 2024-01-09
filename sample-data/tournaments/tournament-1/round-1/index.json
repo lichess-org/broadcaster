@@ -1,37 +1,40 @@
 {
-  "pairings" : [ {
-    "white" : {
-      "fname" : "Player A",
-      "mname" : null,
-      "lname" : "Player 1",
-      "title" : null,
-      "federation" : null
+  "pairings": [
+    {
+      "white": {
+        "fname": "Player A",
+        "mname": null,
+        "lname": "Player 1",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "Player B",
+        "mname": null,
+        "lname": "Player 2",
+        "title": null,
+        "federation": null
+      },
+      "result": "*",
+      "live": false
     },
-    "black" : {
-      "fname" : "Player B",
-      "mname" : null,
-      "lname" : "Player 2",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "*",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "Player C",
-      "mname" : null,
-      "lname" : "Player 3",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "Player D",
-      "mname" : null,
-      "lname" : "Player 4",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "*",
-    "live" : false
-  } ]
+    {
+      "white": {
+        "fname": "Player C",
+        "mname": null,
+        "lname": "Player 3",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "Player D",
+        "mname": null,
+        "lname": "Player 4",
+        "title": null,
+        "federation": null
+      },
+      "result": "*",
+      "live": false
+    }
+  ]
 }

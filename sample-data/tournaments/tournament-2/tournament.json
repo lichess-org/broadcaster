@@ -1,23 +1,30 @@
 {
-  "id" : "Vestland KM barn og unge 2023",
-  "name" : "Sample Invitational 2023",
-  "rounds" : [ {
-    "count" : 12,
-    "live" : 0
-  }, {
-    "count" : 12,
-    "live" : 0
-  }, {
-    "count" : 12,
-    "live" : 0
-  }, {
-    "count" : 12,
-    "live" : 0
-  }, {
-    "count" : 12,
-    "live" : 0
-  }, {
-    "count" : 12,
-    "live" : 12
-  } ]
+  "id": "Vestland KM barn og unge 2023",
+  "name": "Sample Invitational 2023",
+  "rounds": [
+    {
+      "count": 12,
+      "live": 0
+    },
+    {
+      "count": 12,
+      "live": 0
+    },
+    {
+      "count": 12,
+      "live": 0
+    },
+    {
+      "count": 12,
+      "live": 0
+    },
+    {
+      "count": 12,
+      "live": 0
+    },
+    {
+      "count": 12,
+      "live": 12
+    }
+  ]
 }

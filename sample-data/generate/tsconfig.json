@@ -1,12 +1,8 @@
 {
-    "extends": "../../tsconfig.json",
-    "compilerOptions": {
-        "target": "ESNext",
-        "types": [
-            "node"
-        ]
-    },
-    "include": [
-        "./**/*.ts"
-    ]
+  "extends": "../../tsconfig.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "types": ["node"]
+  },
+  "include": ["./**/*.ts"]
 }

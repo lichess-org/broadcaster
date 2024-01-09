@@ -1,207 +1,220 @@
 {
-  "pairings" : [ {
-    "white" : {
-      "fname" : "M",
-      "mname" : null,
-      "lname" : "Moss",
-      "title" : null,
-      "federation" : null
+  "pairings": [
+    {
+      "white": {
+        "fname": "M",
+        "mname": null,
+        "lname": "Moss",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "V",
+        "mname": null,
+        "lname": "Tufteland",
+        "title": null,
+        "federation": null
+      },
+      "result": "1-0",
+      "live": false
     },
-    "black" : {
-      "fname" : "V",
-      "mname" : null,
-      "lname" : "Tufteland",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "S",
+        "mname": null,
+        "lname": "Solvag",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "H",
+        "mname": null,
+        "lname": "Lonning",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "result" : "1-0",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "S",
-      "mname" : null,
-      "lname" : "Solvag",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "S",
+        "mname": null,
+        "lname": "Flaten",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "M",
+        "mname": null,
+        "lname": "Nagelsen",
+        "title": null,
+        "federation": null
+      },
+      "result": "1-0",
+      "live": false
     },
-    "black" : {
-      "fname" : "H",
-      "mname" : null,
-      "lname" : "Lonning",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "A",
+        "mname": null,
+        "lname": "Bothun",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "O",
+        "mname": null,
+        "lname": "Traen",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "S",
-      "mname" : null,
-      "lname" : "Flaten",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "M",
+        "mname": null,
+        "lname": "Torsvik",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "F",
+        "mname": null,
+        "lname": "Opheim",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "black" : {
-      "fname" : "M",
-      "mname" : null,
-      "lname" : "Nagelsen",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "O",
+        "mname": null,
+        "lname": "Hansen",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "D",
+        "mname": null,
+        "lname": "Skagen",
+        "title": null,
+        "federation": null
+      },
+      "result": "1-0",
+      "live": false
     },
-    "result" : "1-0",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "A",
-      "mname" : null,
-      "lname" : "Bothun",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "U",
+        "mname": null,
+        "lname": "Garmann",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "A",
+        "mname": null,
+        "lname": "Ryabchikov",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "black" : {
-      "fname" : "O",
-      "mname" : null,
-      "lname" : "Traen",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "M",
+        "mname": null,
+        "lname": "Michoel",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "H",
+        "mname": null,
+        "lname": "Le",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "M",
-      "mname" : null,
-      "lname" : "Torsvik",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "A",
+        "mname": null,
+        "lname": "Gjersvik",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "H",
+        "mname": null,
+        "lname": "Kjellevold",
+        "title": null,
+        "federation": null
+      },
+      "result": "1/2-1/2",
+      "live": false
     },
-    "black" : {
-      "fname" : "F",
-      "mname" : null,
-      "lname" : "Opheim",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "M",
+        "mname": null,
+        "lname": "Cziboly",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "B",
+        "mname": null,
+        "lname": "Stafseth",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "O",
-      "mname" : null,
-      "lname" : "Hansen",
-      "title" : null,
-      "federation" : null
+    {
+      "white": {
+        "fname": "R",
+        "mname": null,
+        "lname": "Roy",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "S",
+        "mname": null,
+        "lname": "Myny",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
     },
-    "black" : {
-      "fname" : "D",
-      "mname" : null,
-      "lname" : "Skagen",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "1-0",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "U",
-      "mname" : null,
-      "lname" : "Garmann",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "A",
-      "mname" : null,
-      "lname" : "Ryabchikov",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "M",
-      "mname" : null,
-      "lname" : "Michoel",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "H",
-      "mname" : null,
-      "lname" : "Le",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "A",
-      "mname" : null,
-      "lname" : "Gjersvik",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "H",
-      "mname" : null,
-      "lname" : "Kjellevold",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "1/2-1/2",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "M",
-      "mname" : null,
-      "lname" : "Cziboly",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "B",
-      "mname" : null,
-      "lname" : "Stafseth",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "R",
-      "mname" : null,
-      "lname" : "Roy",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "S",
-      "mname" : null,
-      "lname" : "Myny",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "0-1",
-    "live" : false
-  }, {
-    "white" : {
-      "fname" : "L",
-      "mname" : null,
-      "lname" : "Sleire",
-      "title" : null,
-      "federation" : null
-    },
-    "black" : {
-      "fname" : "A",
-      "mname" : null,
-      "lname" : "Birdzo",
-      "title" : null,
-      "federation" : null
-    },
-    "result" : "0-1",
-    "live" : false
-  } ]
+    {
+      "white": {
+        "fname": "L",
+        "mname": null,
+        "lname": "Sleire",
+        "title": null,
+        "federation": null
+      },
+      "black": {
+        "fname": "A",
+        "mname": null,
+        "lname": "Birdzo",
+        "title": null,
+        "federation": null
+      },
+      "result": "0-1",
+      "live": false
+    }
+  ]
 }

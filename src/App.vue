@@ -1,17 +1,32 @@
 <script setup lang="ts">
 import { useUserStore } from "./stores/user";
 import { listen } from "@tauri-apps/api/event";
-import { AccessTokenResponse } from "./types";
+import { AccessTokenResponse, PgnPushResult } from "./types";
 import { useLogStore } from "./stores/logs";
 import { requestNotificationPermission } from "./notify";
-import { startQueueWorker } from "./uploader";
 
 const logs = useLogStore();
 const user = useUserStore();
 
-listen<AccessTokenResponse>("update_access_token", (event) => {
+listen<AccessTokenResponse>("event::update_access_token", (event) => {
   logs.clear();
   user.setAccessToken(event.payload);
+});
+
+listen<number>("event::queue_size", (event) => {
+  logs.queueSize = event.payload;
+});
+
+listen<PgnPushResult>("event::upload_success", (event) => {
+  logs.moveCount += event.payload.response.moves;
+  logs.files.add(event.payload.file);
+  logs.info(
+    `Uploaded ${event.payload.response.moves} moves from ${event.payload.file}`,
+  );
+});
+
+listen<string>("event::upload_error", (event) => {
+  logs.error(event.payload);
 });
 
 if (user.isLoggedIn()) {
@@ -19,8 +34,6 @@ if (user.isLoggedIn()) {
 }
 
 requestNotificationPermission();
-
-startQueueWorker();
 </script>
 
 <template>

@@ -3,6 +3,7 @@ import { FileEntry, readDir } from "@tauri-apps/api/fs";
 import { useLogStore } from "./stores/logs";
 import { useSettingsStore } from "./stores/settings";
 import { useUserStore } from "./stores/user";
+import { useSystemStore } from "./stores/system";
 
 export async function lichessFetch(
   path: string,
@@ -19,7 +20,6 @@ export async function lichessFetch(
   return fetch(url, {
     headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
-      // "User-Agent": `${system.uaPrefix()} as:${user.username?.toLowerCase() ?? "anon"}`,
     }),
     signal: controller.signal,
     ...options,
@@ -150,4 +150,24 @@ export async function recursiveFileList(folder: string): Promise<string[]> {
   traverse(entries);
 
   return files.reverse();
+}
+
+/**
+ * Add a PGN push to the queue, which will be handled in Rust by the backend.
+ */
+export async function add_to_queue(roundId: string, files: string[]) {
+  const settings = useSettingsStore();
+  const system = useSystemStore();
+  const user = useUserStore();
+
+  const url = `${settings.lichessUrl}/api/broadcast/round/${roundId}/push`;
+
+  await invoke("add_to_queue", {
+    files,
+    url,
+    apiToken: user.accessToken?.access_token,
+    userAgent: `${system.uaPrefix()} as:${
+      user.username?.toLowerCase() ?? "anon"
+    }`,
+  });
 }
