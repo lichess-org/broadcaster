@@ -149,6 +149,7 @@ if (import.meta.vitest) {
   it("filters pgn files", () => {
     expect(isSingleGamePgn("path/to/game-1.pgn")).toBe(true);
     expect(isSingleGamePgn("path/to/games.pgn")).toBe(false);
+    expect(isSingleGamePgn("path/to/index.json")).toBe(false);
   });
 }
 
