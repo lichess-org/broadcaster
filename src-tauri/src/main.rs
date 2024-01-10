@@ -137,8 +137,9 @@ fn post_pgn_to_lichess(
         }
     } else {
         Err(format!(
-            "Error pushing PGN file to Lichess: {:?}",
-            response.status()
+            "Error pushing PGN file to Lichess: {:?} - {:?}",
+            response.status(),
+            response.text()
         ))
     }
 }
