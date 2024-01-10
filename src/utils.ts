@@ -125,12 +125,31 @@ export function delayDisplay(delay?: number): string {
     .join(" ");
 }
 
+if (import.meta.vitest) {
+  const { it, expect } = import.meta.vitest;
+
+  it("computes delay value", () => {
+    expect(delayDisplay(1)).toBe("1 second");
+    expect(delayDisplay(15)).toBe("15 seconds");
+    expect(delayDisplay(75)).toBe("1 minute 15 seconds");
+  });
+}
+
 /**
  * Ignore the "games.pgn" file which is a multi-game pgn file.
  * We only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
  */
 export function isSingleGamePgn(path: string): boolean {
   return path.endsWith(".pgn") && !path.endsWith("games.pgn");
+}
+
+if (import.meta.vitest) {
+  const { it, expect } = import.meta.vitest;
+
+  it("filters pgn files", () => {
+    expect(isSingleGamePgn("path/to/game-1.pgn")).toBe(true);
+    expect(isSingleGamePgn("path/to/games.pgn")).toBe(false);
+  });
 }
 
 export async function recursiveFileList(folder: string): Promise<string[]> {

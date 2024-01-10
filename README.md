@@ -26,11 +26,12 @@ pnpm tauri dev
 pnpm esrun sample-data/generate/index.ts path/to/selected/folder
 ```
 
-## Formatting / Linting
+## Formatting / Linting / Tests
 
 ```bash
 pnpm format
 pnpm tsc
+pnpm test
 ```
 
 ## Icon Generation

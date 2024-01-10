@@ -1,4 +1,4 @@
-name: Linter
+name: CI
 
 on: [push, pull_request]
 
@@ -22,3 +22,18 @@ jobs:
           version: latest
       - run: pnpm install
       - run: pnpx prettier --check .
+
+  tests:
+    strategy:
+      matrix:
+        node: [20, latest]
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 1
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: latest
+      - run: pnpm install
+      - run: pnpm test
