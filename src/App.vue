@@ -21,7 +21,7 @@ listen<PgnPushResult>("event::upload_success", (event) => {
   logs.moveCount += event.payload.response.moves;
   logs.files.add(event.payload.file);
   logs.info(
-    `Uploaded ${event.payload.response.moves} moves from ${event.payload.file}`,
+    `Uploaded ${event.payload.file}`,
   );
 });
 
