@@ -1,8 +1,8 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { LichessBroadcast } from "../types";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { LichessBroadcast } from '../types';
 
-export const useBroadcastsStore = defineStore("broadcasts", () => {
+export const useBroadcastsStore = defineStore('broadcasts', () => {
   const broadcasts = ref<LichessBroadcast[]>([]);
 
   const add = (broadcast: LichessBroadcast) => {

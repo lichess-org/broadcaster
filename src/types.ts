@@ -10,7 +10,7 @@ interface Tournament {
   slug: string;
   createdAt: number;
   description: string;
-  tier?: "normal" | "high" | "best";
+  tier?: 'normal' | 'high' | 'best';
 }
 
 interface Round {

@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
-import { AccessTokenResponse, LichessUser } from "../types";
-import { lichessFetch } from "../utils";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
+import { AccessTokenResponse, LichessUser } from '../types';
+import { lichessFetch } from '../utils';
 
 export const useUserStore = defineStore(
-  "user",
+  'user',
   () => {
     const accessToken = ref<AccessTokenResponse | null>(null);
     const expiresAt = ref<number | null>(null);
@@ -18,9 +18,9 @@ export const useUserStore = defineStore(
     }
 
     function updateUser() {
-      lichessFetch("/api/account")
-        .then((response) => response.json() as Promise<LichessUser>)
-        .then((data) => {
+      lichessFetch('/api/account')
+        .then(response => response.json() as Promise<LichessUser>)
+        .then(data => {
           username.value = data.username;
         });
     }
@@ -33,9 +33,7 @@ export const useUserStore = defineStore(
       const oneMonthFromNow = new Date();
       oneMonthFromNow.setMonth(oneMonthFromNow.getMonth() + 11);
 
-      return (
-        expiresAt.value === null || expiresAt.value < oneMonthFromNow.getTime()
-      );
+      return expiresAt.value === null || expiresAt.value < oneMonthFromNow.getTime();
     }
 
     function isLoggedIn(): boolean {
@@ -43,8 +41,8 @@ export const useUserStore = defineStore(
     }
 
     function logout() {
-      lichessFetch("/api/token", {
-        method: "DELETE",
+      lichessFetch('/api/token', {
+        method: 'DELETE',
       });
 
       accessToken.value = null;

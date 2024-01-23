@@ -1,15 +1,11 @@
-import { invoke } from "@tauri-apps/api";
-import { FileEntry, readDir } from "@tauri-apps/api/fs";
-import { useLogStore } from "./stores/logs";
-import { useSettingsStore } from "./stores/settings";
-import { useUserStore } from "./stores/user";
-import { useSystemStore } from "./stores/system";
+import { invoke } from '@tauri-apps/api';
+import { FileEntry, readDir } from '@tauri-apps/api/fs';
+import { useLogStore } from './stores/logs';
+import { useSettingsStore } from './stores/settings';
+import { useUserStore } from './stores/user';
+import { useSystemStore } from './stores/system';
 
-export async function lichessFetch(
-  path: string,
-  options?: object,
-  timeoutMs = 5_000,
-): Promise<Response> {
+export async function lichessFetch(path: string, options?: object, timeoutMs = 5_000): Promise<Response> {
   const settings = useSettingsStore();
   const user = useUserStore();
 
@@ -24,7 +20,7 @@ export async function lichessFetch(
     signal: controller.signal,
     ...options,
   })
-    .then((response) => {
+    .then(response => {
       clearTimeout(timeout);
       if (!response.ok) handleFetchError(url, response);
       return response;
@@ -41,7 +37,7 @@ function handleFetchError(url: string, response: Response) {
 
   logs.error(
     response.status === 401
-      ? "Error: Invalid/expired session. Please log out of this app on the Settings page and then log back in."
+      ? 'Error: Invalid/expired session. Please log out of this app on the Settings page and then log back in.'
       : `Error: ${response.status} ${response.statusText} - ${url}`,
   );
 
@@ -49,89 +45,71 @@ function handleFetchError(url: string, response: Response) {
 }
 
 export async function openPath(path: string) {
-  await invoke("open_path", { path });
+  await invoke('open_path', { path });
 }
 
 export function timestampToLocalDatetime(timestamp?: number) {
   if (!timestamp) {
-    return "";
+    return '';
   }
 
   const date = new Date(timestamp);
 
   return date.toLocaleDateString(undefined, {
-    weekday: "long",
-    year: "2-digit",
-    month: "numeric",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
+    weekday: 'long',
+    year: '2-digit',
+    month: 'numeric',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
   });
 }
 
 export function relativeTimeDisplay(timestamp?: number) {
   if (!timestamp) {
-    return "";
+    return '';
   }
 
   const then = new Date(timestamp).getTime();
   const deltaSeconds = Math.round((then - Date.now()) / 1000);
 
-  const cutoffs = [
-    60,
-    3600,
-    86400,
-    86400 * 7,
-    86400 * 30,
-    86400 * 365,
-    Infinity,
-  ];
-  const units: Intl.RelativeTimeFormatUnit[] = [
-    "second",
-    "minute",
-    "hour",
-    "day",
-    "week",
-    "month",
-    "year",
-  ];
-  const unitIndex = cutoffs.findIndex(
-    (cutoff) => cutoff > Math.abs(deltaSeconds),
-  );
+  const cutoffs = [60, 3600, 86400, 86400 * 7, 86400 * 30, 86400 * 365, Infinity];
+  const units: Intl.RelativeTimeFormatUnit[] = ['second', 'minute', 'hour', 'day', 'week', 'month', 'year'];
+  const unitIndex = cutoffs.findIndex(cutoff => cutoff > Math.abs(deltaSeconds));
   const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
-  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: "auto" });
+  const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
 }
 
 export function delayDisplay(delay?: number): string {
   if (!delay) {
-    return "";
+    return '';
   }
 
   return [
     {
       value: Math.floor(delay / 60),
-      label: "minute",
+      label: 'minute',
     },
     {
       value: delay % 60,
-      label: "second",
+      label: 'second',
     },
   ]
     .filter(({ value }) => value > 0)
     .map(({ value, label }) => {
-      return `${value} ${label}${value > 1 ? "s" : ""}`;
+      return `${value} ${label}${value > 1 ? 's' : ''}`;
     })
-    .join(" ");
+    .join(' ');
 }
 
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
-  it("computes delay value", () => {
-    expect(delayDisplay(1)).toBe("1 second");
-    expect(delayDisplay(15)).toBe("15 seconds");
-    expect(delayDisplay(75)).toBe("1 minute 15 seconds");
+  it('computes delay value', () => {
+    expect(delayDisplay(1)).toBe('1 second');
+    expect(delayDisplay(15)).toBe('15 seconds');
+    expect(delayDisplay(75)).toBe('1 minute 15 seconds');
   });
 }
 
@@ -140,16 +118,16 @@ if (import.meta.vitest) {
  * We only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
  */
 export function isSingleGamePgn(path: string): boolean {
-  return path.endsWith(".pgn") && !path.endsWith("games.pgn");
+  return path.endsWith('.pgn') && !path.endsWith('games.pgn');
 }
 
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
-  it("filters pgn files", () => {
-    expect(isSingleGamePgn("path/to/game-1.pgn")).toBe(true);
-    expect(isSingleGamePgn("path/to/games.pgn")).toBe(false);
-    expect(isSingleGamePgn("path/to/index.json")).toBe(false);
+  it('filters pgn files', () => {
+    expect(isSingleGamePgn('path/to/game-1.pgn')).toBe(true);
+    expect(isSingleGamePgn('path/to/games.pgn')).toBe(false);
+    expect(isSingleGamePgn('path/to/index.json')).toBe(false);
   });
 }
 
@@ -182,12 +160,10 @@ export async function add_to_queue(roundId: string, files: string[]) {
 
   const url = `${settings.lichessUrl}/api/broadcast/round/${roundId}/push`;
 
-  await invoke("add_to_queue", {
+  await invoke('add_to_queue', {
     files,
     url,
     apiToken: user.accessToken?.access_token,
-    userAgent: `${system.uaPrefix()} as:${
-      user.username?.toLowerCase() ?? "anon"
-    }`,
+    userAgent: `${system.uaPrefix()} as:${user.username?.toLowerCase() ?? 'anon'}`,
   });
 }

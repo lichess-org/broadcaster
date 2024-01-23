@@ -1,13 +1,13 @@
-import { defineStore } from "pinia";
-import { ref } from "vue";
+import { defineStore } from 'pinia';
+import { ref } from 'vue';
 
 export const useSettingsStore = defineStore(
-  "settings",
+  'settings',
   () => {
-    const lichessUrl = ref<string>("https://lichess.org");
+    const lichessUrl = ref<string>('https://lichess.org');
 
     const setLichessUrl = (url: string) => {
-      lichessUrl.value = url.replace(/\/$/, "");
+      lichessUrl.value = url.replace(/\/$/, '');
     };
 
     return {

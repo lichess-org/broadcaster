@@ -1,4 +1,4 @@
-import { faker } from "@faker-js/faker";
+import { faker } from '@faker-js/faker';
 
 interface NewBroadcast {
   name: string;
@@ -24,11 +24,11 @@ for (let i = 1; i <= 10; i++) {
     tier: faker.number.int({ min: 3, max: 5 }),
   };
 
-  const response = await fetch("http://localhost:8080/broadcast/new", {
-    method: "POST",
+  const response = await fetch('http://localhost:8080/broadcast/new', {
+    method: 'POST',
     headers: {
-      Authorization: "Bearer lip_admin",
-      "Content-Type": "application/json",
+      Authorization: 'Bearer lip_admin',
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(broadcast),
   });
@@ -47,17 +47,14 @@ for (let i = 1; i <= 10; i++) {
       startsAt: faker.date.future().getTime(),
     };
 
-    const response = await fetch(
-      `http://localhost:8080/broadcast/${broadcastResult.tour.id}/new`,
-      {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer lip_admin",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(round),
+    const response = await fetch(`http://localhost:8080/broadcast/${broadcastResult.tour.id}/new`, {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer lip_admin',
+        'Content-Type': 'application/json',
       },
-    );
+      body: JSON.stringify(round),
+    });
 
     if (!response.ok) {
       console.error(response.statusText);
