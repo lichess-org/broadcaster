@@ -9,6 +9,7 @@
     "preview": "vite preview",
     "tauri": "tauri",
     "test": "vitest run",
+    "test:watch": "vitest",
     "tsc": "vue-tsc --noEmit"
   },
   "dependencies": {
@@ -22,9 +23,9 @@
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.26",
-    "@faker-js/faker": "^8.3.1",
+    "@faker-js/faker": "^8.4.0",
     "@tauri-apps/cli": "^1.5.9",
-    "@types/node": "^20.11.5",
+    "@types/node": "^20.11.8",
     "@vitejs/plugin-vue": "^5.0.3",
     "autoprefixer": "^10.4.17",
     "chess.js": "1.0.0-beta.7",
@@ -34,7 +35,7 @@
     "tailwindcss": "^3.4.1",
     "typescript": "^5.3.3",
     "vite": "^5.0.12",
-    "vitest": "^1.2.1",
+    "vitest": "^1.2.2",
     "vue-tsc": "^1.8.27"
   }
 }
