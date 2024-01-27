@@ -48,20 +48,31 @@ export async function openPath(path: string) {
   await invoke('open_path', { path });
 }
 
-export function timestampToLocalDatetime(timestamp?: number) {
+export function timestampToLocalDatetime(timestamp?: number, locales?: Intl.LocalesArgument) {
   if (!timestamp) {
     return '';
   }
 
   const date = new Date(timestamp);
 
-  return date.toLocaleDateString(undefined, {
+  return date.toLocaleDateString(locales, {
     weekday: 'long',
     year: '2-digit',
     month: 'numeric',
     day: 'numeric',
     hour: 'numeric',
     minute: 'numeric',
+  });
+}
+
+if (import.meta.vitest) {
+  const { it, expect } = import.meta.vitest;
+
+  it('shows localized datetime', () => {
+    expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'en-US')).toBe(
+      'Saturday, 2/10/24, 2:30 PM',
+    );
+    expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'fr-FR')).toBe('samedi 10/02/24 14:30');
   });
 }
 
@@ -79,6 +90,31 @@ export function relativeTimeDisplay(timestamp?: number) {
   const divisor = unitIndex ? cutoffs[unitIndex - 1] : 1;
   const rtf = new Intl.RelativeTimeFormat(undefined, { numeric: 'auto' });
   return rtf.format(Math.floor(deltaSeconds / divisor), units[unitIndex]);
+}
+
+if (import.meta.vitest) {
+  const { it, expect, vi } = import.meta.vitest;
+
+  it('shows relative time', () => {
+    const now = new Date(2000, 1, 1);
+    vi.setSystemTime(now);
+
+    expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 0, 1).getTime())).toBe('in 1 second');
+    expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 0, 2).getTime())).toBe('in 2 seconds');
+
+    expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 45, 0).getTime())).toBe('in 45 minutes');
+    expect(relativeTimeDisplay(new Date(2000, 1, 1, 1, 0, 0).getTime())).toBe('in 1 hour');
+
+    expect(relativeTimeDisplay(new Date(2000, 1, 3, 0, 0, 0).getTime())).toBe('in 2 days');
+    expect(relativeTimeDisplay(new Date(2000, 1, 22, 0, 0, 0).getTime())).toBe('in 3 weeks');
+    expect(relativeTimeDisplay(new Date(2000, 6, 0, 0, 0, 0).getTime())).toBe('in 4 months');
+    expect(relativeTimeDisplay(new Date(2010, 1, 0, 0, 0, 0).getTime())).toBe('in 10 years');
+
+    expect(relativeTimeDisplay(new Date(2000, 1, 2).getTime())).toBe('tomorrow');
+    expect(relativeTimeDisplay(new Date(1999, 12, 31).getTime())).toBe('yesterday');
+
+    expect(relativeTimeDisplay(new Date(1999, 12, 15).getTime())).toBe('3 weeks ago');
+  });
 }
 
 export function delayDisplay(delay?: number): string {
