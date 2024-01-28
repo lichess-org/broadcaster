@@ -1,31 +1,29 @@
 <script setup lang="ts">
-import { useUserStore } from "./stores/user";
-import { listen } from "@tauri-apps/api/event";
-import { AccessTokenResponse, PgnPushResult } from "./types";
-import { useLogStore } from "./stores/logs";
-import { requestNotificationPermission } from "./notify";
+import { useUserStore } from './stores/user';
+import { listen } from '@tauri-apps/api/event';
+import { AccessTokenResponse, PgnPushResult } from './types';
+import { useLogStore } from './stores/logs';
+import { requestNotificationPermission } from './notify';
 
 const logs = useLogStore();
 const user = useUserStore();
 
-listen<AccessTokenResponse>("event::update_access_token", (event) => {
+listen<AccessTokenResponse>('event::update_access_token', event => {
   logs.clear();
   user.setAccessToken(event.payload);
 });
 
-listen<number>("event::queue_size", (event) => {
+listen<number>('event::queue_size', event => {
   logs.queueSize = event.payload;
 });
 
-listen<PgnPushResult>("event::upload_success", (event) => {
+listen<PgnPushResult>('event::upload_success', event => {
   logs.moveCount += event.payload.response.moves;
   logs.files.add(event.payload.file);
-  logs.info(
-    `Uploaded ${event.payload.response.moves} moves from ${event.payload.file}`,
-  );
+  logs.info(`Uploaded ${event.payload.file}`);
 });
 
-listen<string>("event::upload_error", (event) => {
+listen<string>('event::upload_error', event => {
   logs.error(event.payload);
 });
 
@@ -39,31 +37,18 @@ requestNotificationPermission();
 <template>
   <header class="mb-12 flex">
     <router-link to="/">
-      <img
-        src="./assets/lichess-white.svg"
-        class="w-12 inline-block"
-        alt="Lichess logo"
-      />
+      <img src="./assets/lichess-white.svg" class="w-12 inline-block" alt="Lichess logo" />
     </router-link>
 
     <div class="grow">
       <nav class="flex space-x-4 justify-end">
-        <router-link to="/" class="nav-item" active-class="active">
-          Home
-        </router-link>
+        <router-link to="/" class="nav-item" active-class="active"> Home </router-link>
 
-        <router-link
-          to="/broadcasts"
-          class="nav-item"
-          active-class="active"
-          v-if="user.isLoggedIn()"
-        >
+        <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()">
           Broadcasts
         </router-link>
 
-        <router-link to="/settings" class="nav-item" active-class="active">
-          Settings
-        </router-link>
+        <router-link to="/settings" class="nav-item" active-class="active"> Settings </router-link>
       </nav>
     </div>
   </header>

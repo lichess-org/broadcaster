@@ -2,7 +2,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "target": "ESNext",
-    "types": ["node"]
+    "types": ["node"],
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts"],
 }

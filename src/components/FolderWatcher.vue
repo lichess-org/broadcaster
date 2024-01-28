@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { open } from "@tauri-apps/api/dialog";
-import { DebouncedEvent, watch } from "tauri-plugin-fs-watch-api";
-import { useLogStore } from "../stores/logs";
-import { add_to_queue, isSingleGamePgn } from "../utils";
+import { open } from '@tauri-apps/api/dialog';
+import { DebouncedEvent, watch } from 'tauri-plugin-fs-watch-api';
+import { useLogStore } from '../stores/logs';
+import { add_to_queue, isSingleGamePgn } from '../utils';
 
 const logs = useLogStore();
 
@@ -11,13 +11,13 @@ const props = defineProps<{
 }>();
 
 async function selectPgnFolder() {
-  open({ directory: true }).then((selected) => {
+  open({ directory: true }).then(selected => {
     if (selected === null) {
       return;
     }
 
-    if (typeof selected !== "string") {
-      throw new Error("Expected a single folder to be selected");
+    if (typeof selected !== 'string') {
+      throw new Error('Expected a single folder to be selected');
     }
 
     startWatchingFolder(selected);
@@ -38,9 +38,9 @@ async function startWatchingFolder(path: string) {
 
 async function handleFolderChange(events: DebouncedEvent) {
   const files = events
-    .filter((event) => event.kind === "Any")
-    .filter((event) => isSingleGamePgn(event.path))
-    .map((event) => event.path);
+    .filter(event => event.kind === 'Any')
+    .filter(event => isSingleGamePgn(event.path))
+    .map(event => event.path);
 
   if (files.length === 0) {
     return;
@@ -48,8 +48,8 @@ async function handleFolderChange(events: DebouncedEvent) {
 
   await add_to_queue(props.roundId, files);
 
-  const paths = files.map((file) => file.split("/").pop());
-  logs.info(`Modified: ${paths.join(", ")}`);
+  const paths = files.map(file => file.split('/').pop());
+  logs.info(`Modified: ${paths.join(', ')}`);
 }
 </script>
 

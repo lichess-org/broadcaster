@@ -31,7 +31,7 @@ pnpm esrun sample-data/generate/index.ts path/to/selected/folder
 ```bash
 pnpm format
 pnpm tsc
-pnpm test
+pnpm test ## or pnpm test:watch
 ```
 
 ## Icon Generation

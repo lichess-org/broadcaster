@@ -1,18 +1,13 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
-import { useLogStore } from "../stores/logs";
+import { onMounted, ref } from 'vue';
+import { useLogStore } from '../stores/logs';
 
 const logs = useLogStore();
 const logViewer = ref<HTMLElement | null>(null);
 
 function isScrolledToBottom(): boolean {
   if (logViewer.value) {
-    return (
-      logViewer.value.scrollHeight -
-        logViewer.value.scrollTop -
-        logViewer.value.clientHeight <
-      100
-    );
+    return logViewer.value.scrollHeight - logViewer.value.scrollTop - logViewer.value.clientHeight < 100;
   }
 
   return false;

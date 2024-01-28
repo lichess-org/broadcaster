@@ -1,8 +1,4 @@
-import {
-  isPermissionGranted,
-  requestPermission,
-  sendNotification,
-} from "@tauri-apps/api/notification";
+import { isPermissionGranted, requestPermission, sendNotification } from '@tauri-apps/api/notification';
 
 async function canNotify() {
   return isPermissionGranted();
@@ -16,7 +12,7 @@ export async function requestNotificationPermission(): Promise<boolean> {
   }
 
   const permission = await requestPermission();
-  return permission === "granted";
+  return permission === 'granted';
 }
 
 export async function notify(title: string, body: string) {

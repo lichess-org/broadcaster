@@ -1,6 +1,6 @@
-import vue from "@vitejs/plugin-vue";
+import vue from '@vitejs/plugin-vue';
 // import { defineConfig } from "vite";
-import { defineConfig } from "vitest/config";
+import { defineConfig } from 'vitest/config';
 
 // https://vitejs.dev/config/
 export default defineConfig(async () => ({
@@ -16,7 +16,7 @@ export default defineConfig(async () => ({
     strictPort: true,
   },
   test: {
-    environment: "jsdom",
-    includeSource: ["src/**/*.{js,ts}"],
+    environment: 'jsdom',
+    includeSource: ['src/**/*.{js,ts}'],
   },
 }));

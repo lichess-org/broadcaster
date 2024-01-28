@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { ref } from "vue";
-import { useSettingsStore } from "../stores/settings";
-import { useUserStore } from "../stores/user";
-import { openPath } from "../utils";
-import { useLogStore } from "../stores/logs";
-import { useSystemStore } from "../stores/system";
+import { ref } from 'vue';
+import { useSettingsStore } from '../stores/settings';
+import { useUserStore } from '../stores/user';
+import { openPath } from '../utils';
+import { useLogStore } from '../stores/logs';
+import { useSystemStore } from '../stores/system';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -32,33 +32,19 @@ function logout() {
 </script>
 
 <template>
-  <h2
-    class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight"
-  >
-    Settings
-  </h2>
+  <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
 
   <div class="divide-y divide-white/5">
-    <div
-      class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
-    >
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">
-          Configuration
-        </h2>
+        <h2 class="text-base font-semibold leading-7 text-white">Configuration</h2>
       </div>
 
       <div class="md:col-span-2">
         <form @submit.prevent="save">
-          <div
-            class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6"
-          >
+          <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
             <div class="col-span-full">
-              <label
-                for="lichessUrl"
-                class="block text-sm font-medium leading-6 text-white"
-                >Lichess URL</label
-              >
+              <label for="lichessUrl" class="block text-sm font-medium leading-6 text-white">Lichess URL</label>
               <div class="mt-2">
                 <div
                   class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
@@ -110,9 +96,7 @@ function logout() {
       </div>
     </div>
 
-    <div
-      class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
-    >
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
         <h2 class="text-base font-semibold leading-7 text-white">About</h2>
       </div>
@@ -123,30 +107,18 @@ function logout() {
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           See the source and contribute to this
-          <a
-            href="#"
-            class="underline"
-            @click.prevent="openPath('https://github.com/fitztrev/broadcaster')"
+          <a href="#" class="underline" @click.prevent="openPath('https://github.com/fitztrev/broadcaster')"
             >app on GitHub</a
           >
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           If you're having trouble with your broadcast, please post to
           <code class="font-bold">#support</code> on the
-          <a
-            href="#"
-            class="underline"
-            @click.prevent="openPath('https://discord.gg/lichess')"
-          >
-            Lichess Discord</a
-          >.
+          <a href="#" class="underline" @click.prevent="openPath('https://discord.gg/lichess')"> Lichess Discord</a>.
         </p>
 
         <div class="mt-8">
-          <form
-            class="flex items-start md:col-span-2"
-            @submit.prevent="clearAllData()"
-          >
+          <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
             <button
               type="submit"
               class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500"
