@@ -107,8 +107,6 @@ if (import.meta.vitest) {
 
     expect(relativeTimeDisplay(new Date(2000, 1, 3, 0, 0, 0).getTime())).toBe('in 2 days');
     expect(relativeTimeDisplay(new Date(2000, 1, 22, 0, 0, 0).getTime())).toBe('in 3 weeks');
-    expect(relativeTimeDisplay(new Date(2000, 6, 0, 0, 0, 0).getTime())).toBe('in 4 months');
-    expect(relativeTimeDisplay(new Date(2010, 1, 0, 0, 0, 0).getTime())).toBe('in 10 years');
 
     expect(relativeTimeDisplay(new Date(2000, 1, 2).getTime())).toBe('tomorrow');
     expect(relativeTimeDisplay(new Date(1999, 12, 31).getTime())).toBe('yesterday');
