@@ -60,5 +60,5 @@ interface PgnPushResponse {
 
 export interface PgnPushResult {
   response: PgnPushResponse;
-  file: string;
+  files: string[];
 }
