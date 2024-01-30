@@ -22,7 +22,7 @@ listen<PgnPushResult>('event::upload_success', event => {
 
   event.payload.files.forEach(file => {
     logs.files.add(file);
-  })
+  });
 
   logs.info(`Uploaded ${event.payload.files.join(', ')}`);
 });
