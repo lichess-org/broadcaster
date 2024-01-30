@@ -10,7 +10,7 @@ use reqwest::{
 };
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::VecDeque,
+    collections::{HashMap, VecDeque},
     fs::File,
     io::Read,
     sync::{Arc, Mutex},
@@ -33,8 +33,15 @@ struct UploadJob {
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
+struct GamePushResult {
+    moves: Option<u32>,
+    error: Option<String>,
+    tags: Vec<HashMap<String, String>>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
 struct LichessPushResponse {
-    moves: u32,
+    games: Vec<GamePushResult>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

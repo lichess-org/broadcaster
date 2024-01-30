@@ -23,7 +23,13 @@ pnpm tauri dev
 2. Run this to automatically write a bunch of PGN to the folder:
 
 ```bash
-pnpm esrun sample-data/generate/index.ts path/to/selected/folder
+pnpm esrun sample-data/generate/index.ts games path/to/selected/folder
+```
+
+Test errors by writing bad PGN files:
+
+```bash
+pnpm esrun sample-data/generate/index.ts errors path/to/selected/folder
 ```
 
 ## Formatting / Linting / Tests

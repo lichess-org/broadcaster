@@ -54,11 +54,19 @@ interface Game {
   url: string;
 }
 
-interface PgnPushResponse {
-  moves: number;
+export interface PgnTag {
+  [key: string]: string;
+}
+
+interface LichessPushResponse {
+  games: {
+    moves?: number;
+    error?: string;
+    tags: PgnTag[];
+  }[];
 }
 
 export interface PgnPushResult {
-  response: PgnPushResponse;
+  response: LichessPushResponse;
   files: string[];
 }
