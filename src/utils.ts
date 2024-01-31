@@ -4,6 +4,7 @@ import { useLogStore } from './stores/logs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
+import { PgnTag } from './types';
 
 export async function lichessFetch(path: string, options?: object, timeoutMs = 5_000): Promise<Response> {
   const settings = useSettingsStore();
@@ -199,5 +200,18 @@ export async function add_to_queue(roundId: string, files: string[]) {
     url,
     apiToken: user.accessToken?.access_token,
     userAgent: `${system.uaPrefix()} as:${user.username?.toLowerCase() ?? 'anon'}`,
+  });
+}
+
+export function pgnTag(tag: string, tags: PgnTag[]): string | undefined {
+  const found = tags.find(t => t[tag]);
+  return found ? found[tag] : undefined;
+}
+
+if (import.meta.vitest) {
+  const { it, expect } = import.meta.vitest;
+
+  it('returns a PGN tag', () => {
+    expect(pgnTag('White', [{ White: 'Magnus Carlsen' }])).toBe('Magnus Carlsen');
   });
 }

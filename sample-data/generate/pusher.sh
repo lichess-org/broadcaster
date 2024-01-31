@@ -2,7 +2,7 @@
 
 LICHESS_URL="http://localhost:8080"
 API_TOKEN="lip_bobby" # with study:write permission
-BROADCAST_ROUND_ID="J1Lk2oa1"
+BROADCAST_ROUND_ID="xVEzYJHf"
 
 #### Part A ####
 echo "Pushing each game individually..."
@@ -28,8 +28,6 @@ http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROAD
 
 1. Nc3'
 
-
-
 #### Part B ####
 echo "Pushing combined PGN of 2 games..."
 
@@ -46,10 +44,6 @@ http -A bearer -a $API_TOKEN --body post $LICHESS_URL/api/broadcast/round/$BROAD
 [Result "*"]
 
 1. Nc3 Nf6'
-
-
-
-
 
 #### Part C ####
 echo "Pushing combined PGN of all 3 games..."

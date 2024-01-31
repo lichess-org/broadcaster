@@ -4,6 +4,7 @@ import { listen } from '@tauri-apps/api/event';
 import { AccessTokenResponse, PgnPushResult } from './types';
 import { useLogStore } from './stores/logs';
 import { requestNotificationPermission } from './notify';
+import { pgnTag } from './utils';
 
 const logs = useLogStore();
 const user = useUserStore();
@@ -18,9 +19,18 @@ listen<number>('event::queue_size', event => {
 });
 
 listen<PgnPushResult>('event::upload_success', event => {
-  logs.moveCount += event.payload.response.moves;
-  logs.files.add(event.payload.file);
-  logs.info(`Uploaded ${event.payload.file}`);
+  // logs.moveCount += event.payload.response.moves;
+
+  event.payload.files.forEach(file => {
+    logs.files.add(file);
+  });
+
+  logs.info(`Uploaded ${event.payload.files.join(', ')}`);
+
+  const errors = event.payload.response.games.filter(game => game.error);
+  errors.forEach(game => {
+    logs.error(`PGN Error: ${game.error} in ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`);
+  });
 });
 
 listen<string>('event::upload_error', event => {

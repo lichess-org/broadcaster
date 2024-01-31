@@ -10,7 +10,7 @@ use reqwest::{
 };
 use serde::{Deserialize, Serialize};
 use std::{
-    collections::VecDeque,
+    collections::{HashMap, VecDeque},
     fs::File,
     io::Read,
     sync::{Arc, Mutex},
@@ -26,21 +26,28 @@ struct UploadQueue {
 
 #[derive(Debug)]
 struct UploadJob {
-    file: String,
+    files: Vec<String>,
     url: String,
     api_token: String,
     user_agent: String,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
-struct PgnPushResponse {
-    moves: u32,
+struct GamePushResult {
+    moves: Option<u32>,
+    error: Option<String>,
+    tags: Vec<HashMap<String, String>>,
+}
+
+#[derive(Clone, Debug, Serialize, Deserialize)]
+struct LichessPushResponse {
+    games: Vec<GamePushResult>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]
 struct PgnPushResult {
-    response: PgnPushResponse,
-    file: String,
+    response: LichessPushResponse,
+    files: Vec<String>,
 }
 
 fn main() {
@@ -71,7 +78,7 @@ fn main() {
                                     "event::upload_success",
                                     PgnPushResult {
                                         response,
-                                        file: job.file,
+                                        files: job.files,
                                     },
                                 )
                                 .expect("failed to emit event");
@@ -98,8 +105,8 @@ fn main() {
         .expect("error while running tauri application");
 }
 
-fn handle_upload_job(job: &UploadJob) -> Result<PgnPushResponse, String> {
-    let mut file = match File::open(&job.file) {
+fn read_pgn_file(path: &str) -> Result<String, String> {
+    let mut file = match File::open(path) {
         Ok(file) => file,
         Err(err) => return Err(err.to_string()),
     };
@@ -109,7 +116,17 @@ fn handle_upload_job(job: &UploadJob) -> Result<PgnPushResponse, String> {
         return Err(err.to_string());
     }
 
-    post_pgn_to_lichess(&job.url, file_content, &job.api_token, &job.user_agent)
+    Ok(file_content)
+}
+
+fn handle_upload_job(job: &UploadJob) -> Result<LichessPushResponse, String> {
+    let pgns = job
+        .files
+        .iter()
+        .map(|file| read_pgn_file(file))
+        .collect::<Result<Vec<String>, String>>()?;
+
+    post_pgn_to_lichess(&job.url, pgns.join("\n\n"), &job.api_token, &job.user_agent)
 }
 
 fn post_pgn_to_lichess(
@@ -117,7 +134,7 @@ fn post_pgn_to_lichess(
     pgn_content: String,
     api_token: &str,
     user_agent: &str,
-) -> Result<PgnPushResponse, String> {
+) -> Result<LichessPushResponse, String> {
     let client = Client::new();
     let request_builder: RequestBuilder = client
         .post(url)
@@ -131,7 +148,7 @@ fn post_pgn_to_lichess(
     };
 
     if response.status().is_success() {
-        match response.json::<PgnPushResponse>() {
+        match response.json::<LichessPushResponse>() {
             Ok(response) => Ok(response),
             Err(err) => Err(format!("Error parsing response: {err}")),
         }
@@ -160,17 +177,10 @@ fn add_to_queue(
 ) {
     let mut queue = state.lock().unwrap();
 
-    for file in files {
-        // if file is already queued to be uploaded, skip it
-        if queue.jobs.iter().any(|job| job.file == file) {
-            continue;
-        }
-
-        queue.jobs.push_back(UploadJob {
-            file: file.to_string(),
-            url: url.to_string(),
-            api_token: api_token.to_string(),
-            user_agent: user_agent.to_string(),
-        });
-    }
+    queue.jobs.push_back(UploadJob {
+        files,
+        url: url.to_string(),
+        api_token: api_token.to_string(),
+        user_agent: user_agent.to_string(),
+    });
 }

@@ -1,33 +1,27 @@
-import fs from 'fs';
-import path from 'path';
 import { faker } from '@faker-js/faker';
 import { Chess } from 'chess.js';
+import { writeFileSync } from 'fs';
+import { join } from 'path';
 
-function writeToFile(filename: number, pgn: string) {
-  const filePath = path.join(outputFolder, `game-${filename}.pgn`);
-  fs.writeFile(filePath, pgn, () => {
-    console.log(`Wrote ${filePath}`);
-  });
+const action = process.argv[2] as 'games' | 'errors';
+const outputFolder = process.argv[3];
+
+if (!action || !outputFolder) {
+  throw new Error('Usage: pnpm esrun index.ts <games|errors> <output-folder>');
 }
 
-const outputFolder = process.argv[2];
-if (!outputFolder) {
-  console.log('Usage: pnpm esrun index.ts <output-folder>');
-  process.exit(1);
+function writeToFile(filename: string | number, contents: string) {
+  const filePath = join(outputFolder, `game-${filename}.pgn`);
+  writeFileSync(filePath, contents);
+  console.log(`Wrote ${filePath}`);
 }
 
-const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+function newGame(): Chess {
+  const eventName = `${faker.company.name()} Invitational`;
+  const location = `${faker.location.city()} ${faker.location.country()}`;
+  const date = faker.date.recent();
+  const pgnDate = `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
 
-const country = faker.location.country();
-const eventName = `${faker.company.name()} Invitational`;
-const location = `${faker.location.city()} ${country}`;
-
-const date = faker.date.recent();
-const pgnDate = `${date.getFullYear()}.${date.getMonth() + 1}.${date.getDate()}`;
-
-const games = new Map<number, Chess>();
-
-for (let i = 1; i <= 16; i++) {
   const game = new Chess();
 
   game.header('Event', eventName);
@@ -39,8 +33,6 @@ for (let i = 1; i <= 16; i++) {
   game.header('Black', faker.person.fullName());
   game.header('WhiteElo', faker.number.int({ min: 1000, max: 2700 }).toString());
   game.header('BlackElo', faker.number.int({ min: 1000, max: 2700 }).toString());
-  game.header('Result', '*');
-
   for (const title of ['WhiteTitle', 'BlackTitle']) {
     faker.helpers.maybe(
       () => {
@@ -51,31 +43,51 @@ for (let i = 1; i <= 16; i++) {
       },
     );
   }
+  game.header('Result', '*');
 
-  games.set(i, game);
+  return game;
 }
 
-await Promise.all(
-  Array.from(games.keys()).map(async i => {
-    const game = games.get(i) as Chess;
+const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
-    while (!game.isGameOver() && (game.history().length <= 100 * 2 || faker.datatype.boolean(0.9))) {
-      const moves = game.moves();
-      if (moves.length === 0) break;
+if (action === 'games') {
+  const games = new Map<number, Chess>();
 
-      const move = faker.helpers.arrayElement(moves);
-      game.move(move);
+  for (let i = 1; i <= 16; i++) {
+    games.set(i, newGame());
+  }
 
-      console.log(`Game ${i}: ${move}`);
+  await Promise.all(
+    Array.from(games.keys()).map(async i => {
+      const game = games.get(i) as Chess;
 
+      while (!game.isGameOver() && (game.history().length <= 100 * 2 || faker.datatype.boolean(0.9))) {
+        const moves = game.moves();
+        if (moves.length === 0) break;
+
+        const move = faker.helpers.arrayElement(moves);
+        game.move(move);
+
+        console.log(`Game ${i}: ${move}`);
+
+        writeToFile(i, game.pgn());
+        await sleep(faker.number.int({ min: 500, max: 2_000 }));
+      }
+
+      const result = game.isDraw() ? '1/2-1/2' : game.turn() === 'w' ? '0-1' : '1-0';
+      game.header('Result', result);
       writeToFile(i, game.pgn());
-      await sleep(faker.number.int({ min: 500, max: 2_000 }));
-    }
-
-    const result = game.isDraw() ? '1/2-1/2' : game.turn() === 'w' ? '0-1' : '1-0';
-    game.header('Result', result);
-    writeToFile(i, game.pgn());
-  }),
-);
+    }),
+  );
+} else if (action === 'errors') {
+  // 3 types of errors: empty file, non-pgn string, illegal moves
+  writeToFile('empty', '');
+  await sleep(1200);
+  writeToFile('non-pgn', 'This is not PGN');
+  await sleep(1200);
+  writeToFile('illegal', newGame().pgn().replace(' *', '\n1. Kh3 *'));
+} else {
+  throw new Error('Action must be "games" or "errors"');
+}
 
 console.log('Done');
