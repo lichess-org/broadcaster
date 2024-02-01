@@ -3,25 +3,13 @@ import { computed, ref } from 'vue';
 import { router } from '../router';
 import { RoundResponse } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
-import {
-  add_to_queue,
-  delayDisplay,
-  isSingleGamePgn,
-  lichessFetch,
-  openPath,
-  recursiveFileList,
-  relativeTimeDisplay,
-  timestampToLocalDatetime,
-} from '../utils';
+import RoundTimes from './RoundTimes.vue';
+import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
 
 const logs = useLogStore();
 
 const round = ref<RoundResponse | null>(null);
-
-const delay = computed<string>(() => {
-  return delayDisplay(round.value?.round.delay);
-});
 
 const watchedFolder = computed<string>(() => {
   if (!round.value) {
@@ -29,14 +17,6 @@ const watchedFolder = computed<string>(() => {
   }
 
   return logs.watchProcesses.get(round.value.round.id)?.folder ?? '';
-});
-
-const relativeTime = computed<string>(() => {
-  return relativeTimeDisplay(round.value?.round.startsAt);
-});
-
-const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(round.value?.round.startsAt);
 });
 
 function stopWatching() {
@@ -49,6 +29,7 @@ function getRound() {
     .then(response => response.json() as Promise<RoundResponse>)
     .then(data => {
       round.value = data;
+      console.log(round.value);
     });
 }
 
@@ -73,19 +54,7 @@ getRound();
           <span class="ml-2 text-gray-400">/ {{ round.tour.name }}</span>
         </h2>
         <p class="text-gray-200 text-xl">{{ round.tour.description }}</p>
-        <div v-if="startsAt" class="mt-3 flex items-center gap-x-2.5 text-xs leading-5 text-gray-400">
-          <p class="truncate">{{ startsAt }}</p>
-          <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
-            <circle cx="1" cy="1" r="1" />
-          </svg>
-          <p class="whitespace-nowrap">{{ relativeTime }}</p>
-          <template v-if="delay">
-            <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
-              <circle cx="1" cy="1" r="1" />
-            </svg>
-            <p class="whitespace-nowrap">Move Delay: {{ delay }}</p>
-          </template>
-        </div>
+        <RoundTimes :round="round.round" />
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
         <button

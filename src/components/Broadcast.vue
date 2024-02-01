@@ -3,7 +3,7 @@ import { computed } from 'vue';
 import { LichessBroadcast } from '../types';
 import { router } from '../router';
 import { useLogStore } from '../stores/logs';
-import { relativeTimeDisplay, timestampToLocalDatetime } from '../utils';
+import RoundTimes from './RoundTimes.vue';
 
 const logs = useLogStore();
 
@@ -13,14 +13,6 @@ const props = defineProps<{
 
 const isBroadcasting = computed<boolean>(() => {
   return logs.watchProcesses.has(props.broadcast.round.id);
-});
-
-const relativeTime = computed<string>(() => {
-  return relativeTimeDisplay(props.broadcast.round.startsAt);
-});
-
-const startsAt = computed<string>(() => {
-  return timestampToLocalDatetime(props.broadcast.round.startsAt);
 });
 
 function openRound(id: string) {
@@ -57,13 +49,7 @@ function openRound(id: string) {
           </a>
         </h2>
       </div>
-      <div v-if="startsAt" class="mt-3 flex items-center gap-x-2.5 text-xs leading-5 text-gray-400">
-        <p class="truncate">{{ startsAt }}</p>
-        <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
-          <circle cx="1" cy="1" r="1" />
-        </svg>
-        <p class="whitespace-nowrap">{{ relativeTime }}</p>
-      </div>
+      <RoundTimes :round="broadcast.round" />
     </div>
     <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path

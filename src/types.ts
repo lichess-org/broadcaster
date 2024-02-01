@@ -13,7 +13,7 @@ interface Tournament {
   tier?: 'normal' | 'high' | 'best';
 }
 
-interface Round {
+export interface Round {
   id: string;
   name: string;
   slug: string;
