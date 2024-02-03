@@ -150,7 +150,7 @@ dependencies = [
  "futures-lite 2.2.0",
  "parking",
  "polling 3.3.2",
- "rustix 0.38.30",
+ "rustix 0.38.31",
  "slab",
  "tracing",
  "windows-sys 0.52.0",
@@ -189,7 +189,7 @@ dependencies = [
  "cfg-if",
  "event-listener 3.1.0",
  "futures-lite 1.13.0",
- "rustix 0.38.30",
+ "rustix 0.38.31",
  "windows-sys 0.48.0",
 ]
 
@@ -216,7 +216,7 @@ dependencies = [
  "cfg-if",
  "futures-core",
  "futures-io",
- "rustix 0.38.30",
+ "rustix 0.38.31",
  "signal-hook-registry",
  "slab",
  "windows-sys 0.48.0",
@@ -1631,9 +1631,9 @@ dependencies = [
 
 [[package]]
 name = "iana-time-zone"
-version = "0.1.59"
+version = "0.1.60"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b6a67363e2aa4443928ce15e57ebae94fd8949958fd1223c4cfc0cd473ad7539"
+checksum = "e7ffbb5a1b541ea2561f8c41c087286cc091e21e556a4f09a8f6cbf17b69b141"
 dependencies = [
  "android_system_properties",
  "core-foundation-sys",
@@ -2221,6 +2221,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "num-conv"
+version = "0.1.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "51d515d32fb182ee37cda2ccdcb92950d6a3c2893aa280e540671c2cd0f3b1d9"
+
+[[package]]
 name = "num-traits"
 version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2706,7 +2712,7 @@ dependencies = [
  "cfg-if",
  "concurrent-queue",
  "pin-project-lite",
- "rustix 0.38.30",
+ "rustix 0.38.31",
  "tracing",
  "windows-sys 0.52.0",
 ]
@@ -3071,9 +3077,9 @@ dependencies = [
 
 [[package]]
 name = "rustix"
-version = "0.38.30"
+version = "0.38.31"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "322394588aaf33c24007e8bb3238ee3e4c5c09c084ab32bc73890b99ff326bca"
+checksum = "6ea3e1a662af26cd7a3ba09c0297a31af215563ecf42817c98df621387f4e949"
 dependencies = [
  "bitflags 2.4.2",
  "errno",
@@ -3904,7 +3910,7 @@ dependencies = [
  "cfg-if",
  "fastrand 2.0.1",
  "redox_syscall",
- "rustix 0.38.30",
+ "rustix 0.38.31",
  "windows-sys 0.52.0",
 ]
 
@@ -3957,12 +3963,13 @@ dependencies = [
 
 [[package]]
 name = "time"
-version = "0.3.31"
+version = "0.3.33"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f657ba42c3f86e7680e53c8cd3af8abbe56b5491790b46e22e19c0d57463583e"
+checksum = "00b24b79b7a07f10209f19e683ca1e289d80b1e76ffa8c2b779718566a083679"
 dependencies = [
  "deranged",
  "itoa 1.0.10",
+ "num-conv",
  "powerfmt",
  "serde",
  "time-core",
@@ -3977,10 +3984,11 @@ checksum = "ef927ca75afb808a4d64dd374f00a2adf8d0fcff8e7b184af886c3c87ec4a3f3"
 
 [[package]]
 name = "time-macros"
-version = "0.2.16"
+version = "0.2.17"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "26197e33420244aeb70c3e8c78376ca46571bc4e701e4791c2cd9f57dcb3a43f"
+checksum = "7ba3a3ef41e6672a2f0f001392bb5dcd3ff0a9992d618ca761a11c3121547774"
 dependencies = [
+ "num-conv",
  "time-core",
 ]
 
@@ -4013,9 +4021,9 @@ checksum = "1f3ccbac311fea05f86f61904b462b55fb3df8837a366dfc601a0161d0532f20"
 
 [[package]]
 name = "tokio"
-version = "1.35.1"
+version = "1.36.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c89b4efa943be685f629b149f53829423f8f5531ea21249408e8e2f8671ec104"
+checksum = "61285f6515fa018fb2d1e46eb21223fff441ee8db5d0f1435e8ab4f5cdb80931"
 dependencies = [
  "backtrace",
  "bytes",
@@ -4198,9 +4206,9 @@ dependencies = [
 
 [[package]]
 name = "treediff"
-version = "4.0.2"
+version = "4.0.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "52984d277bdf2a751072b5df30ec0377febdb02f7696d64c2d7d54630bac4303"
+checksum = "4d127780145176e2b5d16611cc25a900150e86e9fd79d3bde6ff3a37359c9cb5"
 dependencies = [
  "serde_json",
 ]
@@ -4513,9 +4521,9 @@ dependencies = [
 
 [[package]]
 name = "webpki-roots"
-version = "0.25.3"
+version = "0.25.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1778a42e8b3b90bff8d0f5032bf22250792889a5cdc752aa0020c84abe3aaf10"
+checksum = "5f20c57d8d7db6d3b86154206ae5d8fba62dd39573114de97c2cb0578251f8e1"
 
 [[package]]
 name = "webview2-com"
@@ -4942,9 +4950,9 @@ checksum = "dff9641d1cd4be8d1a070daf9e3773c5f67e78b4d9d42263020c057706765c04"
 
 [[package]]
 name = "winnow"
-version = "0.5.36"
+version = "0.5.37"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "818ce546a11a9986bc24f93d0cdf38a8a1a400f1473ea8c82e59f6e0ffab9249"
+checksum = "a7cad8365489051ae9f054164e459304af2e7e9bb407c958076c8bf4aef52da5"
 dependencies = [
  "memchr",
 ]
@@ -5036,7 +5044,7 @@ checksum = "8da84f1a25939b27f6820d92aed108f83ff920fdf11a7b19366c27c4cda81d4f"
 dependencies = [
  "libc",
  "linux-raw-sys 0.4.13",
- "rustix 0.38.30",
+ "rustix 0.38.31",
 ]
 
 [[package]]
