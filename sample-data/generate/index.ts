@@ -50,6 +50,18 @@ function newGame(): Chess {
 
 const sleep = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
+const result = (game: Chess) => {
+  if (game.isCheckmate() && game.turn() === 'w') {
+    return '0-1';
+  } else if (game.isCheckmate() && game.turn() === 'b') {
+    return '1-0';
+  } else if (game.isDraw()) {
+    return '1/2-1/2';
+  }
+
+  throw new Error('Game is not over');
+};
+
 if (action === 'games') {
   const games = new Map<number, Chess>();
 
@@ -74,8 +86,7 @@ if (action === 'games') {
         await sleep(faker.number.int({ min: 500, max: 2_000 }));
       }
 
-      const result = game.isDraw() ? '1/2-1/2' : game.turn() === 'w' ? '0-1' : '1-0';
-      game.header('Result', result);
+      game.header('Result', result(game));
       writeToFile(i, game.pgn());
     }),
   );

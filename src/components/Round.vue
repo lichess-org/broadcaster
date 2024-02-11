@@ -34,7 +34,7 @@ function getRound() {
 }
 
 async function uploadExistingFilesInFolder() {
-  let files = await recursiveFileList(watchedFolder.value!);
+  let files = await recursiveFileList(watchedFolder.value);
   files = files.filter(file => isSingleGamePgn(file));
 
   await add_to_queue(round.value!.round.id, files);

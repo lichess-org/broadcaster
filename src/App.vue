@@ -19,8 +19,6 @@ listen<number>('event::queue_size', event => {
 });
 
 listen<PgnPushResult>('event::upload_success', event => {
-  // logs.moveCount += event.payload.response.moves;
-
   event.payload.files.forEach(file => {
     logs.files.add(file);
   });

@@ -36,7 +36,7 @@ async function startWatchingFolder(path: string) {
   });
 }
 
-async function handleFolderChange(events: DebouncedEvent) {
+function handleFolderChange(events: DebouncedEvent): void {
   const files = events
     .filter(event => event.kind === 'Any')
     .filter(event => isSingleGamePgn(event.path))
@@ -46,7 +46,7 @@ async function handleFolderChange(events: DebouncedEvent) {
     return;
   }
 
-  await add_to_queue(props.roundId, files);
+  add_to_queue(props.roundId, files);
 
   const paths = files.map(file => file.split('/').pop());
   logs.info(`Modified: ${paths.join(', ')}`);
