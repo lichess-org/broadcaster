@@ -4,7 +4,7 @@ import { useLogStore } from './stores/logs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
-import { PgnTag } from './types';
+import { PgnTags } from './types';
 
 export async function lichessFetch(path: string, options?: object, timeoutMs = 5_000): Promise<Response> {
   const settings = useSettingsStore();
@@ -203,15 +203,25 @@ export async function add_to_queue(roundId: string, files: string[]) {
   });
 }
 
-export function pgnTag(tag: string, tags: PgnTag[]): string | undefined {
-  const found = tags.find(t => t[tag]);
-  return found ? found[tag] : undefined;
+export function pgnTag(tag: string, tags: PgnTags): string | undefined {
+  return tags[tag];
 }
 
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
+  it('returns a PGN name', () => {
+    let tags = { White: 'Magnus Carlsen' };
+    expect(pgnTag('White', tags)).toBe('Magnus Carlsen');
+  });
+
   it('returns a PGN tag', () => {
-    expect(pgnTag('White', [{ White: 'Magnus Carlsen' }])).toBe('Magnus Carlsen');
+    let tags: PgnTags = { A: '1', B: '2', C: '3' };
+    expect(pgnTag('B', tags)).toBe('2');
+  });
+
+  it('cannot find the PGN tag', () => {
+    let tags: PgnTags = { A: '1', B: '2', C: '3' };
+    expect(pgnTag('D', tags)).toBeUndefined();
   });
 }

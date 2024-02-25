@@ -36,7 +36,7 @@ struct UploadJob {
 struct GamePushResult {
     moves: Option<u32>,
     error: Option<String>,
-    tags: Vec<HashMap<String, String>>,
+    tags: HashMap<String, String>,
 }
 
 #[derive(Clone, Debug, Serialize, Deserialize)]

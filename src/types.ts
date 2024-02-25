@@ -54,15 +54,13 @@ interface Game {
   url: string;
 }
 
-export interface PgnTag {
-  [key: string]: string;
-}
+export type PgnTags = Record<string, string>;
 
 interface LichessPushResponse {
   games: {
     moves?: number;
     error?: string;
-    tags: PgnTag[];
+    tags: PgnTags;
   }[];
 }
 
