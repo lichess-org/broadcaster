@@ -2,11 +2,11 @@ use oauth2::{
     basic::BasicClient, reqwest::http_client, AuthUrl, AuthorizationCode, ClientId, CsrfToken,
     PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
 };
-use tauri::{AppHandle, Window};
+use tauri::{AppHandle, Manager};
 use tiny_http::Server;
 
 #[tauri::command]
-pub fn start_oauth_flow(app_handle: AppHandle, window: Window, lichess_url: &str) {
+pub fn start_oauth_flow(app_handle: AppHandle, lichess_url: &str) {
     let server = Server::http("0.0.0.0:0").unwrap();
     let port = server.server_addr().to_ip().unwrap().port();
     let localhost_url = format!("http://localhost:{port}/");
@@ -48,9 +48,9 @@ pub fn start_oauth_flow(app_handle: AppHandle, window: Window, lichess_url: &str
                 .request(http_client)
                 .unwrap();
 
-            window
-                .emit("event::update_access_token", access_token)
-                .unwrap();
+            app_handle
+                .emit_all("event::update_access_token", access_token)
+                .expect("failed to emit event");
 
             let _ = request.respond(tiny_http::Response::from_string(
                 "Thanks! You may now close this window and return to the app.",
