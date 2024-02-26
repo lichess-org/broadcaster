@@ -2,20 +2,18 @@ use oauth2::{
     basic::BasicClient, reqwest::http_client, AuthUrl, AuthorizationCode, ClientId, CsrfToken,
     PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
 };
-use tauri::Window;
+use tauri::{AppHandle, Window};
 use tiny_http::Server;
 
-const OAUTH_CLIENT_ID: &str = "github.com/fitztrev/broadcaster";
-
 #[tauri::command]
-pub fn start_oauth_flow(window: Window, lichess_url: &str) {
+pub fn start_oauth_flow(app_handle: AppHandle, window: Window, lichess_url: &str) {
     let server = Server::http("0.0.0.0:0").unwrap();
     let port = server.server_addr().to_ip().unwrap().port();
     let localhost_url = format!("http://localhost:{port}/");
     println!("Local server started: {localhost_url}");
 
     let client = BasicClient::new(
-        ClientId::new(OAUTH_CLIENT_ID.to_string()),
+        ClientId::new(app_handle.config().tauri.bundle.identifier.clone()),
         None,
         AuthUrl::new(format!("{lichess_url}/oauth")).unwrap(),
         Some(TokenUrl::new(format!("{lichess_url}/api/token")).unwrap()),
