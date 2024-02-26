@@ -211,17 +211,13 @@ if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
   it('returns a PGN name', () => {
-    let tags = { White: 'Magnus Carlsen' };
+    let tags: PgnTags = { White: 'Magnus Carlsen' };
     expect(pgnTag('White', tags)).toBe('Magnus Carlsen');
   });
 
   it('returns a PGN tag', () => {
     let tags: PgnTags = { A: '1', B: '2', C: '3' };
     expect(pgnTag('B', tags)).toBe('2');
-  });
-
-  it('cannot find the PGN tag', () => {
-    let tags: PgnTags = { A: '1', B: '2', C: '3' };
     expect(pgnTag('D', tags)).toBeUndefined();
   });
 }

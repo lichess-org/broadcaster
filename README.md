@@ -37,7 +37,10 @@ pnpm esrun sample-data/generate/index.ts errors path/to/selected/folder
 ```bash
 pnpm format
 pnpm tsc
-pnpm test ## or pnpm test:watch
+
+pnpm test
+# or
+pnpm test:watch
 ```
 
 ## Icon Generation
