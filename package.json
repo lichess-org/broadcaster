@@ -18,7 +18,7 @@
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
-    "vue": "^3.4.19",
+    "vue": "^3.4.20",
     "vue-router": "^4.3.0"
   },
   "devDependencies": {
