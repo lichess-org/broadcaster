@@ -5,8 +5,14 @@ use oauth2::{
 use tauri::{AppHandle, Manager};
 use tiny_http::Server;
 
+#[allow(clippy::needless_pass_by_value)]
 #[tauri::command]
-pub fn start_oauth_flow(app_handle: AppHandle, lichess_url: &str) {
+pub fn start_oauth_flow<R: tauri::Runtime>(
+    app_handle: AppHandle<R>,
+    oauth_url: String,
+    token_url: String,
+    scopes: Vec<String>,
+) {
     let server = Server::http("0.0.0.0:0").unwrap();
     let port = server.server_addr().to_ip().unwrap().port();
     let localhost_url = format!("http://localhost:{port}/");
@@ -15,8 +21,8 @@ pub fn start_oauth_flow(app_handle: AppHandle, lichess_url: &str) {
     let client = BasicClient::new(
         ClientId::new(app_handle.config().tauri.bundle.identifier.clone()),
         None,
-        AuthUrl::new(format!("{lichess_url}/oauth")).unwrap(),
-        Some(TokenUrl::new(format!("{lichess_url}/api/token")).unwrap()),
+        AuthUrl::new(oauth_url).unwrap(),
+        Some(TokenUrl::new(token_url).unwrap()),
     )
     .set_redirect_uri(RedirectUrl::new(localhost_url).unwrap());
 
@@ -24,8 +30,7 @@ pub fn start_oauth_flow(app_handle: AppHandle, lichess_url: &str) {
 
     let (authorize_url, _) = client
         .authorize_url(CsrfToken::new_random)
-        .add_scope(Scope::new("study:read".to_string()))
-        .add_scope(Scope::new("study:write".to_string()))
+        .add_scopes(scopes.iter().map(|s| Scope::new(s.to_string())))
         .set_pkce_challenge(code_challenge)
         .url();
 

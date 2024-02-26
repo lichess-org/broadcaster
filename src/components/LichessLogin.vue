@@ -6,7 +6,9 @@ const settings = useSettingsStore();
 
 async function login() {
   await invoke('start_oauth_flow', {
-    lichessUrl: settings.lichessUrl,
+    oauthUrl: `${settings.lichessUrl}/oauth`,
+    tokenUrl: `${settings.lichessUrl}/api/token`,
+    scopes: ['study:read', 'study:write'],
   });
 }
 </script>
