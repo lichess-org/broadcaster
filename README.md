@@ -1,3 +1,9 @@
+# Lichess Broadcaster
+
+Automatically upload PGN from your local computer to a live [Lichess Broadcast](https://lichess.org/broadcast)
+
+![image](https://github.com/fitztrev/broadcaster/assets/271432/bd38ec06-cbaa-4b6b-8d50-a01cff2e313b)
+
 ## Development Setup
 
 ### Prerequisites
