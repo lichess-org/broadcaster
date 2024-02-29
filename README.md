@@ -1,8 +1,8 @@
 # Lichess Broadcaster
 
-This is a cross-platform desktop application for automatically uploading PGN from your local computer to a live [Lichess Broadcast](https://lichess.org/broadcast).
+This is a cross-platform desktop application for automatically uploading PGN files (chess game notation) from your local computer to a live [Lichess Broadcast](https://lichess.org/broadcast).
 
-Some smart chess boards can write PGN files to a folder on your computer. This app watches that folder and uploads the PGN in real-time using the [Lichess API](https://lichess.org/api).
+Some smart chess boards used in OTB (over the board) events can write PGN files to a folder on your computer. This application monitors that folder and uploads the PGN file in real-time using the [Lichess API](https://lichess.org/api). In practice, this means anyone with internet access can follow the ongoing OTB games live and with minimal additional effort from tournament organisers. Lichess freely provides the infrastructure to show the tournament games to thousands of spectators, which would otherwise be a costly or technically challenging task for organizers.
 
 ![image](https://github.com/lichess-org/broadcaster/assets/271432/2ec27912-0ef2-4ac6-9870-130e01f444aa)
 
