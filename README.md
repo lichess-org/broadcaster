@@ -1,8 +1,20 @@
 # Lichess Broadcaster
 
-Automatically upload PGN from your local computer to a live [Lichess Broadcast](https://lichess.org/broadcast)
+This is a cross-platform desktop application for automatically uploading PGN from your local computer to a live [Lichess Broadcast](https://lichess.org/broadcast).
 
-![image](https://github.com/fitztrev/broadcaster/assets/271432/bd38ec06-cbaa-4b6b-8d50-a01cff2e313b)
+Some smart chess boards can write PGN files to a folder on your computer. This app watches that folder and uploads the PGN in real-time using the [Lichess API](https://lichess.org/api).
+
+![image](https://github.com/lichess-org/broadcaster/assets/271432/2ec27912-0ef2-4ac6-9870-130e01f444aa)
+
+## About
+
+This app is built with [Tauri](https://tauri.app/), a framework for building desktop apps with web technologies. It's written in Rust and TypeScript.
+
+Contributions are welcome. Please read our [Contributing](https://lichess.org/help/contribute) guide if you're interested in helping with this or our other projects.
+
+## Download
+
+To download the latest version, go to the [Releases](https://github.com/lichess-org/broadcaster/releases) and download the installer for your operating system.
 
 ## Development Setup
 
@@ -21,24 +33,7 @@ pnpm install
 pnpm tauri dev
 ```
 
-#### Testing
-
-##### Simulate boards writing PGN to a folder:
-
-1. In the app, select a Round and start a folder watch.
-2. Run this to automatically write a bunch of PGN to the folder:
-
-```bash
-pnpm esrun sample-data/generate/index.ts games path/to/selected/folder
-```
-
-Test errors by writing bad PGN files:
-
-```bash
-pnpm esrun sample-data/generate/index.ts errors path/to/selected/folder
-```
-
-## Formatting / Linting / Tests
+### Formatting / Linting / Tests
 
 ```bash
 pnpm format
@@ -49,7 +44,24 @@ pnpm test
 pnpm test:watch
 ```
 
-## Icon Generation
+### PGN Testing
+
+#### Simulate boards writing PGN to a folder:
+
+1. In the app, select a Round and start a folder watch.
+2. Run this to automatically write a bunch of PGN to the folder:
+
+```bash
+pnpm esrun sample-data/generate/index.ts games path/to/folder
+```
+
+Test errors by writing bad PGN files:
+
+```bash
+pnpm esrun sample-data/generate/index.ts errors path/to/folder
+```
+
+### Icon Generation
 
 Given a source image file, generate the icon files for the app:
 
@@ -57,7 +69,7 @@ Given a source image file, generate the icon files for the app:
 pnpm tauri icon public/lichess-favicon-1024.png
 ```
 
-## Test Build
+### Test Release Build
 
 ```bash
 pnpm tauri build
