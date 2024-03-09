@@ -39,9 +39,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
-        # with:
-        #   tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-        #   releaseName: 'Broadcaster v__VERSION__'
-        #   releaseBody: 'See the assets to download this version and install.'
-        #   releaseDraft: false
-        #   prerelease: true
+        with:
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
+          releaseName: 'Broadcaster v__VERSION__'
+          releaseBody: 'See the assets to download this version and install.'
+          releaseDraft: false
+          prerelease: true
