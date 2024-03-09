@@ -1,0 +1,27 @@
+name: Github Pages Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - updater
+    paths:
+      - '.github/workflows/gh-pages.yml'
+      - 'updater/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v4
+        with:
+          enablement: 'true'
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'updater'
+      - uses: actions/deploy-pages@v4
