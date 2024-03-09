@@ -12,7 +12,7 @@
       "url": "https://github.com/lichess-org/broadcaster/releases/download/v1.0.0/app-aarch64.app.tar.gz"
     },
     "linux-x86_64": {
-      "signature": "Content of app.AppImage.tar.gz.sig",
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVScVpEZmQ4SXcrcjRSaFRPNXJ1U1BlNnhWREM5OVRleWpMdy95VTV3czFWZ01HR2RUQ0tPTTZrb3IzQjM1K1Zmem55WmFLMG51SjdKYXhDZ0xOTmMwZXhSTjVnSHE4cHdzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzA5OTk4MjQ2CWZpbGU6bGljaGVzcy1icm9hZGNhc3Rlcl8wLjYuMV9hbWQ2NC5BcHBJbWFnZS50YXIuZ3oKK1R3bHlOb2x4ZWN3RWVKMzBtU2NvSnNia3FJR1ZIL1Y5eERZcUlrWkpoZ3BCV292R1JuOUdlNGRYNGZiUysxVlVCTVdua2lidVdESjdrUnBWVGNzRGc9PQo=",
       "url": "https://github.com/lichess-org/broadcaster/releases/download/v1.0.0/app-amd64.AppImage.tar.gz"
     },
     "windows-x86_64": {
