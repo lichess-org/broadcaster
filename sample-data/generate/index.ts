@@ -55,11 +55,9 @@ const result = (game: Chess) => {
     return '0-1';
   } else if (game.isCheckmate() && game.turn() === 'b') {
     return '1-0';
-  } else if (game.isDraw()) {
+  } else {
     return '1/2-1/2';
   }
-
-  throw new Error('Game is not over');
 };
 
 if (action === 'games') {
