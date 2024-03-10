@@ -1,0 +1,21 @@
+skip_non_tags: true
+
+install:
+  # install node + pnpm
+  - ps: Install-Product node 20
+  - npm set fetch-retry-maxtimeout 180000
+  - curl -L https://unpkg.com/@pnpm/self-installer | node
+  - pnpm install
+
+  # install rust
+  - appveyor DownloadFile https://win.rustup.rs/ -FileName rustup-init.exe
+  - rustup-init -yv
+  - set PATH=%PATH%;%USERPROFILE%\.cargo\bin
+  - rustc -vV
+  - cargo -vV
+
+build_script:
+  - pnpm tauri build
+
+artifacts:
+  - path: src-tauri\target\release\bundle
