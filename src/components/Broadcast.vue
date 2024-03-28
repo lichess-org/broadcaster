@@ -26,9 +26,10 @@ function openRound(id: string) {
 </script>
 
 <template>
-  <li
+  <a
     class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
-    @click="openRound(broadcast.round.id)"
+    @click.prevent="openRound(broadcast.round.id)"
+    href=""
   >
     <div class="min-w-0 flex-auto">
       <div class="flex items-center gap-x-3">
@@ -41,12 +42,12 @@ function openRound(id: string) {
           <div class="h-2 w-2 rounded-full bg-current"></div>
         </div>
         <h2 class="min-w-0 text-sm font-semibold leading-6 text-white">
-          <a href="#" class="flex gap-x-2">
+          <span class="flex gap-x-2">
             <span class="truncate">{{ broadcast.tour.name }}</span>
             <span class="text-gray-400">/</span>
             <span class="whitespace-nowrap">{{ broadcast.round.name }}</span>
             <span class="absolute inset-0"></span>
-          </a>
+          </span>
         </h2>
       </div>
       <RoundTimes :round="broadcast.round" />
@@ -58,5 +59,5 @@ function openRound(id: string) {
         clip-rule="evenodd"
       />
     </svg>
-  </li>
+  </a>
 </template>

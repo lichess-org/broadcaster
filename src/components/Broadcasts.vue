@@ -21,21 +21,14 @@ const hasBroadcasts = computed<boolean>(() => {
 async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
   let response = await lichessFetch(`/api/broadcast/my-rounds`, {}, 60_000);
 
-  return new Promise(async resolve => {
-    let reader = response.body!.getReader();
-    let gen = ndjson(reader);
+  let reader = response.body!.getReader();
+  let gen = ndjson(reader);
 
-    while (true) {
-      let { done, value } = await gen.next();
-
-      if (done) {
-        resolve(true);
-        return;
-      }
-
-      callback(value);
-    }
-  });
+  while (true) {
+    let { done, value } = await gen.next();
+    if (done) return;
+    callback(value);
+  }
 }
 
 function refresh() {
@@ -86,9 +79,9 @@ if (!hasBroadcasts.value) {
   </div>
 
   <div v-if="hasBroadcasts" class="overflow-y-auto">
-    <ul role="list" class="divide-y divide-white/5">
+    <div role="list" class="divide-y divide-white/5">
       <Broadcast v-for="broadcast in broadcasts.broadcasts" :broadcast="broadcast" />
-    </ul>
+    </div>
   </div>
 
   <div v-if="!hasBroadcasts && !isLoading" class="text-center mt-12">
