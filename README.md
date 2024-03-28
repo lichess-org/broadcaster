@@ -82,13 +82,11 @@ Release artifacts are in `src-tauri/target/release/bundle/`
 1. Tag the new version:
 
    ```bash
-   git checkout main
-   npm version 0.x.x
-   git push origin main --tags
+   ./scripts/release
    ```
 
 1. Github workflow will build the app for each OS, create a release, and attach the artifacts.
 
-### Update the "Check for Updates" endpoint
+1. Update the "Check for Updates" endpoint
 
-The app will make a request to <https://lichess-org.github.io/broadcaster/version.json> (served by Github Pages) to see if a newer version is available. Update that file manually when ready to recommend the update.
+   When ready to recommend the update, change [`version.json`](https://github.com/lichess-org/broadcaster/blob/main/updater/version.json)

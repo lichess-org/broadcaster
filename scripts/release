@@ -5,7 +5,7 @@ git fetch
 LATEST_TAG=$(git describe --tags --abbrev=0)
 
 echo "Last tag: $LATEST_TAG"
-echo "Enter new tag: "
+echo "Enter new tag (without 'v'): "
 read NEW_TAG
 
 # validate that $NEW_TAG is a valid semver in the format x.y.z
