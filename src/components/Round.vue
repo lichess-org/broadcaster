@@ -29,7 +29,6 @@ function getRound() {
     .then(response => response.json() as Promise<RoundResponse>)
     .then(data => {
       round.value = data;
-      console.log(round.value);
     });
 }
 
@@ -66,7 +65,7 @@ getRound();
         </button>
         <button
           type="button"
-          @click="openPath(round.round.url)"
+          @click="round?.round.url && openPath(round.round.url)"
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
         >
           View on Lichess
