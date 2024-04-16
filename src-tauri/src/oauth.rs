@@ -40,14 +40,11 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
         if let Some(request) = server.incoming_requests().next() {
             let path = request.url().to_string();
             let parts = serde_urlencoded::from_str::<Vec<(String, String)>>(&path[2..]).unwrap();
-            let code = match parts.iter().find(|(key, _)| key == "code") {
-                Some((_, value)) => value.to_string(),
-                None => {
-                    let _ = request.respond(tiny_http::Response::from_string(
-                        "Failed to get code from the request.",
-                    ));
-                    return Err("Failed to get code from the request.".to_string());
-                }
+            let code = if let Some((_, value)) = parts.iter().find(|(key, _)| key == "code") { value.to_string() } else {
+                let _ = request.respond(tiny_http::Response::from_string(
+                    "Failed to get code from the request.",
+                ));
+                return Err("Failed to get code from the request.".to_string());
             };
 
             let access_token = client
