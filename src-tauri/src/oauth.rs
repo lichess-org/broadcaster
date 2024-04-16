@@ -40,12 +40,15 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
         if let Some(request) = server.incoming_requests().next() {
             let path = request.url().to_string();
             let parts = serde_urlencoded::from_str::<Vec<(String, String)>>(&path[2..]).unwrap();
-            let code = parts
-                .iter()
-                .find(|(key, _)| key == "code")
-                .unwrap()
-                .1
-                .to_string();
+            let code = match parts.iter().find(|(key, _)| key == "code") {
+                Some((_, value)) => value.to_string(),
+                None => {
+                    let _ = request.respond(tiny_http::Response::from_string(
+                        "Failed to get code from the request.",
+                    ));
+                    return Err("Failed to get code from the request.".to_string());
+                }
+            };
 
             let access_token = client
                 .exchange_code(AuthorizationCode::new(code.to_string()))
@@ -61,5 +64,6 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
                 "Thanks! You may now close this window and return to the app.",
             ));
         }
+        Ok(())
     });
 }
