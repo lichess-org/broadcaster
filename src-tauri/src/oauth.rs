@@ -40,10 +40,12 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
         if let Some(request) = server.incoming_requests().next() {
             let path = request.url().to_string();
             let parts = serde_urlencoded::from_str::<Vec<(String, String)>>(&path[2..]).unwrap();
-            let code = if let Some((_, value)) = parts.iter().find(|(key, _)| key == "code") { value.to_string() } else {
-                let _ = request.respond(tiny_http::Response::from_string(
-                    "Failed to get code from the request.",
-                ));
+            let code = if let Some((_, value)) = parts.iter().find(|(key, _)| key == "code") {
+                value.to_string()
+            } else {
+                let html = generate_html_page("Failed to get code from the request.");
+                let header = tiny_http::Header::from_bytes("Content-Type", "text/html").unwrap();
+                let _ = request.respond(tiny_http::Response::from_string(html).with_header(header));
                 return Err("Failed to get code from the request.".to_string());
             };
 
@@ -57,10 +59,41 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
                 .emit_all("event::update_access_token", access_token)
                 .expect("failed to emit event");
 
-            let _ = request.respond(tiny_http::Response::from_string(
-                "Thanks! You may now close this window and return to the app.",
-            ));
+            let html =
+                generate_html_page("Thanks! You may now close this window and return to the app.");
+            let header = tiny_http::Header::from_bytes("Content-Type", "text/html").unwrap();
+            let _ = request.respond(tiny_http::Response::from_string(html).with_header(header));
         }
         Ok(())
     });
+}
+
+fn generate_html_page(message: &str) -> String {
+    format!(
+        r#"<!doctype html>
+        <html lang="en">
+        
+        <head>
+            <title>Lichess Broadcaster</title>
+        </head>
+        
+        <body style="background-color: rgb(31 41 55);">
+            <div style="padding: 1rem; display: flex; flex-direction: column;">
+                <header style="margin-bottom: 3rem;">
+                    <img src="https://raw.githubusercontent.com/lichess-org/lila/0b1089fae758088def573be94e5e88b65b706dc2/public/logo/lichess-discord.png" style="width: 3rem; display: inline-block;" alt="Lichess logo">
+                </header>
+                <h3 style="text-align: center; margin-top: 5rem; font-size: 1.25rem; font-weight: 600; color: rgb(229 231 235);">{message}</h3>
+            </div>
+        </body>
+        <style>
+            * {{
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+                font-family: ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+            }}
+        </style>
+        
+        </html>"#
+    )
 }
