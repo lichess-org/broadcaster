@@ -13,6 +13,7 @@ edition = "2021"
 tauri-build = { version = "1.5", features = [] }
 
 [dependencies]
+askama = "0.12.1"
 oauth2 = "4.4.2"
 open = "5.0.1"
 reqwest = { version = "0.11.23", features = ["blocking", "json"] }

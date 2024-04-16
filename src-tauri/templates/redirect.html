@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <title>Lichess Broadcaster</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        background-color: rgb(31 41 55);
+        padding: 1rem;
+        text-align: center;
+        margin-top: 5rem;
+        font-size: 2rem;
+        font-weight: 600;
+        color: rgb(229 231 235);
+      }
+      .error {
+        background-color: #fca5a5;
+        color: #991b1b;
+        margin: 1rem;
+        padding: 1rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    {% match self.error %}
+      {% when Some with (error) %}
+        <div class="error">{{ error }}</div>
+      {% else %}
+    {% endmatch %}
+
+    {% match self.message %}
+      {% when Some with (message) %}
+        <div class="message">{{ message }}</div>
+      {% else %}
+    {% endmatch %}
+  </body>
+</html>
