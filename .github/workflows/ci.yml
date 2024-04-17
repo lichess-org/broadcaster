@@ -4,22 +4,28 @@ on: [push, pull_request]
 
 jobs:
   check-typescript:
+    strategy:
+      matrix:
+        pnpm: [8, 9]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: ${{ matrix.pnpm }}
           run_install: true
       - run: pnpm tsc
 
   check-formatting:
+    strategy:
+      matrix:
+        pnpm: [8, 9]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: ${{ matrix.pnpm }}
           run_install: true
       - run: pnpx prettier --check .
 
@@ -28,12 +34,13 @@ jobs:
       matrix:
         node: [20, latest]
         os: [ubuntu-latest]
+        pnpm: [8, 9]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 1
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: ${{ matrix.pnpm }}
           run_install: true
       - run: pnpm test
