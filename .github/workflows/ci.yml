@@ -9,8 +9,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
-      - run: pnpm install
+          version: 8
+          run_install: true
       - run: pnpm tsc
 
   check-formatting:
@@ -19,8 +19,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
-      - run: pnpm install
+          version: 8
+          run_install: true
       - run: pnpx prettier --check .
 
   tests:
@@ -34,6 +34,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: latest
-      - run: pnpm install
+          version: 8
+          run_install: true
       - run: pnpm test

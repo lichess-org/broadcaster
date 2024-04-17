@@ -1,9 +1,17 @@
+use askama::Template;
 use oauth2::{
     basic::BasicClient, reqwest::http_client, AuthUrl, AuthorizationCode, ClientId, CsrfToken,
     PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
 };
 use tauri::{AppHandle, Manager};
 use tiny_http::Server;
+
+#[derive(Template, Clone, Debug)]
+#[template(path = "redirect.html")]
+struct RedirectTemplate {
+    error: Option<String>,
+    message: Option<String>,
+}
 
 #[allow(clippy::needless_pass_by_value)]
 #[tauri::command]
@@ -40,12 +48,19 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
         if let Some(request) = server.incoming_requests().next() {
             let path = request.url().to_string();
             let parts = serde_urlencoded::from_str::<Vec<(String, String)>>(&path[2..]).unwrap();
-            let code = parts
-                .iter()
-                .find(|(key, _)| key == "code")
-                .unwrap()
-                .1
-                .to_string();
+            let code = if let Some((_, value)) = parts.iter().find(|(key, _)| key == "code") {
+                value.to_string()
+            } else {
+                let html = RedirectTemplate {
+                    error: Some("Login cancelled".to_string()),
+                    message: Some("Failed to get code from the request".to_string()),
+                }
+                .render()
+                .unwrap();
+                let header = tiny_http::Header::from_bytes("Content-Type", "text/html").unwrap();
+                let _ = request.respond(tiny_http::Response::from_string(html).with_header(header));
+                return Err("Failed to get code from the request".to_string());
+            };
 
             let access_token = client
                 .exchange_code(AuthorizationCode::new(code.to_string()))
@@ -57,9 +72,17 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
                 .emit_all("event::update_access_token", access_token)
                 .expect("failed to emit event");
 
-            let _ = request.respond(tiny_http::Response::from_string(
-                "Thanks! You may now close this window and return to the app.",
-            ));
+            let html = RedirectTemplate {
+                error: None,
+                message: Some(
+                    "Thanks! You may now close this window and return to the app.".to_string(),
+                ),
+            }
+            .render()
+            .unwrap();
+            let header = tiny_http::Header::from_bytes("Content-Type", "text/html").unwrap();
+            let _ = request.respond(tiny_http::Response::from_string(html).with_header(header));
         }
+        Ok(())
     });
 }
