@@ -10,7 +10,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - run: pnpm install
+          run_install: true
       - run: pnpm tsc
 
   check-formatting:
@@ -20,7 +20,7 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - run: pnpm install
+          run_install: true
       - run: pnpx prettier --check .
 
   tests:
@@ -35,5 +35,5 @@ jobs:
       - uses: pnpm/action-setup@v2
         with:
           version: 8
-      - run: pnpm install
+          run_install: true
       - run: pnpm test
