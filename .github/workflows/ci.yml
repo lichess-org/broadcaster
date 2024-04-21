@@ -9,7 +9,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: true
       - run: pnpm tsc
 
@@ -19,7 +19,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: true
       - run: pnpx prettier --check .
 
@@ -34,6 +34,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v2
         with:
-          version: 8
+          version: 9
           run_install: true
       - run: pnpm test
