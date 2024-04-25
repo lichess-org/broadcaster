@@ -75,7 +75,7 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
             let html = RedirectTemplate {
                 error: None,
                 message: Some(
-                    "Thanks! You may now close this window and return to the app.".to_string(),
+                    "Success! You may now close this window and return to the app.".to_string(),
                 ),
             }
             .render()
