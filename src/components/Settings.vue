@@ -52,7 +52,7 @@ function logout() {
                   <input
                     type="text"
                     id="lichessUrl"
-                    autocomplete="false"
+                    autocomplete="off"
                     class="flex-1 border-0 bg-transparent py-1.5 px-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
                     v-model="form.lichessUrl"
                   />
