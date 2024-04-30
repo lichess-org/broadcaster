@@ -132,5 +132,4 @@ jobs:
             --notes "See the assets to download this version and install." \
             --verify-tag \
             --prerelease \
-            --latest \
             release-files/*
