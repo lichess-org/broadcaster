@@ -20,6 +20,10 @@ To download the latest version, go to the [Releases](https://github.com/lichess-
 
 This program uses free code signing provided by [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=lichess) and a certificate by the [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=lichess)
 
+## Privacy Policy
+
+This program will not transfer any information to other networked systems unless specifically requested by the user or the person installing or operating it. See the Lichess [Privacy Policy](https://lichess.org/privacy).
+
 ## Development Setup
 
 ### Prerequisites
