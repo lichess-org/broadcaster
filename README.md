@@ -16,6 +16,10 @@ Contributions are welcome. Please read our [Contributing](https://lichess.org/he
 
 To download the latest version, go to the [Releases](https://github.com/lichess-org/broadcaster/releases) and download the installer for your operating system.
 
+## Code signing policy
+
+This program uses free code signing provided by [SignPath.io](https://signpath.io?utm_source=foundation&utm_medium=github&utm_campaign=lichess) and a certificate by the [SignPath Foundation](https://signpath.org?utm_source=foundation&utm_medium=github&utm_campaign=lichess)
+
 ## Development Setup
 
 ### Prerequisites

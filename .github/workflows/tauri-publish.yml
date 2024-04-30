@@ -1,6 +1,4 @@
-# modified from: https://github.com/tauri-apps/tauri-action
-
-name: 'Publish'
+name: 'Build'
 
 on:
   push:
@@ -9,23 +7,29 @@ on:
   workflow_dispatch:
 
 jobs:
-  publish-tauri:
-    permissions:
-      contents: write
+  build:
     strategy:
       fail-fast: false
       matrix:
         include:
-          - platform: 'macos-latest' # for Arm based macs (M1 and above).
-            args: '--target aarch64-apple-darwin'
-          - platform: 'macos-latest' # for Intel based macs.
-            args: '--target x86_64-apple-darwin'
-          - platform: 'ubuntu-22.04' # for Tauri v1 you could replace this with ubuntu-20.04.
-            args: ''
-          - platform: 'windows-latest'
-            args: ''
+          - platform: ubuntu-22.04
+            target: x86_64-unknown-linux-gnu
+            bundles: appimage,deb
+          - platform: macos-latest
+            target: x86_64-apple-darwin
+            bundles: app,dmg
+          - platform: macos-latest
+            target: aarch64-apple-darwin
+            bundles: app,dmg
+          - platform: windows-latest
+            target: x86_64-pc-windows-msvc
+            bundles: msi
 
     runs-on: ${{ matrix.platform }}
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      RELEASE_VERSION: ${{ steps.tauri-build.outputs.RELEASE_VERSION }}
     steps:
       - uses: actions/checkout@v4
 
@@ -37,23 +41,96 @@ jobs:
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
         with:
-          # Those targets are only used on macos runners so it's in an `if` to slightly speed up windows and linux builds.
           targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - name: install dependencies (ubuntu only)
-        if: matrix.platform == 'ubuntu-22.04' # This must match the platform value defined above.
+        if: matrix.platform == 'ubuntu-22.04'
         run: |
           sudo apt-get update
           sudo apt-get install -y libwebkit2gtk-4.0-dev libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
-      - uses: tauri-apps/tauri-action@v0
+      - name: tauri build
+        id: tauri-build
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           TAURI_PRIVATE_KEY: ${{ secrets.TAURI_PRIVATE_KEY }}
+        shell: bash
+        run: |
+          pnpm tauri build --ci --target ${{ matrix.target }} --bundles ${{ matrix.bundles }},updater
+          echo "RELEASE_VERSION=v$(pnpm pkg get version | tr -d \")" >> $GITHUB_OUTPUT
+
+      - name: upload artifact (windows unsigned msi)
+        uses: actions/upload-artifact@v4
+        if: matrix.platform == 'windows-latest'
         with:
-          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version
-          releaseName: 'Broadcaster v__VERSION__'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: false
-          prerelease: true
-          args: ${{ matrix.args }}
+          name: windows-unsigned-msi
+          path: ./src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
+
+      - name: code signing (windows)
+        id: code-signing
+        if: matrix.platform == 'windows-latest'
+        uses: signpath/github-action-submit-signing-request@v0.3
+        with:
+          api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
+          organization-id: '5f88bd6d-9f02-4053-af25-77474c4957e8'
+          project-slug: 'broadcaster'
+          signing-policy-slug: 'test-signing'
+          github-artifact-name: 'windows-unsigned-msi'
+          wait-for-completion: true
+          output-artifact-directory: 'org/content'
+
+      - name: generate updater signature (windows)
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        run: pnpm tauri signer sign --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" --password "${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}" org/content/*.msi
+
+      - name: add target to macos filenames
+        if: matrix.platform == 'macos-latest'
+        run: |
+          mv src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz     src-tauri/target/${{ matrix.target }}/release/bundle/macos/Lichess-Broadcaster-${{ matrix.target }}.app.tar.gz
+          mv src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz.sig src-tauri/target/${{ matrix.target }}/release/bundle/macos/Lichess-Broadcaster-${{ matrix.target }}.app.tar.gz.sig
+
+      - name: upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-${{ matrix.platform }}-${{ matrix.target}}
+          path: |
+            ./org/content/*
+            ./src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage*
+            ./src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
+            ./src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
+            ./src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz*
+
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: windows-unsigned-msi
+
+      - name: download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: prepare the release files
+        run: |
+          mkdir release-files
+          find artifacts -type f -exec mv {} release-files \;
+
+      - name: publish release (if not exists)
+        run: |
+          gh release view ${{ needs.build.outputs.RELEASE_VERSION }} || \
+          gh release create ${{ needs.build.outputs.RELEASE_VERSION }} \
+            --title "Broadcaster ${{ needs.build.outputs.RELEASE_VERSION }}" \
+            --notes "See the assets to download this version and install." \
+            --verify-tag \
+            --prerelease \
+            --latest \
+            release-files/*
