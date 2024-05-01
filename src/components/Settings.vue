@@ -107,7 +107,7 @@ function logout() {
         </p>
         <p class="mb-2 text-sm leading-6 text-gray-400">
           See the source and contribute to this
-          <a href="#" class="underline" @click.prevent="openPath('https://github.com/fitztrev/broadcaster')"
+          <a href="#" class="underline" @click.prevent="openPath('https://github.com/lichess-org/broadcaster')"
             >app on GitHub</a
           >
         </p>
