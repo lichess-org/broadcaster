@@ -128,7 +128,7 @@ jobs:
         run: |
           gh release view ${{ needs.build.outputs.RELEASE_VERSION }} || \
           gh release create ${{ needs.build.outputs.RELEASE_VERSION }} \
-            --title "Broadcaster ${{ needs.build.outputs.RELEASE_VERSION }}" \
+            --title "${{ needs.build.outputs.RELEASE_VERSION }}" \
             --notes "See the assets to download this version and install." \
             --verify-tag \
             --latest \
