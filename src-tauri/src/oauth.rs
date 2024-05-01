@@ -75,7 +75,7 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
             let html = RedirectTemplate {
                 error: None,
                 message: Some(
-                    "Success! You may now close this window and return to the app.".to_string(),
+                    "Lichess Broadcaster is ready to be used! You can close this window and return to the application.".to_string(),
                 ),
             }
             .render()

@@ -13,15 +13,24 @@
         padding: 1rem;
         text-align: center;
         margin-top: 5rem;
+      }
+      a,
+      div {
+        color: rgb(229 231 235);
+      }
+      .alert {
         font-size: 2rem;
         font-weight: 600;
-        color: rgb(229 231 235);
+        margin: 1rem;
+        padding: 1rem;
       }
       .error {
         background-color: #fca5a5;
         color: #991b1b;
-        margin: 1rem;
-        padding: 1rem;
+      }
+      .info {
+        margin-top: 2rem;
+        font-size: 1.5rem;
       }
     </style>
   </head>
@@ -29,14 +38,19 @@
   <body>
     {% match self.error %}
       {% when Some with (error) %}
-        <div class="error">{{ error }}</div>
+        <div class="alert error">{{ error }}</div>
       {% else %}
     {% endmatch %}
 
     {% match self.message %}
       {% when Some with (message) %}
-        <div class="message">{{ message }}</div>
+        <div class="alert success">{{ message }}</div>
       {% else %}
     {% endmatch %}
+
+    <div class="info">
+      For help getting started, read <a href="https://lichess.org/broadcast/help">https://lichess.org/broadcast/help</a>
+      or join the <a href="https://discord.gg/lichess">Lichess Discord</a> and post in <strong>#support</strong>.
+    </div>
   </body>
 </html>
