@@ -90,7 +90,7 @@ jobs:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '5f88bd6d-9f02-4053-af25-77474c4957e8'
           project-slug: 'broadcaster'
-          signing-policy-slug: 'test-signing'
+          signing-policy-slug: 'release-signing'
           github-artifact-name: 'windows-unsigned-msi'
           wait-for-completion: true
           output-artifact-directory: 'artifacts'
