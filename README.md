@@ -74,7 +74,9 @@ pnpm esrun sample-data/generate/index.ts errors path/to/folder
 Given a source image file, generate the icon files for the app:
 
 ```bash
-pnpm tauri icon public/lichess-favicon-1024.png
+convert src/assets/app-icon.png -size 702x702 xc:none -fill white -draw "roundrectangle 0,0,702,702,351,351" src/assets/mask.png
+convert src/assets/app-icon.png \( src/assets/mask-1.png -alpha off \) -compose copy_opacity -composite src/assets/rounded.png
+pnpm tauri icon src/assets/rounded.png
 ```
 
 ### Test Release Build

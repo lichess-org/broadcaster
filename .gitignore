@@ -23,4 +23,8 @@ dist-ssr
 *.sln
 *.sw?
 
+src/assets/mask-0.png
+src/assets/mask-1.png
+src/assets/rounded.png
+
 todo.md
