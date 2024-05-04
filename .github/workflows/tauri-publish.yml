@@ -124,6 +124,11 @@ jobs:
         with:
           path: artifacts
 
+      - name: prepare the release files
+        run: |
+          mkdir release-files
+          find artifacts -type f -exec mv {} release-files \;
+
       - name: publish release (if not exists)
         run: |
           gh release view ${{ needs.build.outputs.RELEASE_VERSION }} || \
@@ -132,4 +137,4 @@ jobs:
             --notes "See the assets to download this version and install." \
             --verify-tag \
             --latest \
-            artifacts/*
+            release-files/*
