@@ -106,36 +106,31 @@ jobs:
           name: release-${{ matrix.platform }}-${{ matrix.target}}
           path: artifacts
 
-  # publish:
-  #   needs: build
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #   permissions:
-  #     contents: write
-  #   steps:
-  #     - uses: actions/checkout@v4
+  publish:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
 
-  #     - uses: geekyeggo/delete-artifact@v5
-  #       with:
-  #         name: windows-unsigned-msi
+      - uses: geekyeggo/delete-artifact@v5
+        with:
+          name: windows-unsigned-msi
 
-  #     - name: download artifacts
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         path: artifacts
+      - name: download artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
 
-  #     - name: prepare the release files
-  #       run: |
-  #         mkdir release-files
-  #         find artifacts -type f -exec mv {} release-files \;
-
-  #     - name: publish release (if not exists)
-  #       run: |
-  #         gh release view ${{ needs.build.outputs.RELEASE_VERSION }} || \
-  #         gh release create ${{ needs.build.outputs.RELEASE_VERSION }} \
-  #           --title "${{ needs.build.outputs.RELEASE_VERSION }}" \
-  #           --notes "See the assets to download this version and install." \
-  #           --verify-tag \
-  #           --latest \
-  #           release-files/*
+      - name: publish release (if not exists)
+        run: |
+          gh release view ${{ needs.build.outputs.RELEASE_VERSION }} || \
+          gh release create ${{ needs.build.outputs.RELEASE_VERSION }} \
+            --title "${{ needs.build.outputs.RELEASE_VERSION }}" \
+            --notes "See the assets to download this version and install." \
+            --verify-tag \
+            --latest \
+            artifacts/*
