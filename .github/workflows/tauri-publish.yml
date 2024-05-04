@@ -59,7 +59,9 @@ jobs:
           echo "RELEASE_VERSION=v$(pnpm pkg get version | tr -d \")" >> $GITHUB_OUTPUT
 
       - name: set filenames
+        shell: bash
         run: |
+          ls -alR src-tauri/target
           mkdir artifacts
           cp src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.dmg                          artifacts/Lichess-Broadcaster-macos-intel.dmg                || true
           cp src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.app.tar.gz                   artifacts/Lichess-Broadcaster-macos-intel.app.tar.gz         || true
