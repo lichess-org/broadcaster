@@ -58,12 +58,28 @@ jobs:
           pnpm tauri build --ci --target ${{ matrix.target }} --bundles ${{ matrix.bundles }},updater
           echo "RELEASE_VERSION=v$(pnpm pkg get version | tr -d \")" >> $GITHUB_OUTPUT
 
+      - name: set filenames
+        shell: bash
+        run: |
+          mkdir artifacts
+          cp src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg                            artifacts/Lichess-Broadcaster-macos-intel.dmg                || true
+          cp src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.app.tar.gz                   artifacts/Lichess-Broadcaster-macos-intel.app.tar.gz         || true
+          cp src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.app.tar.gz.sig               artifacts/Lichess-Broadcaster-macos-intel.app.tar.gz.sig     || true
+          cp src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg                           artifacts/Lichess-Broadcaster-macos-silicon.dmg              || true
+          cp src-tauri/target/aarch64-apple-darwin/release/bundle/macos/*.app.tar.gz                  artifacts/Lichess-Broadcaster-macos-silicon.app.tar.gz       || true
+          cp src-tauri/target/aarch64-apple-darwin/release/bundle/macos/*.app.tar.gz.sig              artifacts/Lichess-Broadcaster-macos-silicon.app.tar.gz.sig   || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage             artifacts/Lichess-Broadcaster-linux.AppImage                 || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage.tar.gz      artifacts/Lichess-Broadcaster-linux.AppImage.tar.gz          || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage.tar.gz.sig  artifacts/Lichess-Broadcaster-linux.AppImage.tar.gz.sig      || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/*.deb                       artifacts/Lichess-Broadcaster-linux.deb                      || true
+          cp src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi                         artifacts/Lichess-Broadcaster-windows.msi                    || true
+
       - name: upload artifact (windows unsigned msi)
         uses: actions/upload-artifact@v4
         if: matrix.platform == 'windows-latest'
         with:
           name: windows-unsigned-msi
-          path: ./src-tauri/target/${{ matrix.target }}/release/bundle/msi/*.msi
+          path: artifacts/Lichess-Broadcaster-windows.msi
 
       - name: code signing (windows)
         id: code-signing
@@ -76,29 +92,18 @@ jobs:
           signing-policy-slug: 'release-signing'
           github-artifact-name: 'windows-unsigned-msi'
           wait-for-completion: true
-          output-artifact-directory: 'org/content'
+          output-artifact-directory: 'artifacts'
 
       - name: generate updater signature (windows)
         if: matrix.platform == 'windows-latest'
         shell: bash
-        run: pnpm tauri signer sign --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" --password "${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}" org/content/*.msi
-
-      - name: add target to macos filenames
-        if: matrix.platform == 'macos-latest'
-        run: |
-          mv src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz     src-tauri/target/${{ matrix.target }}/release/bundle/macos/Lichess-Broadcaster-${{ matrix.target }}.app.tar.gz
-          mv src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz.sig src-tauri/target/${{ matrix.target }}/release/bundle/macos/Lichess-Broadcaster-${{ matrix.target }}.app.tar.gz.sig
+        run: pnpm tauri signer sign --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" --password "${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}" artifacts/Lichess-Broadcaster-windows.msi
 
       - name: upload release artifacts
         uses: actions/upload-artifact@v4
         with:
           name: release-${{ matrix.platform }}-${{ matrix.target}}
-          path: |
-            ./org/content/*
-            ./src-tauri/target/${{ matrix.target }}/release/bundle/appimage/*.AppImage*
-            ./src-tauri/target/${{ matrix.target }}/release/bundle/deb/*.deb
-            ./src-tauri/target/${{ matrix.target }}/release/bundle/dmg/*.dmg
-            ./src-tauri/target/${{ matrix.target }}/release/bundle/macos/*.app.tar.gz*
+          path: artifacts
 
   publish:
     needs: build
@@ -119,11 +124,6 @@ jobs:
         with:
           path: artifacts
 
-      - name: prepare the release files
-        run: |
-          mkdir release-files
-          find artifacts -type f -exec mv {} release-files \;
-
       - name: publish release (if not exists)
         run: |
           gh release view ${{ needs.build.outputs.RELEASE_VERSION }} || \
@@ -132,4 +132,4 @@ jobs:
             --notes "See the assets to download this version and install." \
             --verify-tag \
             --latest \
-            release-files/*
+            artifacts/*
