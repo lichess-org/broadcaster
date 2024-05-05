@@ -39,4 +39,5 @@ jobs:
         with:
           version: 9
           run_install: true
+      - run: node --version
       - run: pnpm test
