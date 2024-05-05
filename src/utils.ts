@@ -56,22 +56,25 @@ export function timestampToLocalDatetime(timestamp?: number, locales?: Intl.Loca
 
   const date = new Date(timestamp);
 
-  return date.toLocaleDateString(locales, {
-    weekday: 'long',
-    year: '2-digit',
-    month: 'numeric',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
-  });
+ return date
+    .toLocaleDateString(locales, {
+      weekday: 'long',
+      year: '2-digit',
+      month: 'numeric',
+      day: 'numeric',
+      hour: 'numeric',
+      minute: 'numeric',
+    })
+    .replace(/\u202f/g, ' ');
 }
+
 
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
   it('shows localized datetime', () => {
     expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'en-US')).toBe(
-      'Saturday, 2/10/24, 2:30\u202fPM',
+      'Saturday, 2/10/24, 2:30 PM',
     );
     expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'fr-FR')).toBe('samedi 10/02/24 14:30');
   });
