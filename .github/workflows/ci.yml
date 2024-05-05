@@ -27,7 +27,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [18, 18.13.0, 20, latest]
+        node: [20, latest]
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     timeout-minutes: 1
@@ -40,5 +40,4 @@ jobs:
         with:
           version: 9
           run_install: true
-      - run: node --version
       - run: pnpm test
