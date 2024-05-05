@@ -71,7 +71,7 @@ if (import.meta.vitest) {
 
   it('shows localized datetime', () => {
     expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'en-US')).toBe(
-      'Saturday, 2/10/24, 2:30 PM',
+      'Saturday, 2/10/24, 2:30\u202fPM',
     );
     expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'fr-FR')).toBe('samedi 10/02/24 14:30');
   });
