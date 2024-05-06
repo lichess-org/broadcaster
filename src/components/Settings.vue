@@ -87,7 +87,9 @@ function logout() {
             Reset All Settings
           </button>
         </form>
-        <p class="mt-2 text-sm leading-6 text-gray-400">Clear all local data and reset app settings to their defaults</p>
+        <p class="mt-2 text-sm leading-6 text-gray-400">
+          Clear all local data and reset app settings to their defaults
+        </p>
       </div>
     </div>
   </div>
