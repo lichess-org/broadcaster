@@ -60,36 +60,39 @@ fn main() {
             let app_handle = app.handle();
 
             std::thread::spawn(move || loop {
-                let mut queue = arced_upload_queue.lock().unwrap();
+                match arced_upload_queue.lock() {
+                    Ok(mut queue) => {
+                        let queue_size = queue.jobs.len();
+                        app_handle
+                            .emit_all("event::queue_size", queue_size)
+                            .expect("failed to emit event");
 
-                let queue_size = queue.jobs.len();
-                app_handle
-                    .emit_all("event::queue_size", queue_size)
-                    .expect("failed to emit event");
+                        let next_job = queue.jobs.pop_front();
+                        drop(queue);
 
-                let next_job = queue.jobs.pop_front();
-                drop(queue);
-
-                match next_job {
-                    Some(job) => match handle_upload_job(&job) {
-                        Ok(response) => {
-                            app_handle
-                                .emit_all(
-                                    "event::upload_success",
-                                    PgnPushResult {
-                                        response,
-                                        files: job.files,
-                                    },
-                                )
-                                .expect("failed to emit event");
+                        match next_job {
+                            Some(job) => match handle_upload_job(&job) {
+                                Ok(response) => {
+                                    app_handle
+                                        .emit_all(
+                                            "event::upload_success",
+                                            PgnPushResult {
+                                                response,
+                                                files: job.files,
+                                            },
+                                        )
+                                        .expect("failed to emit event");
+                                }
+                                Err(err) => {
+                                    app_handle
+                                        .emit_all("event::upload_error", err)
+                                        .expect("failed to emit event");
+                                }
+                            },
+                            None => std::thread::sleep(std::time::Duration::from_secs(1)),
                         }
-                        Err(err) => {
-                            app_handle
-                                .emit_all("event::upload_error", err)
-                                .expect("failed to emit event");
-                        }
-                    },
-                    None => std::thread::sleep(std::time::Duration::from_secs(1)),
+                    }
+                    Err(err) => eprintln!("Error locking upload queue: {err}"),
                 }
             });
 
@@ -175,12 +178,13 @@ fn add_to_queue(
     user_agent: &str,
     state: tauri::State<'_, Arc<Mutex<UploadQueue>>>,
 ) {
-    let mut queue = state.lock().unwrap();
-
-    queue.jobs.push_back(UploadJob {
-        files,
-        url: url.to_string(),
-        api_token: api_token.to_string(),
-        user_agent: user_agent.to_string(),
-    });
+    match state.lock() {
+        Ok(mut queue) => queue.jobs.push_back(UploadJob {
+            files,
+            url: url.to_string(),
+            api_token: api_token.to_string(),
+            user_agent: user_agent.to_string(),
+        }),
+        Err(err) => eprintln!("Error locking upload queue: {err}"),
+    }
 }
