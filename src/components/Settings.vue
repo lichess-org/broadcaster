@@ -34,6 +34,66 @@ function logout() {
 <template>
   <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
 
+  <div
+    class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
+    v-if="user.isLoggedIn()"
+  >
+    <div>
+      <h2 class="text-base font-semibold leading-7 text-white">Session</h2>
+    </div>
+
+    <div>
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        You are logged in as <strong>{{ user.username }}</strong>
+      </p>
+      <form class="flex items-start md:col-span-2" @submit.prevent="logout()">
+        <button
+          type="submit"
+          class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
+        >
+          Logout
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+    <div>
+      <h2 class="text-base font-semibold leading-7 text-white">About</h2>
+    </div>
+
+    <div class="md:col-span-2">
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        You are using version v<strong>{{ system.appVersion }}</strong>
+      </p>
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        See the source and contribute to this
+        <a href="#" class="underline" @click.prevent="openPath('https://github.com/lichess-org/broadcaster')"
+          >app on GitHub</a
+        >
+      </p>
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        If you're having trouble with your broadcast, please post to
+        <code class="font-bold">#support</code> on the
+        <a href="#" class="underline" @click.prevent="openPath('https://discord.gg/lichess')"> Lichess Discord</a>.
+      </p>
+
+      <div class="mt-8">
+        <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
+          <button
+            type="submit"
+            class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500"
+          >
+            Reset All Settings
+          </button>
+        </form>
+        <p class="mt-2 text-sm leading-6 text-gray-400">
+          Clear all local data and reset app settings to their defaults
+        </p>
+      </div>
+    </div>
+  </div>
+
   <div class="divide-y divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
@@ -70,66 +130,6 @@ function logout() {
             </button>
           </div>
         </form>
-      </div>
-    </div>
-
-    <div
-      class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
-      v-if="user.isLoggedIn()"
-    >
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Session</h2>
-      </div>
-
-      <div>
-        <p class="mb-2 text-sm leading-6 text-gray-400">
-          You are logged in as <strong>{{ user.username }}</strong>
-        </p>
-        <form class="flex items-start md:col-span-2" @submit.prevent="logout()">
-          <button
-            type="submit"
-            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
-          >
-            Logout
-          </button>
-        </form>
-      </div>
-    </div>
-
-    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
-      <div>
-        <h2 class="text-base font-semibold leading-7 text-white">About</h2>
-      </div>
-
-      <div class="md:col-span-2">
-        <p class="mb-2 text-sm leading-6 text-gray-400">
-          You are using version v<strong>{{ system.appVersion }}</strong>
-        </p>
-        <p class="mb-2 text-sm leading-6 text-gray-400">
-          See the source and contribute to this
-          <a href="#" class="underline" @click.prevent="openPath('https://github.com/lichess-org/broadcaster')"
-            >app on GitHub</a
-          >
-        </p>
-        <p class="mb-2 text-sm leading-6 text-gray-400">
-          If you're having trouble with your broadcast, please post to
-          <code class="font-bold">#support</code> on the
-          <a href="#" class="underline" @click.prevent="openPath('https://discord.gg/lichess')"> Lichess Discord</a>.
-        </p>
-
-        <div class="mt-8">
-          <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
-            <button
-              type="submit"
-              class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500"
-            >
-              Reset All Settings
-            </button>
-          </form>
-          <p class="mt-2 text-sm leading-6 text-gray-400">
-            Clear all local data + reset app settings to their defaults
-          </p>
-        </div>
       </div>
     </div>
   </div>
