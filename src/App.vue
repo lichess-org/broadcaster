@@ -50,13 +50,11 @@ requestNotificationPermission();
 
     <div class="grow">
       <nav class="flex space-x-4 justify-end">
-        <router-link to="/" class="nav-item" active-class="active"> Home </router-link>
-
-        <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()">
-          Broadcasts
-        </router-link>
-
-        <router-link to="/settings" class="nav-item" active-class="active"> Settings </router-link>
+        <router-link to="/" class="nav-item" active-class="active">Status</router-link>
+        <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()"
+          >Broadcasts</router-link
+        >
+        <router-link to="/settings" class="nav-item" active-class="active">Settings</router-link>
       </nav>
     </div>
   </header>
