@@ -6,8 +6,10 @@ import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
 import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
+import { useSettingsStore } from '../stores/settings';
 
 const logs = useLogStore();
+const settings = useSettingsStore();
 
 const round = ref<RoundResponse | null>(null);
 
@@ -69,6 +71,13 @@ getRound();
           class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
         >
           View on Lichess
+        </button>
+        <button
+          type="button"
+          @click="openPath(`${settings.lichessUrl}/broadcast/${round?.tour.id}/new`)"
+          class="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+        >
+          &plus; New Round
         </button>
       </div>
     </div>
