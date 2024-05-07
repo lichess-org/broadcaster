@@ -97,7 +97,7 @@ Release artifacts are in `src-tauri/target/release/bundle/`
 
 2. Github workflow will build the app for each OS, create a release, and attach the artifacts.
 
-   * Approve the signing request in the SignPath dashboard when the workflow gets to that step.
+   - Approve the signing request in the SignPath dashboard when the workflow gets to that step.
 
 3. Update the "Check for Updates" endpoint
 
