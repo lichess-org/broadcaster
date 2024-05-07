@@ -95,8 +95,10 @@ Release artifacts are in `src-tauri/target/release/bundle/`
    ./scripts/release
    ```
 
-1. Github workflow will build the app for each OS, create a release, and attach the artifacts.
+2. Github workflow will build the app for each OS, create a release, and attach the artifacts.
 
-1. Update the "Check for Updates" endpoint
+   * Approve the signing request in the SignPath dashboard when the workflow gets to that step.
 
-   When ready to recommend the update, change [`version.json`](https://github.com/lichess-org/broadcaster/blob/main/updater/version.json)
+3. Update the "Check for Updates" endpoint
+
+When ready to recommend the update, change [`version.json`](https://github.com/lichess-org/broadcaster/blob/main/updater/version.json)
