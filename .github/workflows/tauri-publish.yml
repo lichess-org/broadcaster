@@ -16,10 +16,7 @@ jobs:
             target: x86_64-unknown-linux-gnu
             bundles: appimage,deb
           - platform: macos-latest
-            target: x86_64-apple-darwin
-            bundles: app,dmg
-          - platform: macos-latest
-            target: aarch64-apple-darwin
+            target: universal-apple-darwin
             bundles: app,dmg
           - platform: windows-latest
             target: x86_64-pc-windows-msvc
@@ -62,17 +59,14 @@ jobs:
         shell: bash
         run: |
           mkdir artifacts
-          cp src-tauri/target/x86_64-apple-darwin/release/bundle/dmg/*.dmg                            artifacts/Lichess-Broadcaster-macos-intel.dmg                || true
-          cp src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.app.tar.gz                   artifacts/Lichess-Broadcaster-macos-intel.app.tar.gz         || true
-          cp src-tauri/target/x86_64-apple-darwin/release/bundle/macos/*.app.tar.gz.sig               artifacts/Lichess-Broadcaster-macos-intel.app.tar.gz.sig     || true
-          cp src-tauri/target/aarch64-apple-darwin/release/bundle/dmg/*.dmg                           artifacts/Lichess-Broadcaster-macos-silicon.dmg              || true
-          cp src-tauri/target/aarch64-apple-darwin/release/bundle/macos/*.app.tar.gz                  artifacts/Lichess-Broadcaster-macos-silicon.app.tar.gz       || true
-          cp src-tauri/target/aarch64-apple-darwin/release/bundle/macos/*.app.tar.gz.sig              artifacts/Lichess-Broadcaster-macos-silicon.app.tar.gz.sig   || true
-          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage             artifacts/Lichess-Broadcaster-linux.AppImage                 || true
-          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage.tar.gz      artifacts/Lichess-Broadcaster-linux.AppImage.tar.gz          || true
-          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage.tar.gz.sig  artifacts/Lichess-Broadcaster-linux.AppImage.tar.gz.sig      || true
-          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/*.deb                       artifacts/Lichess-Broadcaster-linux.deb                      || true
-          cp src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi                         artifacts/Lichess-Broadcaster-windows.msi                    || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage             artifacts/Lichess-Broadcaster-linux.AppImage             || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage.tar.gz      artifacts/Lichess-Broadcaster-linux.AppImage.tar.gz      || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/appimage/*.AppImage.tar.gz.sig  artifacts/Lichess-Broadcaster-linux.AppImage.tar.gz.sig  || true
+          cp src-tauri/target/x86_64-unknown-linux-gnu/release/bundle/deb/*.deb                       artifacts/Lichess-Broadcaster-linux.deb                  || true
+          cp src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg                         artifacts/Lichess-Broadcaster-macos.dmg                  || true
+          cp src-tauri/target/universal-apple-darwin/release/bundle/macos/*.app.tar.gz                artifacts/Lichess-Broadcaster-macos.app.tar.gz           || true
+          cp src-tauri/target/universal-apple-darwin/release/bundle/macos/*.app.tar.gz.sig            artifacts/Lichess-Broadcaster-macos.app.tar.gz.sig       || true
+          cp src-tauri/target/x86_64-pc-windows-msvc/release/bundle/msi/*.msi                         artifacts/Lichess-Broadcaster-windows.msi                || true
 
       - name: upload artifact (windows unsigned msi)
         uses: actions/upload-artifact@v4
@@ -89,7 +83,7 @@ jobs:
           api-token: '${{ secrets.SIGNPATH_API_TOKEN }}'
           organization-id: '5f88bd6d-9f02-4053-af25-77474c4957e8'
           project-slug: 'broadcaster'
-          signing-policy-slug: 'release-signing'
+          signing-policy-slug: ${{ startsWith(github.ref, 'refs/tags/v') && 'release-signing' || 'test-signing' }}
           github-artifact-name: 'windows-unsigned-msi'
           wait-for-completion: true
           output-artifact-directory: 'artifacts'
@@ -106,6 +100,7 @@ jobs:
           path: artifacts
 
   publish:
+    if: ${{ startsWith(github.ref, 'refs/tags/v') }}
     needs: build
     runs-on: ubuntu-latest
     env:
