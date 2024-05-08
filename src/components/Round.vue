@@ -154,12 +154,11 @@ getRound();
       <a
         v-for="game in round.games"
         href="#"
-        @click="openPath(game.url)"
+        @click="round?.round.url && openPath(round.round.url + '/' + game.id)"
         class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
-        :class="{ 'bg-cyan-900 hover:bg-cyan-800': game.ongoing }"
       >
         {{ game.name }}
-        <span class="float-right">{{ game.res }}</span>
+        <span class="float-right">{{ game.status }}</span>
       </a>
     </div>
   </template>

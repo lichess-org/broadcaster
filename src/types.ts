@@ -49,9 +49,19 @@ export interface RoundResponse {
 interface Game {
   id: string;
   name: string;
-  ongoing?: boolean;
-  res?: string;
-  url: string;
+  fen?: string;
+  players?: Player[];
+  lastMove?: string;
+  thinkTime?: number;
+  status?: string;
+}
+
+interface Player {
+  name: string;
+  title?: string;
+  rating?: number;
+  clock?: number;
+  fed?: string;
 }
 
 export type PgnTags = Record<string, string>;
