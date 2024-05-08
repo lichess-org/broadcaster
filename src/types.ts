@@ -53,7 +53,7 @@ interface Game {
   players?: Player[];
   lastMove?: string;
   thinkTime?: number;
-  status?: string;
+  status?: '1-0' | '0-1' | '½-½' | '*';
 }
 
 interface Player {

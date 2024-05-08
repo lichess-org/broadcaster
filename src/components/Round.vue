@@ -158,7 +158,9 @@ getRound();
         class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
       >
         {{ game.name }}
-        <span class="float-right">{{ game.status }}</span>
+        <span class="float-right font-bold" :class="{ 'text-red-600': game.status === '*' }">
+          <span v-if="game.status === '*'">LIVE</span> <span v-else>{{ game.status }}</span></span
+        >
       </a>
     </div>
   </template>
