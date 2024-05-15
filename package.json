@@ -19,7 +19,8 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
     "vue": "^3.4.27",
-    "vue-router": "^4.3.2"
+    "vue-router": "^4.3.2",
+    "vue3-chessboard": "^1.3.3"
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.26",

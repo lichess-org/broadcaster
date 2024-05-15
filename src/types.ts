@@ -46,7 +46,7 @@ export interface RoundResponse {
   games: Game[];
 }
 
-interface Game {
+export interface Game {
   id: string;
   name: string;
   fen?: string;

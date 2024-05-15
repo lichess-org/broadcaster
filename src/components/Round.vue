@@ -4,13 +4,14 @@ import { router } from '../router';
 import { RoundResponse } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
+import RoundBoard from './RoundBoard.vue';
 import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
-
+const showGames = ref(false);
 const round = ref<RoundResponse | null>(null);
 
 const watchedFolder = computed<string>(() => {
@@ -31,6 +32,7 @@ function getRound() {
     .then(response => response.json() as Promise<RoundResponse>)
     .then(data => {
       round.value = data;
+      console.log(round.value.games);
     });
 }
 
@@ -65,6 +67,7 @@ getRound();
         >
           Refresh
         </button>
+
         <button
           type="button"
           @click="round?.round.url && openPath(round.round.url)"
@@ -149,18 +152,17 @@ getRound();
     <h3 class="text-white text-xl my-4">
       Games
       <span class="text-gray-400">({{ round.games.length }})</span>
+      <label for="checkbox"> Show boards </label>
+      <input type="checkbox" v-model="showGames" />
     </h3>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <a
-        v-for="game in round.games"
+        v-for="(game, index) in round.games"
         href="#"
         @click="round?.round.url && openPath(round.round.url + '/' + game.id)"
         class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
       >
-        {{ game.name }}
-        <span class="float-right font-bold" :class="{ 'text-red-600': game.status === '*' }">
-          <span v-if="game.status === '*'">LIVE</span> <span v-else>{{ game.status }}</span></span
-        >
+        <RoundBoard v-model="round.games[index]" :showGames="showGames" :key="game.id"></RoundBoard>
       </a>
     </div>
   </template>
