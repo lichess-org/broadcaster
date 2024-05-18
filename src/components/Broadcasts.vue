@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import ndjson from 'fetch-ndjson';
 import Broadcast from './Broadcast.vue';
-import { LichessBroadcast } from '../types';
+import { LichessMyRound } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
 import { computed, ref } from 'vue';
@@ -18,7 +18,7 @@ const hasBroadcasts = computed<boolean>(() => {
   return broadcasts.broadcasts.length > 0;
 });
 
-async function getBroadcasts(callback: (value: LichessBroadcast) => void) {
+async function getBroadcasts(callback: (value: LichessMyRound) => void) {
   let response = await lichessFetch(`/api/broadcast/my-rounds`, {}, 60_000);
 
   let reader = response.body!.getReader();

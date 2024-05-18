@@ -4,7 +4,7 @@ import { useLogStore } from './stores/logs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
-import { PgnTags } from './types';
+import { BroadcastPgnPushTags } from './types';
 
 export async function lichessFetch(path: string, options?: object, timeoutMs = 5_000): Promise<Response> {
   const settings = useSettingsStore();
@@ -203,7 +203,7 @@ export async function add_to_queue(roundId: string, files: string[]) {
   });
 }
 
-export function pgnTag(tag: string, tags: PgnTags): string | undefined {
+export function pgnTag(tag: string, tags: BroadcastPgnPushTags): string | undefined {
   return tags[tag];
 }
 
@@ -211,12 +211,12 @@ if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
   it('returns a PGN name', () => {
-    let tags: PgnTags = { White: 'Magnus Carlsen' };
+    let tags: BroadcastPgnPushTags = { White: 'Magnus Carlsen' };
     expect(pgnTag('White', tags)).toBe('Magnus Carlsen');
   });
 
   it('returns a PGN tag', () => {
-    let tags: PgnTags = { A: '1', B: '2', C: '3' };
+    let tags: BroadcastPgnPushTags = { A: '1', B: '2', C: '3' };
     expect(pgnTag('B', tags)).toBe('2');
     expect(pgnTag('D', tags)).toBeUndefined();
   });

@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Round } from '../types';
+import { BroadcastRoundInfo } from '../types';
 import { delayDisplay, relativeTimeDisplay, timestampToLocalDatetime } from '../utils';
 
 const props = defineProps<{
-  round: Round;
+  round: BroadcastRoundInfo;
 }>();
 
 const delay = computed<string>(() => {
