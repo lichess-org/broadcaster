@@ -8,9 +8,7 @@ export type LichessRound = operations['broadcastRoundGet']['responses']['200']['
 export type BroadcastRoundInfo = components['schemas']['BroadcastRoundInfo'];
 export type BroadcastPgnPushTags = components['schemas']['BroadcastPgnPushTags'];
 
-type LichessPushResponse = components['schemas']['BroadcastPgnPush'];
-
 export interface PgnPushResult {
-  response: LichessPushResponse;
+  response: components['schemas']['BroadcastPgnPush'];
   files: string[];
 }
