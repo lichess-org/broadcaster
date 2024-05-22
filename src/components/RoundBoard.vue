@@ -12,11 +12,10 @@ const boardConfig: BoardConfig = reactive({
   fen: game.value.fen,
 });
 
-const props = defineProps<{
+defineProps<{
   showGames: Boolean;
 }>();
 
-// Watch for changes to the 'game' object
 watch(game, (updatedGame: Game) => {
   boardConfig.fen = updatedGame.fen;
 });

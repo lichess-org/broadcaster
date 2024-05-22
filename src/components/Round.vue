@@ -32,7 +32,6 @@ function getRound() {
     .then(response => response.json() as Promise<RoundResponse>)
     .then(data => {
       round.value = data;
-      console.log(round.value.games);
     });
 }
 
