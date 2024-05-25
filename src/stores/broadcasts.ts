@@ -1,11 +1,11 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { LichessBroadcast } from '../types';
+import { LichessMyRound } from '../types';
 
 export const useBroadcastsStore = defineStore('broadcasts', () => {
-  const broadcasts = ref<LichessBroadcast[]>([]);
+  const broadcasts = ref<LichessMyRound[]>([]);
 
-  const add = (broadcast: LichessBroadcast) => {
+  const add = (broadcast: LichessMyRound) => {
     broadcasts.value.push(broadcast);
   };
 

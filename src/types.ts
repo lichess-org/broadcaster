@@ -1,80 +1,15 @@
-export interface LichessBroadcast {
-  tour: Tournament;
-  round: Round;
-  study: Study;
-}
+import { components, operations } from './lichess';
 
-interface Tournament {
-  id: string;
-  name: string;
-  slug: string;
-  createdAt: number;
-  description: string;
-  tier?: 'normal' | 'high' | 'best';
-}
+export type LichessMyRound = operations['broadcastMyRoundsGet']['responses']['200']['content']['application/x-ndjson'];
+export type AccessTokenResponse = operations['apiToken']['responses']['200']['content']['application/json'];
+export type LichessUser = operations['accountMe']['responses']['200']['content']['application/json'];
+export type LichessRound = operations['broadcastRoundGet']['responses']['200']['content']['application/json'];
 
-export interface Round {
-  id: string;
-  name: string;
-  slug: string;
-  url: string;
-  createdAt: number;
-  delay?: number;
-  finished?: boolean;
-  ongoing?: boolean;
-  startsAt?: number;
-}
-
-interface Study {
-  writeable: boolean;
-}
-
-export interface AccessTokenResponse {
-  token_type: string;
-  access_token: string;
-  expires_in: number;
-}
-
-export interface LichessUser {
-  username: string;
-}
-
-export interface RoundResponse {
-  round: Round;
-  tour: Tournament;
-  study: Study;
-  games: Game[];
-}
-
-export interface Game {
-  id: string;
-  name: string;
-  fen?: string;
-  players?: Player[];
-  lastMove?: string;
-  thinkTime?: number;
-  status?: '1-0' | '0-1' | '½-½' | '*';
-}
-
-interface Player {
-  name: string;
-  title?: string;
-  rating?: number;
-  clock?: number;
-  fed?: string;
-}
-
-export type PgnTags = Record<string, string>;
-
-interface LichessPushResponse {
-  games: {
-    moves?: number;
-    error?: string;
-    tags: PgnTags;
-  }[];
-}
+export type BroadcastRoundInfo = components['schemas']['BroadcastRoundInfo'];
+export type BroadcastPgnPushTags = components['schemas']['BroadcastPgnPushTags'];
+export type BroadcastRoundGame = components['schemas']['BroadcastRoundGame'];
 
 export interface PgnPushResult {
-  response: LichessPushResponse;
+  response: components['schemas']['BroadcastPgnPush'];
   files: string[];
 }

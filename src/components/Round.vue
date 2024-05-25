@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { router } from '../router';
-import { RoundResponse } from '../types';
+import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
 import RoundBoard from './RoundBoard.vue';
@@ -12,7 +12,7 @@ import { useSettingsStore } from '../stores/settings';
 const logs = useLogStore();
 const settings = useSettingsStore();
 const showGames = ref(false);
-const round = ref<RoundResponse | null>(null);
+const round = ref<LichessRound | null>(null);
 
 const watchedFolder = computed<string>(() => {
   if (!round.value) {
@@ -29,7 +29,7 @@ function stopWatching() {
 
 function getRound() {
   lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
-    .then(response => response.json() as Promise<RoundResponse>)
+    .then(response => response.json() as Promise<LichessRound>)
     .then(data => {
       round.value = data;
     });

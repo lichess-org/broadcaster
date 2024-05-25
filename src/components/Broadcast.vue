@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue';
-import { LichessBroadcast } from '../types';
+import { LichessMyRound } from '../types';
 import { router } from '../router';
 import { useLogStore } from '../stores/logs';
 import RoundTimes from './RoundTimes.vue';
@@ -8,7 +8,7 @@ import RoundTimes from './RoundTimes.vue';
 const logs = useLogStore();
 
 const props = defineProps<{
-  broadcast: LichessBroadcast;
+  broadcast: LichessMyRound;
 }>();
 
 const isBroadcasting = computed<boolean>(() => {

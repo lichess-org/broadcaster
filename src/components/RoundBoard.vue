@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { reactive, watch } from 'vue';
-import { Game } from '../types';
+import { BroadcastRoundGame } from '../types';
 import { TheChessboard, type BoardConfig } from 'vue3-chessboard';
 import 'vue3-chessboard/style.css';
 
-const game = defineModel<Game>({ required: true });
+const game = defineModel<BroadcastRoundGame>({ required: true });
 
 const boardConfig: BoardConfig = reactive({
   viewOnly: true,
@@ -16,7 +16,7 @@ defineProps<{
   showGames: Boolean;
 }>();
 
-watch(game, (updatedGame: Game) => {
+watch(game, (updatedGame: BroadcastRoundGame) => {
   boardConfig.fen = updatedGame.fen;
 });
 </script>
