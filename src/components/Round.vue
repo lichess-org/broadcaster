@@ -8,6 +8,7 @@ import RoundBoard from './RoundBoard.vue';
 import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
+import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -151,8 +152,29 @@ getRound();
     <h3 class="text-white text-xl my-4">
       Games
       <span class="text-gray-400">({{ round.games.length }})</span>
-      <label for="checkbox"> Show boards </label>
-      <input type="checkbox" v-model="showGames" />
+
+      <div class="float-right">
+        <SwitchGroup as="div" class="flex items-center">
+          <Switch
+            v-model="showGames"
+            :class="[
+              showGames ? 'bg-indigo-600' : 'bg-gray-200',
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+            ]"
+          >
+            <span
+              aria-hidden="true"
+              :class="[
+                showGames ? 'translate-x-5' : 'translate-x-0',
+                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+              ]"
+            />
+          </Switch>
+          <SwitchLabel as="span" class="ml-3 text-sm">
+            <span class="font-medium text-gray-400">Show boards</span>
+          </SwitchLabel>
+        </SwitchGroup>
+      </div>
     </h3>
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <a
