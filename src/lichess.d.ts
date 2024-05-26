@@ -3621,7 +3621,7 @@ export interface components {
     };
     Profile: {
       /** @example EC */
-      country?: string;
+      flag?: string;
       location?: string;
       /** @example Free bugs! */
       bio?: string;
@@ -5124,18 +5124,22 @@ export interface components {
      *       },
      *       "rounds": [
      *         {
-     *           "id": "BueO56UJ",
-     *           "name": "Finals Day 1",
-     *           "slug": "finals-day-1",
-     *           "url": "https://lichess.org/broadcast/new-in-chess-classic--finals/finals-day-1/BueO56UJ",
-     *           "createdAt": 1525789431889
-     *         },
-     *         {
      *           "id": "yeGGfkfY",
      *           "name": "Finals Day 2",
      *           "slug": "finals-day-2",
      *           "url": "https://lichess.org/broadcast/new-in-chess-classic--finals/finals-day-2/yeGGfkfY",
-     *           "createdAt": 1525789431889
+     *           "createdAt": 1715858059529,
+     *           "ongoing": true,
+     *           "startsAt": 1716279000000
+     *         },
+     *         {
+     *           "id": "BueO56UJ",
+     *           "name": "Finals Day 1",
+     *           "slug": "finals-day-1",
+     *           "url": "https://lichess.org/broadcast/new-in-chess-classic--finals/finals-day-1/BueO56UJ",
+     *           "createdAt": 1715858037525,
+     *           "finished": true,
+     *           "startsAt": 1716214200000
      *         }
      *       ]
      *     } */
@@ -5155,7 +5159,7 @@ export interface components {
       autoLeaderboard: boolean;
       /** @description Optional long description of the broadcast. Markdown is supported. Length must be less than 20,000 characters. */
       markdown?: string;
-      /** @description Optional, for Lichess admins only, use to feature on /broadcast.
+      /** @description Optional, for Lichess admins only, used to feature on /broadcast.
        *
        *     * `3` for normal
        *     * `4` for high
@@ -5211,6 +5215,7 @@ export interface components {
       ongoing?: boolean;
       /** Format: int64 */
       startsAt?: number;
+      finished?: boolean;
       url: string;
       /** Format: int64 */
       delay?: number;
@@ -5229,6 +5234,25 @@ export interface components {
     BroadcastRoundStudyInfo: {
       /** @description Whether the currently authenticated user has permission to update the study */
       writeable?: boolean;
+    };
+    BroadcastRoundGame: {
+      id: string;
+      name: string;
+      fen?: string;
+      players?: {
+        name?: string;
+        title?: string;
+        rating?: number;
+        clock?: number;
+        fed?: string;
+      }[];
+      lastMove?: string;
+      thinkTime?: number;
+      /**
+       * @description The result of the game
+       * @enum {string}
+       */
+      status?: '*' | '1-0' | '0-1' | '½-½';
     };
     /** @example {
      *       "round": {
@@ -5305,25 +5329,7 @@ export interface components {
       round: components['schemas']['BroadcastRoundInfo'];
       tour: components['schemas']['BroadcastRoundTournamentInfo'];
       study: components['schemas']['BroadcastRoundStudyInfo'];
-      games: {
-        id: string;
-        name: string;
-        fen?: string;
-        players?: {
-          name?: string;
-          title?: string;
-          rating?: number;
-          clock?: number;
-          fed?: string;
-        }[];
-        lastMove?: string;
-        thinkTime?: number;
-        /**
-         * @description The result of the game
-         * @enum {string}
-         */
-        status?: '*' | '1-0' | '0-1' | '½-½';
-      }[];
+      games: components['schemas']['BroadcastRoundGame'][];
     };
     BroadcastPgnPushTags: {
       [key: string]: string | undefined;
@@ -12185,7 +12191,7 @@ export interface operations {
           'application/json': {
             /** @example Bearer */
             token_type: string;
-            /** @example liu_pLwAbN7lFPklzY2m8lTOI1DGApS84u57 */
+            /** @example lio_pLwAbN7lFPklzY2m8lTOI1DGApS84u57 */
             access_token: string;
             /** @example 31536000 */
             expires_in: number;
