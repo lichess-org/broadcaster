@@ -38,6 +38,7 @@ for (let i = 1; i <= 100; i++) {
     const round: NewBroadcastRound = {
       name: `Round ${j}`,
       startsAt: faker.date.future().getTime(),
+      finished: faker.datatype.boolean(0.2),
     };
 
     const response = await fetch(`${lichess}/broadcast/${broadcastResult.tour.id}/new`, {

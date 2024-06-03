@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useLogStore } from '../stores/logs';
 import { lichessFetch, relativeTimeDisplay } from '../utils';
-import { paths } from '../lichess';
 // import RoundTimes from './RoundTimes.vue';
 
 const logs = useLogStore();

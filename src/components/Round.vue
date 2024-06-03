@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { paths } from '@lichess-org/types';
 import { router } from '../router';
 import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
@@ -7,7 +8,6 @@ import RoundTimes from './RoundTimes.vue';
 import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
-import { paths } from '../lichess';
 
 const logs = useLogStore();
 const settings = useSettingsStore();

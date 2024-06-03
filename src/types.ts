@@ -1,4 +1,4 @@
-import { components, operations } from './lichess';
+import { components, operations } from '@lichess-org/types';
 
 export type AccessTokenResponse = operations['apiToken']['responses']['200']['content']['application/json'];
 export type LichessUser = operations['accountMe']['responses']['200']['content']['application/json'];

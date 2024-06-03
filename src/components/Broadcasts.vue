@@ -1,10 +1,10 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue';
+import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
-import { computed, ref } from 'vue';
 import { lichessFetch, openPath } from '../utils';
-import { paths } from '../lichess';
 import BroadcastSummary from './Broadcast.vue';
 
 const settings = useSettingsStore();
