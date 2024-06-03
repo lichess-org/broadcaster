@@ -6,23 +6,18 @@ import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
 import { BroadcastPgnPushTags } from './types';
 
-export async function lichessFetch(path: string, options?: object, timeoutMs = 5_000): Promise<Response> {
+export async function lichessFetch(path: string, options?: object): Promise<Response> {
   const settings = useSettingsStore();
   const user = useUserStore();
-
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
 
   const url = `${settings.lichessUrl}${path}`;
   return fetch(url, {
     headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
     }),
-    signal: controller.signal,
     ...options,
   })
     .then(response => {
-      clearTimeout(timeout);
       if (!response.ok) handleFetchError(url, response);
       return response;
     })

@@ -69,6 +69,14 @@ Test errors by writing bad PGN files:
 pnpm esrun sample-data/generate/index.ts errors path/to/folder
 ```
 
+#### Bulk Broadcast + Round generation:
+
+To seed a bunch of test broadcasts with rounds:
+
+```bash
+pnpm esrun sample-data/generate/add-broadcasts.ts
+```
+
 ### Icon Generation
 
 Given a source image file, generate the icon files for the app:

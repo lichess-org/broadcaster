@@ -1,21 +1,14 @@
 import { faker } from '@faker-js/faker';
+import { paths } from '@lichess-org/types';
 
-interface NewBroadcast {
-  name: string;
-  description: string;
-  autoLeaderboard: boolean;
-  markdown?: string;
-  tier?: number;
-  players?: string;
-}
+type NewBroadcast = paths['/broadcast/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
+type NewBroadcastRound =
+  paths['/broadcast/{broadcastTournamentId}/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
 
-interface NewBroadcastRound {
-  name: string;
-  syncUrl?: string;
-  startsAt?: number;
-}
+const lichess = 'http://localhost:8080';
+const token = 'lip_bobby';
 
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= 100; i++) {
   const broadcast: NewBroadcast = {
     name: `${faker.company.name()} Invitational`,
     description: faker.lorem.sentence(),
@@ -24,10 +17,10 @@ for (let i = 1; i <= 10; i++) {
     tier: faker.number.int({ min: 3, max: 5 }),
   };
 
-  const response = await fetch('http://localhost:8080/broadcast/new', {
+  const response = await fetch(`${lichess}/broadcast/new`, {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer lip_admin',
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(broadcast),
@@ -47,10 +40,10 @@ for (let i = 1; i <= 10; i++) {
       startsAt: faker.date.future().getTime(),
     };
 
-    const response = await fetch(`http://localhost:8080/broadcast/${broadcastResult.tour.id}/new`, {
+    const response = await fetch(`${lichess}/broadcast/${broadcastResult.tour.id}/new`, {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer lip_admin',
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(round),

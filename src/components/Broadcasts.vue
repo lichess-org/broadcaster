@@ -1,45 +1,36 @@
 <script setup lang="ts">
-import ndjson from 'fetch-ndjson';
-import Broadcast from './Broadcast.vue';
-import { LichessMyRound } from '../types';
+import { LichessBroadcastByUser } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
 import { computed, ref } from 'vue';
 import { lichessFetch, openPath } from '../utils';
-import { useBroadcastsStore } from '../stores/broadcasts';
+import { paths } from '../lichess';
+import BroadcastSummary from './Broadcast.vue';
 
-const broadcasts = useBroadcastsStore();
 const settings = useSettingsStore();
 const user = useUserStore();
 
 const isLoading = ref<boolean>(true);
 
+const broadcasts = ref<LichessBroadcastByUser[]>([]);
+
 const hasBroadcasts = computed<boolean>(() => {
-  return broadcasts.broadcasts.length > 0;
+  return broadcasts.value.length > 0;
 });
 
-async function getBroadcasts(callback: (value: LichessMyRound) => void) {
-  let response = await lichessFetch(`/api/broadcast/my-rounds`, {}, 60_000);
-
-  let reader = response.body!.getReader();
-  let gen = ndjson(reader);
-
-  while (true) {
-    let { done, value } = await gen.next();
-    if (done) return;
-    callback(value);
-  }
-}
-
 function refresh() {
-  broadcasts.clear();
+  broadcasts.value = [];
   isLoading.value = true;
 
-  getBroadcasts(value => {
-    broadcasts.add(value);
-  }).finally(() => {
-    isLoading.value = false;
-  });
+  lichessFetch(`/api/broadcast/by/bobby`)
+    .then(
+      response =>
+        response.json() as Promise<
+          paths['/api/broadcast/by/{username}']['get']['responses']['200']['content']['application/json']
+        >,
+    )
+    .then(data => (broadcasts.value = data.currentPageResults))
+    .finally(() => (isLoading.value = false));
 }
 
 if (!hasBroadcasts.value) {
@@ -80,7 +71,7 @@ if (!hasBroadcasts.value) {
 
   <div v-if="hasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">
-      <Broadcast v-for="broadcast in broadcasts.broadcasts" :broadcast="broadcast" />
+      <BroadcastSummary v-for="broadcast in broadcasts" :broadcast="broadcast" />
     </div>
   </div>
 

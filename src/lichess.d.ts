@@ -734,7 +734,6 @@ export interface paths {
     /**
      * Stream current TV game
      * @description Stream positions and moves of the current [TV game](https://lichess.org/tv) in [ndjson](#section/Introduction/Streaming-with-ND-JSON).
-     *     A summary of the game is sent as a first message, and when the featured game changes.
      *     Try it with `curl https://lichess.org/api/tv/feed`.
      *
      */
@@ -756,8 +755,7 @@ export interface paths {
     };
     /**
      * Stream current TV game of a TV channel
-     * @description Stream positions and moves of the current [TV game](https://lichess.org/tv) of a TV channel in [ndjson](#section/Introduction/Streaming-with-ND-JSON).
-     *     A summary of the game is sent as a first message, and when the featured game changes.
+     * @description Stream positions and moves of a current [TV channel's game](https://lichess.org/tv/rapid) in [ndjson](#section/Introduction/Streaming-with-ND-JSON).
      *     Try it with `curl https://lichess.org/api/tv/rapid/feed`.
      *
      */
@@ -1455,7 +1453,29 @@ export interface paths {
      *     Broadcasts are streamed as [ndjson](#section/Introduction/Streaming-with-ND-JSON).
      *
      */
-    get: operations['broadcastIndex'];
+    get: operations['broadcastsOfficial'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/broadcast/by/{username}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    /**
+     * Get broadcasts created by a user
+     * @description Get all incoming, ongoing, and finished official broadcasts.
+     *     The broadcasts are sorted by created date, most recent first.
+     *
+     */
+    get: operations['broadcastsByUser'];
     put?: never;
     post?: never;
     delete?: never;
@@ -3748,15 +3768,22 @@ export interface components {
       count?: components['schemas']['Count'];
       /** @example false */
       streaming?: boolean;
-      /** @example {
-       *       "twitch": {
-       *         "channel": "https://www.twitch.tv/lichessdotorg"
-       *       },
-       *       "youTube": {
-       *         "channel": "https://www.youtube.com/c/LichessDotOrg"
-       *       }
-       *     } */
-      streamer?: unknown;
+      streamer?: {
+        twitch?: {
+          /**
+           * Format: uri
+           * @example https://www.twitch.tv/lichessdotorg
+           */
+          channel?: string;
+        };
+        youTube?: {
+          /**
+           * Format: uri
+           * @example https://www.youtube.com/c/LichessDotOrg
+           */
+          channel?: string;
+        };
+      };
       /**
        * @description only appears if the request is [authenticated with OAuth2](#section/Introduction/Authentication)
        * @example true
@@ -4582,6 +4609,29 @@ export interface components {
       };
       team?: string;
     };
+    GameMoveAnalysis: {
+      /** @description Evaluation in centipawns */
+      eval?: number;
+      /** @description Number of moves until forced mate */
+      mate?: number;
+      /**
+       * @description Best move in UCI notation (only if played move was inaccurate)
+       * @example c2c3
+       */
+      best?: string;
+      /**
+       * @description Best variation in SAN notation (only if played move was inaccurate)
+       * @example c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
+       */
+      variation?: string;
+      /** @description Judgment annotation (only if played move was inaccurate) */
+      judgment?: {
+        /** @enum {string} */
+        name?: 'Inaccuracy' | 'Mistake' | 'Blunder';
+        /** @example Blunder. Nxg6 was best. */
+        comment?: string;
+      };
+    };
     /** @example {
      *       "id": "q7ZvsdUF",
      *       "rated": true,
@@ -4635,8 +4685,8 @@ export interface components {
       lastMoveAt: number;
       status: components['schemas']['GameStatus'];
       players: {
-        white?: components['schemas']['GameUser'];
-        black?: components['schemas']['GameUser'];
+        white: components['schemas']['GameUser'];
+        black: components['schemas']['GameUser'];
       };
       initialFen?: string;
       /** @enum {string} */
@@ -4649,36 +4699,15 @@ export interface components {
       moves?: string;
       pgn?: string;
       daysPerTurn?: number;
-      analysis?: {
-        /** @description Evaluation in centipawns */
-        eval?: number;
-        /** @description Number of moves until forced mate */
-        mate?: number;
-        /**
-         * @description Best move in UCI notation (only if played move was inaccurate)
-         * @example c2c3
-         */
-        best?: string;
-        /**
-         * @description Best variation in SAN notation (only if played move was inaccurate)
-         * @example c3 Nc6 d4 Qb6 Be2 Nge7 Na3 cxd4 cxd4 Nf5
-         */
-        variation?: string;
-        /** @description Judgment annotation (only if played move was inaccurate) */
-        judgment?: {
-          /** @enum {string} */
-          name?: 'Inaccuracy' | 'Mistake' | 'Blunder';
-          /** @example Blunder. Nxg6 was best. */
-          comment?: string;
-        };
-      }[];
+      analysis?: components['schemas']['GameMoveAnalysis'][];
       tournament?: string;
       swiss?: string;
       clock?: {
-        initial?: number;
-        increment?: number;
-        totalTime?: number;
+        initial: number;
+        increment: number;
+        totalTime: number;
       };
+      clocks?: number[];
       division?: {
         /** @description Ply at which the middlegame begins */
         middle?: number;
@@ -4787,8 +4816,46 @@ export interface components {
      *     ] */
     MoveStream: unknown;
     TvFeed: {
-      t?: string;
-      d?: Record<string, never>;
+      /**
+       * @description The type of message.
+       *     A summary of the game is sent as the first message and when the featured game changes.
+       *     Subsequent messages are just the FEN, last move, and clocks.
+       *
+       * @enum {string}
+       */
+      t: 'featured' | 'fen';
+      /** @description The data of the message */
+      d:
+        | {
+            /** @description The game ID */
+            id: string;
+            /** @enum {string} */
+            orientation: 'white' | 'black';
+            players: {
+              /** @enum {string} */
+              color: 'white' | 'black';
+              user: {
+                name: string;
+                id: string;
+                title?: string;
+              };
+              rating: number;
+              /** @description The player's remaining time in seconds */
+              seconds: number;
+            }[];
+            /** @description The FEN of the current position */
+            fen: string;
+          }
+        | {
+            /** @description The FEN of the current position */
+            fen: string;
+            /** @description The last move in UCI format */
+            lm: string;
+            /** @description White's clock in seconds */
+            wc: number;
+            /** @description Black's clock in seconds */
+            bc: number;
+          };
     };
     Clock: {
       limit?: number;
@@ -4838,63 +4905,77 @@ export interface components {
           /** @example rnbq1bnr/ppppkppp/8/4p3/4P3/8/PPPPKPPP/RNBQ1BNR w - - 2 3 */
           fen?: string;
         };
+    /** @example {
+     *       "id": "XhfVxYPG",
+     *       "createdBy": "lichess",
+     *       "system": "arena",
+     *       "minutes": 27,
+     *       "clock": {
+     *         "limit": 60,
+     *         "increment": 0
+     *       },
+     *       "rated": true,
+     *       "fullName": "Hourly Bullet Arena",
+     *       "nbPlayers": 4,
+     *       "variant": {
+     *         "key": "standard",
+     *         "short": "Std",
+     *         "name": "Standard"
+     *       },
+     *       "startsAt": 1716930043067,
+     *       "finishesAt": 1716931663067,
+     *       "status": 10,
+     *       "perf": {
+     *         "key": "bullet",
+     *         "name": "Bullet",
+     *         "position": 0,
+     *         "icon": "T"
+     *       },
+     *       "secondsToStart": 871,
+     *       "minRatedGames": {
+     *         "nb": 20
+     *       },
+     *       "schedule": {
+     *         "freq": "hourly",
+     *         "speed": "bullet"
+     *       }
+     *     } */
     ArenaTournament: {
-      /** @example QITRjufu */
       id?: string;
-      /** @example lichess */
       createdBy?: string;
       /** @constant */
       system?: 'arena';
-      /** @example 57 */
       minutes?: number;
       clock?: components['schemas']['Clock'];
-      /** @example true */
       rated?: boolean;
-      /** @example U1700 SuperBlitz Arena */
       fullName?: string;
-      /** @example 154 */
       nbPlayers?: number;
       variant?: components['schemas']['Variant'];
-      /** @example 1522803600000 */
       startsAt?: number;
-      /** @example 1522807200000 */
       finishesAt?: number;
       status?: components['schemas']['ArenaStatus'];
       perf?: components['schemas']['ArenaPerf'];
-      /** @example 576 */
       secondsToStart?: number;
-      /** @example true */
       hasMaxRating?: boolean;
       maxRating?: components['schemas']['ArenaRatingObj'];
       minRating?: components['schemas']['ArenaRatingObj'];
       minRatedGames?: {
-        /** @example 20 */
         nb?: number;
-        /** @example blitz */
-        perf?: components['schemas']['PerfType'];
       };
-      /** @example false */
       onlyTitled?: boolean;
-      /** @example coders */
       teamMember?: string;
-      /** @example true */
       private?: boolean;
       position?: components['schemas']['ArenaPosition'];
       schedule?: {
-        /** @example hourly */
         freq?: string;
-        /** @example superblitz */
         speed?: string;
       };
       teamBattle?: {
         teams?: string[];
-        /** @example 3 */
         nbLeaders?: number;
       };
       winner?: {
-        /** @example lichess */
         id?: string;
-        /** @example lichess */
         name?: string;
         title?: components['schemas']['Title'];
       };
@@ -4909,134 +4990,320 @@ export interface components {
      * @default rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
      */
     FromPositionFEN: string;
+    ArenaPlayerPerformance: {
+      name?: string;
+      rank?: number;
+      title?: string;
+      patron?: boolean;
+      rating?: number;
+      score?: number;
+      sheet?: {
+        scores?: string;
+        fire?: boolean;
+      };
+      nb?: {
+        game?: number;
+        beserk?: number;
+        win?: number;
+      };
+      performance?: number;
+    };
     /** @example {
-     *       "id": "QITRjufu",
-     *       "fullName": "U1700 SuperBlitz Arena",
-     *       "rated": true,
-     *       "clock": {
-     *         "increment": 0,
-     *         "limit": 180
-     *       },
-     *       "minutes": 57,
+     *       "id": "may24lta",
      *       "createdBy": "lichess",
+     *       "startsAt": "2024-05-25T18:00:00Z",
      *       "system": "arena",
-     *       "secondsToStart": 0,
-     *       "secondsToFinish": 36000,
-     *       "isFinished": true,
-     *       "isRecentlyFinished": true,
-     *       "pairingsClosed": true,
-     *       "startsAt": 1522803600000,
-     *       "nbPlayers": 154,
+     *       "fullName": "Titled Arena May 2024",
+     *       "minutes": 120,
      *       "perf": {
-     *         "icon": ")",
-     *         "key": "blitz",
-     *         "name": "Blitz",
-     *         "position": 1
+     *         "key": "bullet",
+     *         "name": "Bullet",
+     *         "icon": "T"
      *       },
-     *       "schedule": {
-     *         "freq": "hourly",
-     *         "speed": "superblitz"
+     *       "clock": {
+     *         "limit": 60,
+     *         "increment": 0
      *       },
      *       "variant": "standard",
-     *       "duels": [
+     *       "rated": true,
+     *       "spotlight": {
+     *         "headline": "Titled only, $1,000 prize pool"
+     *       },
+     *       "berserkable": true,
+     *       "verdicts": {
+     *         "list": [
+     *           {
+     *             "condition": "Only titled players",
+     *             "verdict": "ok"
+     *           }
+     *         ],
+     *         "accepted": true
+     *       },
+     *       "schedule": {
+     *         "freq": "unique",
+     *         "speed": "bullet"
+     *       },
+     *       "description": "Prizes: $500/$250/$125/$75/$50\r\n\r\n[Warm-up event](https://lichess.org/tournament/may24wua)",
+     *       "onlyTitled": true,
+     *       "nbPlayers": 364,
+     *       "duels": [],
+     *       "isFinished": true,
+     *       "podium": [
      *         {
-     *           "id": "0MM6q4tQ",
-     *           "p": [
-     *             {
-     *               "n": "player1",
-     *               "r": 1500,
-     *               "k": 3
-     *             },
-     *             {
-     *               "n": "player2",
-     *               "r": 1500,
-     *               "k": 3
-     *             }
-     *           ]
+     *           "name": "RebeccaHarris",
+     *           "title": "GM",
+     *           "patron": true,
+     *           "rank": 1,
+     *           "rating": 3257,
+     *           "score": 148,
+     *           "nb": {
+     *             "game": 69,
+     *             "berserk": 25,
+     *             "win": 46
+     *           },
+     *           "performance": 3308
+     *         },
+     *         {
+     *           "name": "Ediz_Gurel",
+     *           "title": "GM",
+     *           "flair": "smileys.alien",
+     *           "rank": 2,
+     *           "rating": 3230,
+     *           "score": 146,
+     *           "nb": {
+     *             "game": 64,
+     *             "berserk": 12,
+     *             "win": 44
+     *           },
+     *           "performance": 3269
+     *         },
+     *         {
+     *           "name": "msb2",
+     *           "title": "GM",
+     *           "patron": true,
+     *           "rank": 3,
+     *           "rating": 3218,
+     *           "score": 131,
+     *           "nb": {
+     *             "game": 74,
+     *             "berserk": 9,
+     *             "win": 44
+     *           },
+     *           "performance": 3215
      *         }
      *       ],
-     *       "standings": {
+     *       "pairingsClosed": true,
+     *       "stats": {
+     *         "moves": 418545,
+     *         "averageRating": 2616,
+     *         "berserks": 729,
+     *         "blackWins": 2236,
+     *         "games": 5023,
+     *         "draws": 311,
+     *         "whiteWins": 2476
+     *       },
+     *       "standing": {
      *         "page": 1,
      *         "players": [
      *           {
-     *             "name": "player1",
+     *             "name": "RebeccaHarris",
+     *             "title": "GM",
+     *             "patron": true,
      *             "rank": 1,
-     *             "rating": 1500,
-     *             "score": 3,
+     *             "rating": 3257,
+     *             "score": 148,
      *             "sheet": {
-     *               "scores": [
-     *                 {
-     *                   "0": 2,
-     *                   "1": 2
-     *                 },
-     *                 {
-     *                   "0": 4,
-     *                   "1": 3
-     *                 },
-     *                 0
-     *               ],
-     *               "total": 6,
+     *               "scores": "030432005442204423030220045423044442201300204220300021033044444423033"
+     *             }
+     *           },
+     *           {
+     *             "name": "Ediz_Gurel",
+     *             "title": "GM",
+     *             "flair": "smileys.alien",
+     *             "rank": 2,
+     *             "rating": 3230,
+     *             "score": 146,
+     *             "sheet": {
+     *               "scores": "4454220224230200000044544432020002242204444220020320204445444422",
      *               "fire": true
+     *             }
+     *           },
+     *           {
+     *             "name": "msb2",
+     *             "title": "GM",
+     *             "patron": true,
+     *             "rank": 3,
+     *             "rating": 3218,
+     *             "score": 131,
+     *             "sheet": {
+     *               "scores": "04221204220204220022244220200222423000022020044422044422124422010023303020"
+     *             }
+     *           },
+     *           {
+     *             "name": "nihalsarin2004",
+     *             "title": "GM",
+     *             "patron": true,
+     *             "rank": 4,
+     *             "rating": 3236,
+     *             "score": 124,
+     *             "sheet": {
+     *               "scores": "30302220030302044220220442204220210022244220202204444422223053200"
+     *             }
+     *           },
+     *           {
+     *             "name": "Arka50",
+     *             "title": "GM",
+     *             "patron": true,
+     *             "rank": 5,
+     *             "rating": 3215,
+     *             "score": 122,
+     *             "sheet": {
+     *               "scores": "303303002000200220444423002020210422110444444442200202002204444220"
+     *             }
+     *           },
+     *           {
+     *             "name": "chessbrahs",
+     *             "title": "GM",
+     *             "rank": 6,
+     *             "rating": 3115,
+     *             "score": 122,
+     *             "sheet": {
+     *               "scores": "220002002020442304542200020000204444422020445220200204220230545220",
+     *               "fire": true
+     *             }
+     *           },
+     *           {
+     *             "name": "neslraCsungaM77",
+     *             "title": "GM",
+     *             "rank": 7,
+     *             "rating": 3122,
+     *             "score": 121,
+     *             "sheet": {
+     *               "scores": "130030000042202422012442202044220204422020022221042213000201022020202044432"
+     *             }
+     *           },
+     *           {
+     *             "name": "ARM-777777",
+     *             "title": "GM",
+     *             "rank": 8,
+     *             "rating": 3154,
+     *             "score": 119,
+     *             "sheet": {
+     *               "scores": "044423030042301021044220220020000000100010200004220444422244444230220320"
+     *             }
+     *           },
+     *           {
+     *             "name": "Night-King96",
+     *             "title": "GM",
+     *             "patron": true,
+     *             "rank": 9,
+     *             "rating": 3131,
+     *             "score": 119,
+     *             "sheet": {
+     *               "scores": "0000300230302302044220030422044444220200000300003304230533023000305433"
+     *             }
+     *           },
+     *           {
+     *             "name": "tacticthunder",
+     *             "title": "IM",
+     *             "rank": 10,
+     *             "rating": 3051,
+     *             "score": 115,
+     *             "sheet": {
+     *               "scores": "20442202044444422100201200020200220044220044220222422022020220422010"
      *             }
      *           }
      *         ]
-     *       },
-     *       "featured": {
-     *         "id": "khe72Fer",
-     *         "fen": "rn1qkb1r/pQ3ppp/2b2n2/8/5P2/4P3/PP4PP/RNB1KBNR",
-     *         "color": "black",
-     *         "lastMove": "d7c6",
-     *         "white": {
-     *           "rank": 2,
-     *           "name": "player1",
-     *           "rating": 1360
-     *         },
-     *         "black": {
-     *           "rank": 5,
-     *           "name": "player2",
-     *           "rating": 1431
-     *         }
-     *       },
-     *       "podium": [
-     *         {
-     *           "name": "player1",
-     *           "rank": 1,
-     *           "rating": 1500,
-     *           "score": 3,
-     *           "sheet": {
-     *             "scores": [
-     *               {
-     *                 "0": 2,
-     *                 "1": 2
-     *               },
-     *               {
-     *                 "0": 4,
-     *                 "1": 3
-     *               },
-     *               0
-     *             ],
-     *             "total": 6,
-     *             "fire": true
-     *           },
-     *           "nb": {
-     *             "game": 3,
-     *             "beserk": 0,
-     *             "win": 2
-     *           },
-     *           "performance": 1787
-     *         }
-     *       ],
-     *       "stats": {
-     *         "games": 454,
-     *         "moves": 27542,
-     *         "whiteWins": 236,
-     *         "blackWins": 207,
-     *         "draws": 11,
-     *         "berserks": 0,
-     *         "averageRating": 1320
      *       }
      *     } */
-    ArenaTournamentVariantIsKey: unknown;
+    ArenaTournamentFull: {
+      id: string;
+      fullName: string;
+      rated?: boolean;
+      spotlight?: {
+        headline?: string;
+      };
+      berserkable?: boolean;
+      onlyTitled?: boolean;
+      clock: {
+        increment: number;
+        limit: number;
+      };
+      minutes?: number;
+      createdBy?: string;
+      system?: string;
+      secondsToStart?: number;
+      secondsToFinish?: number;
+      isFinished: boolean;
+      isRecentlyFinished?: boolean;
+      pairingsClosed?: boolean;
+      startsAt?: string;
+      nbPlayers: number;
+      verdicts?: {
+        accepted?: boolean;
+        list?: {
+          condition?: string;
+          verdict?: string;
+        }[];
+      };
+      perf?: {
+        icon: string;
+        key: string;
+        name: string;
+      };
+      schedule?: {
+        freq: string;
+        speed: string;
+      };
+      variant?: string;
+      duels?: {
+        id?: string;
+        p?: {
+          n?: string;
+          r?: number;
+          k?: number;
+        }[];
+      }[];
+      standing?: {
+        page?: number;
+        players?: components['schemas']['ArenaPlayerPerformance'][];
+      };
+      featured?: {
+        id?: string;
+        fen?: string;
+        orientation?: string;
+        color?: string;
+        lastMove?: string;
+        white?: {
+          name?: string;
+          id?: string;
+          rank?: number;
+          rating?: number;
+        };
+        black?: {
+          name?: string;
+          id?: string;
+          rank?: number;
+          rating?: number;
+        };
+        c?: {
+          /** @description white's clock in seconds */
+          white?: number;
+          /** @description black's clock in seconds */
+          black?: number;
+        };
+      };
+      podium?: components['schemas']['ArenaPlayerPerformance'][];
+      stats: {
+        games: number;
+        moves: number;
+        whiteWins: number;
+        blackWins: number;
+        draws: number;
+        berserks: number;
+        averageRating: number;
+      };
+    };
     /** @example {
      *       "error": "This request is invalid because [...]"
      *     } */
@@ -5076,7 +5343,32 @@ export interface components {
      *         "whiteWins": 42837
      *       }
      *     } */
-    SwissTournament: unknown;
+    SwissTournament: {
+      id: string;
+      createdBy: string;
+      startsAt: string;
+      name: string;
+      clock: {
+        limit: number;
+        increment: number;
+      };
+      variant: string;
+      round: number;
+      nbRounds: number;
+      nbPlayers: number;
+      nbOngoing: number;
+      status: string;
+      stats: {
+        games: number;
+        whiteWins: number;
+        blackWins: number;
+        draws: number;
+        byes: number;
+        absences: number;
+        averageRating: number;
+      };
+      rated: boolean;
+    };
     /** @example {
      *       "error": "This user cannot edit this swiss"
      *     } */
@@ -5113,37 +5405,43 @@ export interface components {
      *       "updatedAt": 1469965025205
      *     } */
     StudyMetadata: unknown;
-    /** @example {
-     *       "tour": {
-     *         "id": "QYiOYnl1",
-     *         "name": "New in Chess Classic | Finals",
-     *         "slug": "new-in-chess-classic--finals",
-     *         "description": "Match for 1st 2nd and 3rd place.",
-     *         "url": "https://lichess.org/broadcast/new-in-chess-classic--finals/phgcXuBl",
-     *         "createdAt": 1525789431889
-     *       },
-     *       "rounds": [
-     *         {
-     *           "id": "yeGGfkfY",
-     *           "name": "Finals Day 2",
-     *           "slug": "finals-day-2",
-     *           "url": "https://lichess.org/broadcast/new-in-chess-classic--finals/finals-day-2/yeGGfkfY",
-     *           "createdAt": 1715858059529,
-     *           "ongoing": true,
-     *           "startsAt": 1716279000000
-     *         },
-     *         {
-     *           "id": "BueO56UJ",
-     *           "name": "Finals Day 1",
-     *           "slug": "finals-day-1",
-     *           "url": "https://lichess.org/broadcast/new-in-chess-classic--finals/finals-day-1/BueO56UJ",
-     *           "createdAt": 1715858037525,
-     *           "finished": true,
-     *           "startsAt": 1716214200000
-     *         }
-     *       ]
-     *     } */
-    BroadcastTour: unknown;
+    BroadcastTour: {
+      id: string;
+      name: string;
+      slug: string;
+      description: string;
+      createdAt: number;
+      /** @description Used to designate featured tournaments on Lichess */
+      tier?: number;
+      image?: string;
+      /** @description HTML markup of the tour description */
+      markup?: string;
+      leaderboard?: boolean;
+      teamTable?: boolean;
+      url: string;
+    };
+    BroadcastRoundInfo: {
+      id: string;
+      name: string;
+      slug: string;
+      /** Format: int64 */
+      createdAt: number;
+      ongoing?: boolean;
+      /** Format: int64 */
+      startsAt?: number;
+      finished?: boolean;
+      url: string;
+      /** Format: int64 */
+      delay?: number;
+    };
+    BroadcastWithRounds: {
+      tour?: components['schemas']['BroadcastTour'];
+      rounds?: components['schemas']['BroadcastRoundInfo'][];
+    };
+    BroadcastByUser: {
+      tour: components['schemas']['BroadcastTour'];
+      lastRound: components['schemas']['BroadcastRoundInfo'];
+    };
     BroadcastForm: {
       /** @description Name of the broadcast tournament. Length must be between 3 and 80 characters.
        *
@@ -5156,7 +5454,7 @@ export interface components {
        *      */
       description: string;
       /** @description Compute and display a simple leaderboard based on game results */
-      autoLeaderboard: boolean;
+      autoLeaderboard?: boolean;
       /** @description Optional long description of the broadcast. Markdown is supported. Length must be less than 20,000 characters. */
       markdown?: string;
       /** @description Optional, for Lichess admins only, used to feature on /broadcast.
@@ -5206,34 +5504,34 @@ export interface components {
       /** @example CHI */
       fed?: string;
     };
-    BroadcastRoundInfo: {
-      id: string;
-      name: string;
-      slug: string;
-      /** Format: int64 */
-      createdAt: number;
-      ongoing?: boolean;
-      /** Format: int64 */
-      startsAt?: number;
-      finished?: boolean;
-      url: string;
-      /** Format: int64 */
-      delay?: number;
-    };
-    BroadcastRoundTournamentInfo: {
-      id: string;
-      name: string;
-      slug: string;
-      description: string;
-      /** Format: int64 */
-      createdAt: number;
-      tier?: number;
-      /** @description URL of the tournament image */
-      image?: string;
-    };
     BroadcastRoundStudyInfo: {
       /** @description Whether the currently authenticated user has permission to update the study */
       writeable?: boolean;
+    };
+    /** @example {
+     *       "round": {
+     *         "createdAt": 1717344905926,
+     *         "id": "n8JeQIeY",
+     *         "name": "round 1",
+     *         "slug": "round-1",
+     *         "url": "https://lichess.org/broadcast/new-name/round-1/n8JeQIeY"
+     *       },
+     *       "study": {
+     *         "writeable": true
+     *       },
+     *       "tour": {
+     *         "createdAt": 1717342164861,
+     *         "description": "test",
+     *         "id": "HdRP6fce",
+     *         "name": "New Name",
+     *         "slug": "new-name",
+     *         "url": "https://lichess.org/broadcast/new-name/HdRP6fce"
+     *       }
+     *     } */
+    BroadcastRoundNew: {
+      round: components['schemas']['BroadcastRoundInfo'];
+      tour: components['schemas']['BroadcastTour'];
+      study: components['schemas']['BroadcastRoundStudyInfo'];
     };
     BroadcastRoundGame: {
       id: string;
@@ -5271,7 +5569,8 @@ export interface components {
      *         "description": "May 18th - 19th  | 4-player double round-robin | Rapid time control | Carlsen, Nakamura, Anand",
      *         "createdAt": 1716014078747,
      *         "tier": 5,
-     *         "image": "https://image.lichess1.org/display?h=400&op=thumbnail&path=loepare:relay:ZuOkdeXK:iq0feQJe.jpg&w=800&sig=36e58a1a648af5b9fe6d3f5725c7a2f52d853153"
+     *         "image": "https://image.lichess1.org/display?h=400&op=thumbnail&path=loepare:relay:ZuOkdeXK:iq0feQJe.jpg&w=800&sig=36e58a1a648af5b9fe6d3f5725c7a2f52d853153",
+     *         "url": "https://lichess.org/broadcast/casablanca-chess-2024/ZuOkdeXK"
      *       },
      *       "study": {
      *         "writeable": false
@@ -5327,7 +5626,7 @@ export interface components {
      *     } */
     BroadcastRound: {
       round: components['schemas']['BroadcastRoundInfo'];
-      tour: components['schemas']['BroadcastRoundTournamentInfo'];
+      tour: components['schemas']['BroadcastTour'];
       study: components['schemas']['BroadcastRoundStudyInfo'];
       games: components['schemas']['BroadcastRoundGame'][];
     };
@@ -5375,20 +5674,19 @@ export interface components {
     };
     /** @example {
      *       "round": {
-     *         "id": "0gLwMpx8",
-     *         "name": "Round 1",
+     *         "id": "n8JeQIeY",
+     *         "name": "round 1",
      *         "slug": "round-1",
-     *         "createdAt": 1716048406676,
-     *         "startsAt": 1713456000000,
-     *         "url": "https://lichess.org/broadcast/moonway-chess-festival/round-1/0gLwMpx8",
-     *         "delay": 600
+     *         "createdAt": 1717344905926,
+     *         "url": "https://lichess.org/broadcast/new-name/round-1/n8JeQIeY"
      *       },
      *       "tour": {
-     *         "id": "noRt7b8A",
-     *         "name": "Moonway Chess Festival",
-     *         "slug": "moonway-chess-festival",
-     *         "description": "April 18th - 28th  |  10-round Swiss  |  Classical time control",
-     *         "createdAt": 1716048385395
+     *         "id": "HdRP6fce",
+     *         "name": "New Name",
+     *         "slug": "new-name",
+     *         "description": "test",
+     *         "createdAt": 1717342164861,
+     *         "url": "https://lichess.org/broadcast/new-name/HdRP6fce"
      *       },
      *       "study": {
      *         "writeable": true
@@ -5396,7 +5694,7 @@ export interface components {
      *     } */
     BroadcastMyRound: {
       round: components['schemas']['BroadcastRoundInfo'];
-      tour: components['schemas']['BroadcastRoundTournamentInfo'];
+      tour: components['schemas']['BroadcastTour'];
       study: components['schemas']['BroadcastRoundStudyInfo'];
     };
     /** @example {
@@ -7706,7 +8004,7 @@ export interface operations {
            * @default 5
            * @enum {integer}
            */
-          waitMinutes: 1 | 2 | 3 | 5 | 10 | 15 | 20 | 30 | 45 | 60;
+          waitMinutes?: 1 | 2 | 3 | 5 | 10 | 15 | 20 | 30 | 45 | 60;
           /** @description Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting */
           startDate?: number;
           variant?: components['schemas']['VariantKey'];
@@ -7714,23 +8012,23 @@ export interface operations {
            * @description Games are rated and impact players ratings
            * @default true
            */
-          rated: boolean;
+          rated?: boolean;
           position?: components['schemas']['FromPositionFEN'];
           /**
            * @description Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2
            * @default true
            */
-          berserkable: boolean;
+          berserkable?: boolean;
           /**
            * @description After 2 wins, consecutive wins grant 4 points instead of 2.
            * @default true
            */
-          streakable: boolean;
+          streakable?: boolean;
           /**
            * @description Whether the players can discuss in a chat
            * @default true
            */
-          hasChat: boolean;
+          hasChat?: boolean;
           /** @description Anything you want to tell players about the tournament */
           description?: string;
           /** @description Make the tournament private, and restrict access with a password.
@@ -7812,7 +8110,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['ArenaTournamentVariantIsKey'];
+          'application/json': components['schemas']['ArenaTournamentFull'];
         };
       };
       /** @description The creation of the Arena tournament failed. */
@@ -7848,7 +8146,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['ArenaTournamentVariantIsKey'];
+          'application/json': components['schemas']['ArenaTournamentFull'];
         };
       };
     };
@@ -7941,7 +8239,7 @@ export interface operations {
            * @default 5
            * @enum {integer}
            */
-          waitMinutes: 1 | 2 | 3 | 5 | 10 | 15 | 20 | 30 | 45 | 60;
+          waitMinutes?: 1 | 2 | 3 | 5 | 10 | 15 | 20 | 30 | 45 | 60;
           /** @description Timestamp (in milliseconds) to start the tournament at a given date and time. Overrides the `waitMinutes` setting */
           startDate?: number;
           variant?: components['schemas']['VariantKey'];
@@ -7949,23 +8247,23 @@ export interface operations {
            * @description Games are rated and impact players ratings
            * @default true
            */
-          rated: boolean;
+          rated?: boolean;
           position?: components['schemas']['FromPositionFEN'];
           /**
            * @description Whether the players can use berserk. Only allowed if clockIncrement <= clockTime * 2
            * @default true
            */
-          berserkable: boolean;
+          berserkable?: boolean;
           /**
            * @description After 2 wins, consecutive wins grant 4 points instead of 2.
            * @default true
            */
-          streakable: boolean;
+          streakable?: boolean;
           /**
            * @description Whether the players can discuss in a chat
            * @default true
            */
-          hasChat: boolean;
+          hasChat?: boolean;
           /** @description Anything you want to tell players about the tournament */
           description?: string;
           /** @description Make the tournament private, and restrict access with a password */
@@ -8034,7 +8332,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['ArenaTournamentVariantIsKey'];
+          'application/json': components['schemas']['ArenaTournamentFull'];
         };
       };
       /** @description The update of the Arena tournament failed. */
@@ -8077,7 +8375,7 @@ export interface operations {
            *
            * @default false
            */
-          pairMeAsap: boolean;
+          pairMeAsap?: boolean;
         };
       };
     };
@@ -8201,7 +8499,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['ArenaTournamentVariantIsKey'];
+          'application/json': components['schemas']['ArenaTournamentFull'];
         };
       };
       /** @description The update of the team battle tournament failed. */
@@ -8455,7 +8753,7 @@ export interface operations {
            * @description Games are rated and impact players ratings
            * @default true
            */
-          rated: boolean;
+          rated?: boolean;
           /** @description Make the tournament private and restrict access with a password. */
           password?: string;
           /** @description Usernames of players that must not play together.
@@ -8484,7 +8782,7 @@ export interface operations {
            *
            * @default 20
            */
-          chatFor: number;
+          chatFor?: number;
           /**
            * @description Minimum rating to join. Leave empty to let everyone join the tournament.
            * @enum {integer}
@@ -8536,7 +8834,7 @@ export interface operations {
            *
            * @default false
            */
-          'conditions.playYourGames': boolean;
+          'conditions.playYourGames'?: boolean;
           /** @description Predefined list of usernames that are allowed to join, separated by commas.
            *     If this list is non-empty, then usernames absent from this list will be forbidden to join.
            *     Adding `%titled` to the list additionally allows any titled player to join.
@@ -8691,7 +8989,7 @@ export interface operations {
            * @description Games are rated and impact players ratings
            * @default true
            */
-          rated: boolean;
+          rated?: boolean;
           /** @description Make the tournament private and restrict access with a password. */
           password?: string;
           /** @description Usernames of players that must not play together.
@@ -8713,7 +9011,7 @@ export interface operations {
            *
            * @default 20
            */
-          chatFor: number;
+          chatFor?: number;
           /**
            * @description Minimum rating to join. Leave empty to let everyone join the tournament.
            * @enum {integer}
@@ -8765,7 +9063,7 @@ export interface operations {
            *
            * @default false
            */
-          'conditions.playYourGames': boolean;
+          'conditions.playYourGames'?: boolean;
           /** @description Predefined list of usernames that are allowed to join, separated by commas.
            *     If this list is non-empty, then usernames absent from this list will be forbidden to join.
            *     Adding `%titled` to the list additionally allows any titled player to join.
@@ -9226,7 +9524,7 @@ export interface operations {
            * @default white
            * @enum {string}
            */
-          orientation: 'white' | 'black';
+          orientation?: 'white' | 'black';
           variant?: components['schemas']['VariantKey'];
         };
       };
@@ -9345,7 +9643,7 @@ export interface operations {
       };
     };
   };
-  broadcastIndex: {
+  broadcastsOfficial: {
     parameters: {
       query?: {
         /** @description Max number of broadcasts to fetch */
@@ -9364,7 +9662,46 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/x-ndjson': components['schemas']['BroadcastTour'][];
+          'application/x-ndjson': components['schemas']['BroadcastWithRounds'];
+        };
+      };
+    };
+  };
+  broadcastsByUser: {
+    parameters: {
+      query?: {
+        page?: number;
+      };
+      header?: never;
+      path: {
+        username: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description A paginated list of the broadcasts created by a user. */
+      200: {
+        headers: {
+          'Access-Control-Allow-Origin'?: string;
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            /** @example 4 */
+            currentPage: number;
+            /** @example 15 */
+            maxPerPage: number;
+            currentPageResults: components['schemas']['BroadcastByUser'][];
+            /** @example 205194 */
+            nbResults: number;
+            /** @example 3 */
+            previousPage: number | null;
+            /** @example 5 */
+            nextPage: number | null;
+            /** @example 13680 */
+            nbPages: number;
+          };
         };
       };
     };
@@ -9389,7 +9726,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['BroadcastTour'];
+          'application/json': components['schemas']['BroadcastWithRounds'];
         };
       };
       /** @description The creation of the broadcast tournament failed. */
@@ -9421,7 +9758,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['BroadcastTour'];
+          'application/json': components['schemas']['BroadcastWithRounds'];
         };
       };
     };
@@ -9527,7 +9864,7 @@ export interface operations {
            *
            * @default false
            */
-          finished: boolean;
+          finished?: boolean;
         };
       };
     };
@@ -9539,7 +9876,7 @@ export interface operations {
           [name: string]: unknown;
         };
         content: {
-          'application/json': components['schemas']['BroadcastRound'];
+          'application/json': components['schemas']['BroadcastRoundNew'];
         };
       };
       /** @description The creation of the broadcast failed. */
@@ -9620,7 +9957,7 @@ export interface operations {
            *
            * @default false
            */
-          finished: boolean;
+          finished?: boolean;
         };
       };
     };
@@ -10380,7 +10717,7 @@ export interface operations {
            * @default false
            * @example true
            */
-          rated: boolean;
+          rated?: boolean;
           /**
            * @description Clock initial time in minutes. Required for real-time seeks.
            * @example 15
@@ -10402,7 +10739,7 @@ export interface operations {
            * @default random
            * @enum {string}
            */
-          color: 'random' | 'white' | 'black';
+          color?: 'random' | 'white' | 'black';
           /** @description The rating range of potential opponents. Better left empty.
            *     Example: 1500-1800
            *      */
@@ -11127,7 +11464,7 @@ export interface operations {
            * @description Game is rated and impacts players ratings
            * @default false
            */
-          rated: boolean;
+          rated?: boolean;
           /**
            * @description Clock initial time in seconds. If empty, a correspondence game is created. Valid values are 0, 15, 30, 45, 60, 90, and any multiple of 60 up to 10800 (3 hours).
            * @example 300
@@ -11148,7 +11485,7 @@ export interface operations {
            * @default random
            * @enum {string}
            */
-          color: 'random' | 'white' | 'black';
+          color?: 'random' | 'white' | 'black';
           variant?: components['schemas']['VariantKey'];
           fen?: components['schemas']['FromPositionFEN'];
           /** @description If set, the response is streamed as [ndjson](#section/Introduction/Streaming-with-ND-JSON).
@@ -11346,7 +11683,7 @@ export interface operations {
            * @default random
            * @enum {string}
            */
-          color: 'random' | 'white' | 'black';
+          color?: 'random' | 'white' | 'black';
           variant?: components['schemas']['VariantKey'];
           fen?: components['schemas']['FromPositionFEN'];
         };
@@ -11389,7 +11726,7 @@ export interface operations {
            * @description Game is rated and impacts players ratings
            * @default false
            */
-          rated: boolean;
+          rated?: boolean;
           /**
            * @description Clock initial time in seconds. If empty, a correspondence game is created.
            * @example 300
@@ -11545,7 +11882,7 @@ export interface operations {
            * @description Game is rated and impacts players ratings
            * @default false
            */
-          rated: boolean;
+          rated?: boolean;
           variant?: components['schemas']['VariantKey'];
           fen?: components['schemas']['FromPositionFEN'];
           /**
@@ -11556,7 +11893,7 @@ export interface operations {
            *
            * @default Your game with {opponent} is ready: {game}.
            */
-          message: string;
+          message?: string;
           /**
            * @description Extra game rules separated by commas.
            *     Example: `noAbort,noRematch`

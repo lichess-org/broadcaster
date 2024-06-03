@@ -7,6 +7,7 @@ import RoundTimes from './RoundTimes.vue';
 import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
+import { paths } from '../lichess';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -28,10 +29,13 @@ function stopWatching() {
 
 function getRound() {
   lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
-    .then(response => response.json() as Promise<LichessRound>)
-    .then(data => {
-      round.value = data;
-    });
+    .then(
+      response =>
+        response.json() as Promise<
+          paths['/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}']['get']['responses']['200']['content']['application/json']
+        >,
+    )
+    .then(data => (round.value = data));
 }
 
 async function uploadExistingFilesInFolder() {
