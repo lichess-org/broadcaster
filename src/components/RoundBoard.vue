@@ -22,9 +22,11 @@ watch(game, (updatedGame: BroadcastRoundGame) => {
 </script>
 
 <template>
-  {{ game.name }}
-  <span class="float-right font-bold" :class="{ 'text-red-600': game.status === '*' }">
-    <span v-if="game.status === '*'">LIVE</span> <span v-else>{{ game.status }}</span>
+  <span class="flex justify-between">
+    {{ game.name }}
+    <span class="font-bold min-w-max" :class="{ 'text-red-600': game.status === '*' }">
+      <span v-if="game.status === '*'">LIVE</span> <span v-else>{{ game.status }}</span>
+    </span>
   </span>
   <span v-if="showGames">
     <TheChessboard :boardConfig="boardConfig" reactive-config class="w-auto" />
