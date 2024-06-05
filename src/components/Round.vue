@@ -176,7 +176,7 @@ getRound();
         </SwitchGroup>
       </div>
     </h3>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
       <a
         v-for="(game, index) in round.games"
         href="#"
