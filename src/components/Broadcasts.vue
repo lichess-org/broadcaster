@@ -22,7 +22,7 @@ function refresh() {
   broadcasts.value = [];
   isLoading.value = true;
 
-  lichessFetch(`/api/broadcast/by/bobby`)
+  lichessFetch(`/api/broadcast/by/${user.username}`)
     .then(
       response =>
         response.json() as Promise<

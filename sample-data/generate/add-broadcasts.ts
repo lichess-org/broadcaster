@@ -6,7 +6,7 @@ type NewBroadcastRound =
   paths['/broadcast/{broadcastTournamentId}/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
 
 const lichess = 'http://localhost:8080';
-const token = 'lip_bobby';
+const token = 'lip_admin';
 
 for (let i = 1; i <= 100; i++) {
   const broadcast: NewBroadcast = {
@@ -14,8 +14,11 @@ for (let i = 1; i <= 100; i++) {
     description: faker.lorem.sentence(),
     autoLeaderboard: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
-    tier: faker.number.int({ min: 3, max: 5 }),
   };
+
+  if (faker.datatype.boolean(0.3)) {
+    broadcast.tier = faker.number.int({ min: 3, max: 5 });
+  }
 
   const response = await fetch(`${lichess}/broadcast/new`, {
     method: 'POST',
