@@ -31,7 +31,7 @@ watch(game, (updatedGame: BroadcastRoundGame) => {
   <a
     href="#"
     @click="roundURL && openPath(roundURL + '/' + game.id)"
-    class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
+    class="flex flex-col justify-between bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
   >
     <span class="flex justify-between">
       {{ game.name }}
