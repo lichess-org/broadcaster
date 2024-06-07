@@ -150,8 +150,8 @@ getRound();
     </div>
 
     <h3 class="text-white text-xl my-4">
-      Games
-      <span class="text-gray-400">({{ round.games.length }})</span>
+      Spectator View
+      <span class="text-gray-400">({{ round.games.length }} games)</span>
 
       <div class="float-right">
         <SwitchGroup as="div" class="flex items-center">
