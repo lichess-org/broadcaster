@@ -27,18 +27,18 @@
     "@digitak/esrun": "^3.2.26",
     "@faker-js/faker": "^8.4.1",
     "@tauri-apps/cli": "^1.5.14",
-    "@types/node": "^20.14.0",
+    "@types/node": "^20.14.2",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.19",
     "chess.js": "1.0.0-beta.8",
     "jsdom": "^24.1.0",
     "postcss": "^8.4.38",
-    "prettier": "^3.3.0",
-    "tailwindcss": "^3.4.3",
+    "prettier": "^3.3.1",
+    "tailwindcss": "^3.4.4",
     "typescript": "^5.4.5",
-    "vite": "^5.2.12",
+    "vite": "^5.2.13",
     "vitest": "^1.6.0",
-    "vue-tsc": "^2.0.19"
+    "vue-tsc": "^2.0.20"
   },
-  "packageManager": "pnpm@9.1.4+sha512.9df9cf27c91715646c7d675d1c9c8e41f6fce88246f1318c1aa6a1ed1aeb3c4f032fcdf4ba63cc69c4fe6d634279176b5358727d8f2cc1e65b65f43ce2f8bfb0"
+  "packageManager": "pnpm@9.2.0+sha512.98a80fd11c2e7096747762304106432b3ddc67dcf54b5a8c01c93f68a2cd5e05e6821849522a06fb76284d41a2660d5e334f2ee3bbf29183bf2e739b1dafa771"
 }
