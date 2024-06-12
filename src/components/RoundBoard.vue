@@ -18,7 +18,7 @@ const boardConfig: BoardConfig = reactive({
 });
 
 defineProps<{
-  showGames: Boolean;
+  showBoard: Boolean;
   roundURL: string;
 }>();
 
@@ -39,7 +39,7 @@ watch(game, (updatedGame: BroadcastRoundGame) => {
         <span v-if="game.status === '*'">LIVE</span> <span v-else>{{ game.status }}</span>
       </span>
     </span>
-    <span v-if="showGames">
+    <span v-show="showBoard">
       <TheChessboard :boardConfig="boardConfig" reactive-config class="w-auto" />
     </span>
   </a>

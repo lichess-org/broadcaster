@@ -12,7 +12,7 @@ import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
-const showGames = ref(false);
+const showBoard = ref(false);
 const round = ref<LichessRound | null>(null);
 
 const watchedFolder = computed<string>(() => {
@@ -156,16 +156,16 @@ getRound();
       <div class="float-right">
         <SwitchGroup as="div" class="flex items-center">
           <Switch
-            v-model="showGames"
+            v-model="showBoard"
             :class="[
-              showGames ? 'bg-indigo-600' : 'bg-gray-200',
+              showBoard ? 'bg-indigo-600' : 'bg-gray-200',
               'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
             ]"
           >
             <span
               aria-hidden="true"
               :class="[
-                showGames ? 'translate-x-5' : 'translate-x-0',
+                showBoard ? 'translate-x-5' : 'translate-x-0',
                 'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
               ]"
             />
@@ -180,7 +180,7 @@ getRound();
       <RoundBoard
         v-for="(game, index) in round.games"
         v-model="round.games[index]"
-        :showGames="showGames"
+        :showBoard="showBoard"
         :roundURL="round.round.url"
         :key="game.id"
       ></RoundBoard>
