@@ -30,7 +30,7 @@ watch(game, (updatedGame: BroadcastRoundGame) => {
 <template>
   <a
     href="#"
-    @click="roundURL && openPath(roundURL + '/' + game.id)"
+    @click.prevent="roundURL && openPath(roundURL + '/' + game.id)"
     class="flex flex-col justify-between bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
   >
     <span class="flex justify-between">
