@@ -39,9 +39,8 @@ if (!hasBroadcasts.value) {
 </script>
 
 <template>
-  <div class="md:flex md:items-center md:justify-between mb-4">
+  <!-- <div class="md:flex md:items-center md:justify-between mb-4">
     <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Your Broadcasts</h2>
     </div>
     <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
       <button
@@ -67,7 +66,7 @@ if (!hasBroadcasts.value) {
         &plus; New Broadcast
       </button>
     </div>
-  </div>
+  </div> -->
 
   <div v-if="hasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">
