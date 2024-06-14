@@ -7,6 +7,7 @@ export type LichessRound = operations['broadcastRoundGet']['responses']['200']['
 
 export type BroadcastRoundInfo = components['schemas']['BroadcastRoundInfo'];
 export type BroadcastPgnPushTags = components['schemas']['BroadcastPgnPushTags'];
+export type BroadcastRoundGame = components['schemas']['BroadcastRoundGame'];
 
 export interface PgnPushResult {
   response: components['schemas']['BroadcastPgnPush'];
