@@ -130,8 +130,12 @@ requestNotificationPermission();
                 </li> -->
                 <li>
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
-                  <router-link to="/broadcasts" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white" active-class="bg-gray-800 text-white" v-if="user.isLoggedIn()"
-                    >
+                  <router-link
+                    to="/broadcasts"
+                    class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
+                    active-class="bg-gray-800 text-white"
+                    v-if="user.isLoggedIn()"
+                  >
                     <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-500">
                       <span class="text-xs font-medium leading-none text-white">T</span>
                     </span>
