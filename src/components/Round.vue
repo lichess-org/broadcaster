@@ -5,13 +5,15 @@ import { router } from '../router';
 import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
+import RoundBoard from './RoundBoard.vue';
 import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
+import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
-
+const showBoard = ref(false);
 const round = ref<LichessRound | null>(null);
 
 const watchedFolder = computed<string>(() => {
@@ -69,6 +71,7 @@ getRound();
         >
           Refresh
         </button>
+
         <button
           type="button"
           @click="round?.round.url && openPath(round.round.url)"
@@ -151,21 +154,40 @@ getRound();
     </div>
 
     <h3 class="text-white text-xl my-4">
-      Games
-      <span class="text-gray-400">({{ round.games.length }})</span>
+      Spectator View
+      <span class="text-gray-400">({{ round.games.length }} games)</span>
+
+      <div class="float-right">
+        <SwitchGroup as="div" class="flex items-center">
+          <Switch
+            v-model="showBoard"
+            :class="[
+              showBoard ? 'bg-indigo-600' : 'bg-gray-200',
+              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
+            ]"
+          >
+            <span
+              aria-hidden="true"
+              :class="[
+                showBoard ? 'translate-x-5' : 'translate-x-0',
+                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
+              ]"
+            />
+          </Switch>
+          <SwitchLabel as="span" class="ml-3 text-sm">
+            <span class="font-medium text-gray-400">Show boards</span>
+          </SwitchLabel>
+        </SwitchGroup>
+      </div>
     </h3>
-    <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <a
-        v-for="game in round.games"
-        href="#"
-        @click="round?.round.url && openPath(round.round.url + '/' + game.id)"
-        class="bg-gray-700 text-gray-100 hover:bg-gray-600 py-2 px-4"
-      >
-        {{ game.name }}
-        <span class="float-right font-bold" :class="{ 'text-red-600': game.status === '*' }">
-          <span v-if="game.status === '*'">LIVE</span> <span v-else>{{ game.status }}</span></span
-        >
-      </a>
+    <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
+      <RoundBoard
+        v-for="(game, index) in round.games"
+        v-model="round.games[index]"
+        :showBoard="showBoard"
+        :roundURL="round.round.url"
+        :key="game.id"
+      ></RoundBoard>
     </div>
   </template>
 </template>
