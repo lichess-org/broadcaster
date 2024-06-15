@@ -32,14 +32,14 @@ function logout() {
 </script>
 
 <template>
-  <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
+  <h2 class="text-2xl font-bold leading-7 sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
 
   <div
     class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
     v-if="user.isLoggedIn()"
   >
     <div>
-      <h2 class="text-base font-semibold leading-7 text-white">Session</h2>
+      <h2 class="text-base font-semibold leading-7">Session</h2>
     </div>
 
     <div>
@@ -59,7 +59,7 @@ function logout() {
 
   <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
     <div>
-      <h2 class="text-base font-semibold leading-7 text-white">About</h2>
+      <h2 class="text-base font-semibold leading-7">About</h2>
     </div>
 
     <div class="md:col-span-2">
@@ -97,7 +97,7 @@ function logout() {
   <div class="divide-y divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Configuration</h2>
+        <h2 class="text-base font-semibold leading-7">Configuration</h2>
       </div>
 
       <div class="md:col-span-2">
