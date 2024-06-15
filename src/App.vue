@@ -123,22 +123,30 @@ requestNotificationPermission();
             <li>
               <div class="text-xs font-semibold leading-6 text-gray-400">Broadcasts</div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
-                <li>
+                <!-- <li>
                   <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()"
                     >Broadcasts</router-link
                   >
-                </li>
+                </li> -->
                 <li>
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
+                  <router-link to="/broadcasts" class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white" active-class="bg-gray-800 text-white" v-if="user.isLoggedIn()"
+                    >
+                    <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-500">
+                      <span class="text-xs font-medium leading-none text-white">T</span>
+                    </span>
+                    <span class="truncate">trevlar's</span>
+                  </router-link>
+                </li>
+                <li>
                   <a
                     href="#"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                   >
-                    <span
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                      >T</span
-                    >
-                    <span class="truncate">My Broadcasts</span>
+                    <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-500">
+                      <img src="./assets/lichess-white.svg" class="w-3 inline-block" alt="Lichess logo" />
+                    </span>
+                    <span class="truncate">Featured</span>
                   </a>
                 </li>
                 <li>
@@ -146,11 +154,10 @@ requestNotificationPermission();
                     href="#"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                   >
-                    <span
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                      >L</span
-                    >
-                    <span class="truncate">Featured Broadcasts</span>
+                    <span class="inline-flex h-6 w-6 items-center justify-center rounded-full bg-gray-500">
+                      <span class="text-xs font-medium leading-none text-white">S</span>
+                    </span>
+                    <span class="truncate">Somebody-else's</span>
                   </a>
                 </li>
                 <li>
@@ -158,22 +165,6 @@ requestNotificationPermission();
                     href="#"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                   >
-                    <span
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                      >W</span
-                    >
-                    <span class="truncate">@somebody-else's</span>
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#"
-                    class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
-                  >
-                    <span
-                      class="flex h-6 w-6 shrink-0 items-center justify-center rounded-lg border border-gray-700 bg-gray-800 text-[0.625rem] font-medium text-gray-400 group-hover:text-white"
-                      >W</span
-                    >
                     <span class="truncate">+ Add</span>
                   </a>
                 </li>
