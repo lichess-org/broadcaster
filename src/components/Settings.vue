@@ -73,8 +73,11 @@ function logout() {
         >
       </p>
       <p class="mb-2 text-sm leading-6 text-gray-400">
-        If you're having trouble with your broadcast, please post to
-        <code class="font-bold">#support</code> on the
+        If you're having trouble with your broadcast, please contact
+        <a href="#" class="underline" @click.prevent="openPath('mailto:broadcast@lichess.org')"
+          >broadcast@lichess.org</a
+        >
+        or post to <code class="font-bold">#support</code> on the
         <a href="#" class="underline" @click.prevent="openPath('https://discord.gg/lichess')"> Lichess Discord</a>.
       </p>
 
