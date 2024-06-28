@@ -59,6 +59,19 @@ function logout() {
 
   <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
     <div>
+      <h2 class="text-base font-semibold leading-7">Sidebar</h2>
+    </div>
+    <div class="md:col-span-2">
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        Include broadcasts by other users in the app's sidebar. If you are a contributor to another user's broadcast,
+        you can add their username here.
+      </p>
+      [todo]
+    </div>
+  </div>
+
+  <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+    <div>
       <h2 class="text-base font-semibold leading-7">About</h2>
     </div>
 

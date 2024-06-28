@@ -3,15 +3,15 @@ import { computed, ref } from 'vue';
 import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser } from '../types';
 import { useSettingsStore } from '../stores/settings';
-import { useUserStore } from '../stores/user';
 import { lichessFetch, openPath } from '../utils';
 import BroadcastSummary from './Broadcast.vue';
+import { router } from '../router';
+import { onBeforeRouteUpdate } from 'vue-router';
 
 const settings = useSettingsStore();
-const user = useUserStore();
 
 const isLoading = ref<boolean>(true);
-
+const username = ref<string>(router.currentRoute.value.params.username as string);
 const broadcasts = ref<LichessBroadcastByUser[]>([]);
 
 const hasBroadcasts = computed<boolean>(() => {
@@ -22,7 +22,7 @@ function refresh() {
   broadcasts.value = [];
   isLoading.value = true;
 
-  lichessFetch(`/api/broadcast/by/${user.username}`)
+  lichessFetch(`/api/broadcast/by/${username.value}`)
     .then(
       response =>
         response.json() as Promise<
@@ -36,6 +36,11 @@ function refresh() {
 if (!hasBroadcasts.value) {
   refresh();
 }
+
+onBeforeRouteUpdate((to, _from) => {
+  username.value = to.params.username as string;
+  refresh();
+});
 </script>
 
 <template>
