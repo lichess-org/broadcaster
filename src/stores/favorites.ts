@@ -1,26 +1,34 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
+import { useUserStore } from './user';
 
-export const useFavoritesStore = defineStore(
-  'favorites',
-  () => {
-    const users = ref<string[]>([]);
+type SidebarUser = { label: string; username: string };
 
-    const add = (user: string) => {
-      users.value = [...users.value, user];
-    };
-
-    const remove = (user: string) => {
-      users.value = users.value.filter(u => u !== user);
-    };
-
-    return {
-      users,
-      add,
-      remove,
-    };
+export const useFavoritesStore = defineStore('favorites', {
+  state: () => ({
+    users: [] as string[],
+  }),
+  actions: {
+    add(user: string) {
+      this.users.push(user);
+    },
+    remove(user: string) {
+      this.users = this.users.filter(u => u !== user);
+    },
   },
-  {
-    persist: true,
+  getters: {
+    sidebar(state): SidebarUser[] {
+      let users: SidebarUser[] = [];
+
+      const user = useUserStore();
+      if (user.username) {
+        users.push({ label: user.username, username: user.username });
+      }
+
+      users.push({ label: 'Featured', username: 'broadcaster' });
+      users = users.concat(state.users.map(username => ({ label: username, username })));
+
+      return users;
+    },
   },
-);
+  persist: true,
+});

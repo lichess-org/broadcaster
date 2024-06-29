@@ -6,24 +6,10 @@ import { useLogStore } from './stores/logs';
 import { requestNotificationPermission } from './notify';
 import { pgnTag } from './utils';
 import { useFavoritesStore } from './stores/favorites';
-import { computed } from 'vue';
 
 const logs = useLogStore();
 const user = useUserStore();
 const favorites = useFavoritesStore();
-
-const sidebarUsers = computed(() => {
-  return [
-    {
-      label: user.username,
-      username: user.username,
-    },
-    {
-      label: 'Featured',
-      username: 'broadcaster',
-    },
-  ].concat(favorites.users.map(username => ({ label: username, username })));
-});
 
 listen<AccessTokenResponse>('event::update_access_token', event => {
   logs.clear();
@@ -136,7 +122,7 @@ requestNotificationPermission();
                 </li>
               </ul>
             </li>
-            <li>
+            <li v-if="user.isLoggedIn()">
               <div class="text-xs font-semibold leading-6 text-gray-400">Broadcasts</div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
                 <!-- <li>
@@ -144,12 +130,12 @@ requestNotificationPermission();
                     >Broadcasts</router-link
                   >
                 </li> -->
-                <li v-for="user in sidebarUsers">
+                <li v-for="u in favorites.sidebar">
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
                     :to="{
                       name: 'broadcasts',
-                      params: { username: user.username },
+                      params: { username: u.username },
                     }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                     active-class="bg-gray-800 text-white"
@@ -162,10 +148,10 @@ requestNotificationPermission();
                         alt="Lichess logo"
                       />
                       <span v-else class="text-xs font-medium leading-none text-white">{{
-                        user.label?.substring(0, 1).toUpperCase()
+                        u.label.substring(0, 1).toUpperCase()
                       }}</span>
                     </span>
-                    <span class="truncate">{{ user.label }}</span>
+                    <span class="truncate">{{ u.label }}</span>
                   </router-link>
                 </li>
                 <li>
