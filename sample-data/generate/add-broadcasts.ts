@@ -37,7 +37,7 @@ for (let i = 1; i <= 100; i++) {
   const broadcastResult = await response.json();
   console.log(broadcastResult);
 
-  for (let j = 1; j <= 5; j++) {
+  for (let j = 1; j <= faker.number.int({ min: 1, max: 5 }); j++) {
     const round: NewBroadcastRound = {
       name: `Round ${j}`,
       startsAt: faker.date.future().getTime(),
