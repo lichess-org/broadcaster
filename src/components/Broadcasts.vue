@@ -1,56 +1,73 @@
 <script setup lang="ts">
-import ndjson from 'fetch-ndjson';
-import Broadcast from './Broadcast.vue';
-import { LichessMyRound } from '../types';
-import { useSettingsStore } from '../stores/settings';
-import { useUserStore } from '../stores/user';
 import { computed, ref } from 'vue';
+import { paths } from '@lichess-org/types';
+import { BroadcastPagination, LichessBroadcastByUser } from '../types';
+import { useSettingsStore } from '../stores/settings';
 import { lichessFetch, openPath } from '../utils';
-import { useBroadcastsStore } from '../stores/broadcasts';
+import { router } from '../router';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
 
-const broadcasts = useBroadcastsStore();
+import BroadcastSummary from './Broadcast.vue';
+import Pagination from './Pagination.vue';
+
 const settings = useSettingsStore();
-const user = useUserStore();
 
 const isLoading = ref<boolean>(true);
-
-const hasBroadcasts = computed<boolean>(() => {
-  return broadcasts.broadcasts.length > 0;
+const username = ref<string>(router.currentRoute.value.params.username as string);
+const broadcasts = ref<LichessBroadcastByUser[]>([]);
+const pagination = ref<BroadcastPagination>({
+  currentPage: 1,
+  nbResults: 0,
+  nbPages: 1,
 });
 
-async function getBroadcasts(callback: (value: LichessMyRound) => void) {
-  let response = await lichessFetch(`/api/broadcast/my-rounds`, {}, 60_000);
+const hasBroadcasts = computed<boolean>(() => {
+  return broadcasts.value.length > 0;
+});
 
-  let reader = response.body!.getReader();
-  let gen = ndjson(reader);
-
-  while (true) {
-    let { done, value } = await gen.next();
-    if (done) return;
-    callback(value);
-  }
-}
+const route = useRoute();
+console.log(route.query);
 
 function refresh() {
-  broadcasts.clear();
+  broadcasts.value = [];
   isLoading.value = true;
 
-  getBroadcasts(value => {
-    broadcasts.add(value);
-  }).finally(() => {
-    isLoading.value = false;
-  });
+  lichessFetch(`/api/broadcast/by/${username.value}`, {
+    page: route.query.page?.toString() ?? '1',
+  })
+    .then(
+      response =>
+        response.json() as Promise<
+          paths['/api/broadcast/by/{username}']['get']['responses']['200']['content']['application/json']
+        >,
+    )
+    .then(data => {
+      broadcasts.value = data.currentPageResults;
+
+      pagination.value = {
+        currentPage: data.currentPage,
+        nbResults: data.nbResults,
+        nbPages: data.nbPages,
+        previousPage: data.previousPage,
+        nextPage: data.nextPage,
+      };
+    })
+    .finally(() => (isLoading.value = false));
 }
 
 if (!hasBroadcasts.value) {
   refresh();
 }
+
+onBeforeRouteUpdate((to, _from) => {
+  username.value = to.params.username as string;
+  refresh();
+});
 </script>
 
 <template>
-  <div class="md:flex md:items-center md:justify-between mb-4">
+  <!-- <div class="md:flex md:items-center md:justify-between mb-4">
     <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Your Broadcasts</h2>
     </div>
     <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
       <button
@@ -76,11 +93,13 @@ if (!hasBroadcasts.value) {
         &plus; New Broadcast
       </button>
     </div>
-  </div>
+  </div> -->
+
+  <Pagination :pages="pagination" :currentPageResultCount="broadcasts.length" />
 
   <div v-if="hasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">
-      <Broadcast v-for="broadcast in broadcasts.broadcasts" :broadcast="broadcast" />
+      <BroadcastSummary v-for="broadcast in broadcasts" :broadcast="broadcast" />
     </div>
   </div>
 

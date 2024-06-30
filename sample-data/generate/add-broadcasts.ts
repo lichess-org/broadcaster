@@ -1,33 +1,29 @@
 import { faker } from '@faker-js/faker';
+import { paths } from '@lichess-org/types';
 
-interface NewBroadcast {
-  name: string;
-  description: string;
-  autoLeaderboard: boolean;
-  markdown?: string;
-  tier?: number;
-  players?: string;
-}
+type NewBroadcast = paths['/broadcast/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
+type NewBroadcastRound =
+  paths['/broadcast/{broadcastTournamentId}/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
 
-interface NewBroadcastRound {
-  name: string;
-  syncUrl?: string;
-  startsAt?: number;
-}
+const lichess = 'http://localhost:8080';
+const token = 'lip_admin';
 
-for (let i = 1; i <= 10; i++) {
+for (let i = 1; i <= 100; i++) {
   const broadcast: NewBroadcast = {
     name: `${faker.company.name()} Invitational`,
     description: faker.lorem.sentence(),
     autoLeaderboard: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
-    tier: faker.number.int({ min: 3, max: 5 }),
   };
 
-  const response = await fetch('http://localhost:8080/broadcast/new', {
+  if (faker.datatype.boolean(0.3)) {
+    broadcast.tier = faker.number.int({ min: 3, max: 5 });
+  }
+
+  const response = await fetch(`${lichess}/broadcast/new`, {
     method: 'POST',
     headers: {
-      Authorization: 'Bearer lip_admin',
+      Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
     },
     body: JSON.stringify(broadcast),
@@ -41,16 +37,18 @@ for (let i = 1; i <= 10; i++) {
   const broadcastResult = await response.json();
   console.log(broadcastResult);
 
-  for (let j = 1; j <= 5; j++) {
+  for (let j = 1; j <= faker.number.int({ min: 1, max: 5 }); j++) {
     const round: NewBroadcastRound = {
       name: `Round ${j}`,
       startsAt: faker.date.future().getTime(),
+      finished: faker.datatype.boolean(0.2),
+      delay: 60 * faker.helpers.arrayElement([0, 1, 5, 10, 15]),
     };
 
-    const response = await fetch(`http://localhost:8080/broadcast/${broadcastResult.tour.id}/new`, {
+    const response = await fetch(`${lichess}/broadcast/${broadcastResult.tour.id}/new`, {
       method: 'POST',
       headers: {
-        Authorization: 'Bearer lip_admin',
+        Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(round),

@@ -41,9 +41,13 @@ export const useUserStore = defineStore(
     }
 
     function logout() {
-      lichessFetch('/api/token', {
-        method: 'DELETE',
-      });
+      lichessFetch(
+        '/api/token',
+        {},
+        {
+          method: 'DELETE',
+        },
+      );
 
       accessToken.value = null;
       expiresAt.value = null;
