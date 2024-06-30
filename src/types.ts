@@ -14,3 +14,11 @@ export interface PgnPushResult {
   response: components['schemas']['BroadcastPgnPush'];
   files: string[];
 }
+
+export interface BroadcastPagination {
+  currentPage: number;
+  nbResults: number;
+  nbPages: number;
+  previousPage?: number | null;
+  nextPage?: number | null;
+}

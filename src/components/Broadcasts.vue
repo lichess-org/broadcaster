@@ -1,35 +1,57 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { paths } from '@lichess-org/types';
-import { LichessBroadcastByUser } from '../types';
+import { BroadcastPagination, LichessBroadcastByUser } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { lichessFetch, openPath } from '../utils';
-import BroadcastSummary from './Broadcast.vue';
 import { router } from '../router';
-import { onBeforeRouteUpdate } from 'vue-router';
+import { onBeforeRouteUpdate, useRoute } from 'vue-router';
+
+import BroadcastSummary from './Broadcast.vue';
+import Pagination from './Pagination.vue';
 
 const settings = useSettingsStore();
 
 const isLoading = ref<boolean>(true);
 const username = ref<string>(router.currentRoute.value.params.username as string);
 const broadcasts = ref<LichessBroadcastByUser[]>([]);
+const pagination = ref<BroadcastPagination>({
+  currentPage: 1,
+  nbResults: 0,
+  nbPages: 1,
+});
 
 const hasBroadcasts = computed<boolean>(() => {
   return broadcasts.value.length > 0;
 });
 
+const route = useRoute();
+console.log(route.query);
+
 function refresh() {
   broadcasts.value = [];
   isLoading.value = true;
 
-  lichessFetch(`/api/broadcast/by/${username.value}`)
+  lichessFetch(`/api/broadcast/by/${username.value}`, {
+    page: route.query.page?.toString() ?? '1',
+  })
     .then(
       response =>
         response.json() as Promise<
           paths['/api/broadcast/by/{username}']['get']['responses']['200']['content']['application/json']
         >,
     )
-    .then(data => (broadcasts.value = data.currentPageResults))
+    .then(data => {
+      broadcasts.value = data.currentPageResults;
+
+      pagination.value = {
+        currentPage: data.currentPage,
+        nbResults: data.nbResults,
+        nbPages: data.nbPages,
+        previousPage: data.previousPage,
+        nextPage: data.nextPage,
+      };
+    })
     .finally(() => (isLoading.value = false));
 }
 
@@ -72,6 +94,8 @@ onBeforeRouteUpdate((to, _from) => {
       </button>
     </div>
   </div> -->
+
+  <Pagination :pages="pagination" :currentPageResultCount="broadcasts.length" />
 
   <div v-if="hasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">

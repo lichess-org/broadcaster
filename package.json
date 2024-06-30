@@ -35,13 +35,13 @@
     "autoprefixer": "^10.4.19",
     "chess.js": "1.0.0-beta.8",
     "jsdom": "^24.1.0",
-    "postcss": "^8.4.38",
+    "postcss": "^8.4.39",
     "prettier": "^3.3.2",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.5.2",
     "vite": "^5.3.2",
     "vitest": "^1.6.0",
-    "vue-tsc": "^2.0.22"
+    "vue-tsc": "^2.0.24"
   },
   "packageManager": "pnpm@9.5.0-beta.0+sha512.c2e60e7ed04e459591c982f2760cd8f7d1f48fe1ca4d46ccbbf8377df1eb2d077ace1e9d334b06250dddf23c03b4562858f77992b9a3bb4a93355aefd173df32"
 }
