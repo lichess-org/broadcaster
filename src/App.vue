@@ -135,7 +135,10 @@ requestNotificationPermission();
                   <router-link
                     :to="{
                       name: 'broadcasts',
-                      params: { username: u.username },
+                      params: {
+                        username: u.username,
+                        pageNum: 1,
+                      },
                     }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                     active-class="bg-gray-800 text-white"
