@@ -9,8 +9,18 @@ const lichess = 'http://localhost:8080';
 const token = 'lip_admin';
 
 for (let i = 1; i <= 100; i++) {
+  const name = [
+    faker.helpers.arrayElement([
+      faker.company.name(),
+      faker.person.lastName(),
+      faker.location.city(),
+      faker.location.country(),
+    ]),
+    faker.helpers.arrayElement(['Cup', 'Championship', 'Open', 'Invitational', 'Classic', 'Rapid']),
+  ].join(' ');
+
   const broadcast: NewBroadcast = {
-    name: `${faker.company.name()} Invitational`,
+    name,
     description: faker.lorem.sentence(),
     autoLeaderboard: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
@@ -37,7 +47,7 @@ for (let i = 1; i <= 100; i++) {
   const broadcastResult = await response.json();
   console.log(broadcastResult);
 
-  for (let j = 1; j <= faker.number.int({ min: 1, max: 5 }); j++) {
+  for (let j = 1; j <= faker.number.int({ min: 0, max: 10 }); j++) {
     const round: NewBroadcastRound = {
       name: `Round ${j}`,
       startsAt: faker.date.future().getTime(),
