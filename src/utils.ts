@@ -96,8 +96,7 @@ if (import.meta.vitest) {
   const { it, expect, vi } = import.meta.vitest;
 
   it('shows relative time', () => {
-    const now = new Date(2000, 1, 1);
-    vi.setSystemTime(now);
+    vi.setSystemTime(new Date(2000, 1, 1));
 
     expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 0, 1).getTime())).toBe('in 1 second');
     expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 0, 2).getTime())).toBe('in 2 seconds');
