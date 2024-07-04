@@ -8,6 +8,7 @@ import { onBeforeRouteUpdate } from 'vue-router';
 
 import BroadcastSummary from './BroadcastSummary.vue';
 import Pagination from './Pagination.vue';
+import BroadcastDrawer from './BroadcastDrawer.vue';
 
 const settings = useSettingsStore();
 
@@ -77,6 +78,8 @@ onBeforeRouteUpdate((to, _from) => {
   </div> -->
 
   <Pagination :broadcasts="broadcasts" />
+
+  <BroadcastDrawer />
 
   <div v-if="pageHasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">
