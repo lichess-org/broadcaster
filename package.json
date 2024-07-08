@@ -30,7 +30,7 @@
     "@digitak/esrun": "^3.2.26",
     "@faker-js/faker": "^8.4.1",
     "@tauri-apps/cli": "^1.6.0",
-    "@types/node": "^20.14.9",
+    "@types/node": "^20.14.10",
     "@vitejs/plugin-vue": "^5.0.5",
     "autoprefixer": "^10.4.19",
     "chess.js": "1.0.0-beta.8",

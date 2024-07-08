@@ -9,8 +9,10 @@ import { onBeforeRouteUpdate } from 'vue-router';
 import BroadcastSummary from './BroadcastSummary.vue';
 import Pagination from './Pagination.vue';
 import BroadcastDrawer from './BroadcastDrawer.vue';
+import { useUserStore } from '../stores/user';
 
 const settings = useSettingsStore();
+const user = useUserStore();
 
 const username = ref<string>(router.currentRoute.value.params.username as string);
 const pageNum = ref<number>(parseInt(router.currentRoute.value.params.pageNum as string));
@@ -104,20 +106,27 @@ onBeforeRouteUpdate((to, _from) => {
     </svg>
 
     <h3 class="mt-2 text-sm font-semibold text-gray-200">No broadcasts</h3>
-    <p class="mt-1 text-sm text-gray-300">Get started by creating a new broadcast.</p>
-    <div class="mt-6">
-      <button
-        type="button"
-        @click="openPath(`${settings.lichessUrl}/broadcast/new`)"
-        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path
-            d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
-          />
-        </svg>
-        Create a new broadcast
-      </button>
-    </div>
+    <p class="mt-1 text-sm text-gray-300">
+      No broadcasts found for <span>{{ username }}</span
+      >.
+    </p>
+
+    <template v-if="user.is(username)">
+      <p class="mt-1 text-sm text-gray-300">Get started by creating a new broadcast.</p>
+      <div class="mt-6">
+        <button
+          type="button"
+          @click="openPath(`${settings.lichessUrl}/broadcast/new`)"
+          class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path
+              d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
+            />
+          </svg>
+          Create a new broadcast
+        </button>
+      </div>
+    </template>
   </div>
 </template>

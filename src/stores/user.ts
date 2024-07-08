@@ -54,6 +54,10 @@ export const useUserStore = defineStore(
       username.value = null;
     }
 
+    function is(u: string): boolean {
+      return u.toLowerCase() === username.value?.toLowerCase();
+    }
+
     return {
       accessToken,
       expiresAt,
@@ -62,6 +66,7 @@ export const useUserStore = defineStore(
       setAccessToken,
       isLoggedIn,
       logout,
+      is,
     };
   },
   {
