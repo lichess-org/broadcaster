@@ -8,7 +8,7 @@ import RoundBoard from './RoundBoard.vue';
 import { lichessFetch, openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
-import { upload_gamespgn_file_if_exists, uploadExistingFilesInFolder } from '../upload';
+import { uploadMultiGameFileIfExists, uploadIndividualGames } from '../upload';
 // import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const logs = useLogStore();
@@ -38,16 +38,22 @@ function getRound() {
 }
 
 async function uploadNow() {
-  await uploadExistingFilesInFolder(round.value!.round.id, watchedFolder.value);
-  router.push('/');
+  const multiGameFiles = await uploadMultiGameFileIfExists(round.value!.round.id, watchedFolder.value);
+
+  if (multiGameFiles.length === 0) {
+    logs.info('No multi-game PGNs found, uploading individual games instead');
+    await uploadIndividualGames(round.value!.round.id, watchedFolder.value);
+  }
 }
 
 async function resetAndReupload() {
+  logs.info('Resetting round and re-uploading PGNs');
+
   await lichessFetch(`/broadcast/round/${round.value!.round.id}/reset`, {
     method: 'POST',
   });
 
-  await upload_gamespgn_file_if_exists(round.value!.round.id, watchedFolder.value);
+  uploadNow();
 }
 
 getRound();

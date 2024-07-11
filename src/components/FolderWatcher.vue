@@ -3,7 +3,7 @@ import { open } from '@tauri-apps/api/dialog';
 import { DebouncedEvent, watch } from 'tauri-plugin-fs-watch-api';
 import { useLogStore } from '../stores/logs';
 import { add_to_queue, isSingleGamePgn } from '../utils';
-import { upload_gamespgn_file_if_exists } from '../upload';
+import { uploadMultiGameFileIfExists } from '../upload';
 
 const logs = useLogStore();
 
@@ -26,7 +26,7 @@ async function selectPgnFolder() {
 }
 
 async function startWatchingFolder(path: string) {
-  upload_gamespgn_file_if_exists(props.roundId, path);
+  uploadMultiGameFileIfExists(props.roundId, path);
 
   const stopWatching = await watch(path, handleFolderChange, {
     recursive: true,
