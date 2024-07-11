@@ -37,15 +37,6 @@ function getRound() {
     });
 }
 
-async function uploadNow() {
-  const multiGameFiles = await uploadMultiGameFileIfExists(round.value!.round.id, watchedFolder.value);
-
-  if (multiGameFiles.length === 0) {
-    logs.info('No multi-game PGNs found, uploading individual games instead');
-    await uploadIndividualGames(round.value!.round.id, watchedFolder.value);
-  }
-}
-
 async function resetAndReupload() {
   logs.info('Resetting round and re-uploading PGNs');
 
@@ -53,7 +44,12 @@ async function resetAndReupload() {
     method: 'POST',
   });
 
-  uploadNow();
+  const multiGameFiles = await uploadMultiGameFileIfExists(round.value!.round.id, watchedFolder.value);
+
+  if (multiGameFiles.length === 0) {
+    logs.info('No multi-game PGNs found, uploading individual games instead');
+    await uploadIndividualGames(round.value!.round.id, watchedFolder.value);
+  }
 }
 
 getRound();
@@ -121,12 +117,6 @@ getRound();
               >
                 Reset round + Re-upload game PGNs
               </button>
-            </div>
-
-            <div class="mt-4 pt-2 border-t-2 border-t-green-900 text-green-100 text-sm">
-              If there are already ongoing games and PGN files in this directory that you want to bulk upload, click
-              here:
-              <a class="underline" href="" @click.prevent="uploadNow"> Upload PGN now </a>
             </div>
           </div>
         </div>
