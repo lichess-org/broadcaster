@@ -40,7 +40,7 @@ function getRound() {
 async function resetAndReupload() {
   logs.info('Resetting round and re-uploading PGNs');
 
-  await lichessFetch(`/broadcast/round/${round.value!.round.id}/reset`, {
+  await lichessFetch(`/api/broadcast/round/${round.value!.round.id}/reset`, {
     method: 'POST',
   });
 
