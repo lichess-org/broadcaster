@@ -78,7 +78,7 @@ function logout() {
           >broadcast@lichess.org</a
         >
         or post to <code class="font-bold">#support</code> on the
-        <a href="#" class="underline" @click.prevent="openPath('https://discord.gg/lichess')"> Lichess Discord</a>.
+        <a href="#" class="underline" @click.prevent="openPath('https://discord.gg/Syx9CbN8Jv')"> Lichess Content Discord</a>.
       </p>
 
       <div class="mt-8">
