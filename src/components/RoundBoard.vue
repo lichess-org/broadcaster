@@ -18,7 +18,7 @@ const boardConfig: BoardConfig = reactive({
 });
 
 defineProps<{
-  showBoard: Boolean;
+  showBoard: boolean;
   roundURL: string;
 }>();
 
