@@ -2,8 +2,8 @@
 
 # usage like: ./curl-pusher.sh akARCJwy 64
 
-LICHESS_URL="https://schlawg.org"
-API_TOKEN="lip_abdul" # with study:write permission
+LICHESS_URL="http://localhost:8080"
+API_TOKEN="lip_admin" # with study:write permission
 BROADCAST_ROUND_ID="$1"
 NUMBER_OF_GAMES="${2:-2}"
 function main() {

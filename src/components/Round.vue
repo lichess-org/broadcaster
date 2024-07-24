@@ -6,10 +6,11 @@ import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
 import RoundBoard from './RoundBoard.vue';
-import { add_to_queue, isSingleGamePgn, lichessFetch, openPath, recursiveFileList } from '../utils';
+import { lichessFetch, openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
-import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
+import { uploadMultiGameFileIfExists, uploadIndividualGames } from '../upload';
+// import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -40,13 +41,19 @@ function getRound() {
     .then(data => (round.value = data));
 }
 
-async function uploadExistingFilesInFolder() {
-  let files = await recursiveFileList(watchedFolder.value);
-  files = files.filter(file => isSingleGamePgn(file));
+async function resetAndReupload() {
+  logs.info('Resetting round and re-uploading PGNs');
 
-  await add_to_queue(round.value!.round.id, files);
+  await lichessFetch(`/api/broadcast/round/${round.value!.round.id}/reset`, {
+    method: 'POST',
+  });
 
-  router.push('/');
+  const multiGameFiles = await uploadMultiGameFileIfExists(round.value!.round.id, watchedFolder.value);
+
+  if (multiGameFiles.length === 0) {
+    logs.info('No multi-game PGNs found, uploading individual games instead');
+    await uploadIndividualGames(round.value!.round.id, watchedFolder.value);
+  }
 }
 
 getRound();
@@ -99,7 +106,7 @@ getRound();
               <a class="underline" href="" @click.prevent="openPath(watchedFolder)">{{ watchedFolder }}</a>
             </p>
 
-            <div class="mt-4">
+            <div class="mt-4 gap-2 flex">
               <button
                 type="button"
                 @click="stopWatching"
@@ -107,12 +114,13 @@ getRound();
               >
                 Stop watching this folder
               </button>
-            </div>
-
-            <div class="mt-4 pt-2 border-t-2 border-t-green-900 text-green-100 text-sm">
-              If there are already ongoing games and PGN files in this directory that you want to bulk upload, click
-              here:
-              <a class="underline" href="" @click.prevent="uploadExistingFilesInFolder"> Upload PGN now </a>
+              <button
+                type="button"
+                @click="resetAndReupload"
+                class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400"
+              >
+                Reset round + Re-upload game PGNs
+              </button>
             </div>
           </div>
         </div>
@@ -157,7 +165,7 @@ getRound();
       Spectator View
       <span class="text-gray-400">({{ round.games.length }} games)</span>
 
-      <div class="float-right">
+      <!-- <div class="float-right">
         <SwitchGroup as="div" class="flex items-center">
           <Switch
             v-model="showBoard"
@@ -178,7 +186,7 @@ getRound();
             <span class="font-medium text-gray-400">Show boards</span>
           </SwitchLabel>
         </SwitchGroup>
-      </div>
+      </div> -->
     </h3>
     <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
       <RoundBoard

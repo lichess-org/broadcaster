@@ -146,21 +146,25 @@ if (import.meta.vitest) {
   });
 }
 
-/**
- * Ignore the "games.pgn" file which is a multi-game pgn file.
- * We only want to upload single game pgn files (game-1.pgn, game-2.pgn, etc.)
- */
 export function isSingleGamePgn(path: string): boolean {
   return path.endsWith('.pgn') && !path.endsWith('games.pgn');
 }
 
+export function isMultiGamePgn(path: string): boolean {
+  return path.endsWith('games.pgn');
+}
+
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
-
-  it('filters pgn files', () => {
+  it('finds pgn files', () => {
     expect(isSingleGamePgn('path/to/game-1.pgn')).toBe(true);
+    expect(isMultiGamePgn('path/to/game-1.pgn')).toBe(false);
+
     expect(isSingleGamePgn('path/to/games.pgn')).toBe(false);
+    expect(isMultiGamePgn('path/to/games.pgn')).toBe(true);
+
     expect(isSingleGamePgn('path/to/index.json')).toBe(false);
+    expect(isMultiGamePgn('path/to/index.json')).toBe(false);
   });
 }
 

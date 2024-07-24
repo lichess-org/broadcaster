@@ -20,7 +20,7 @@ reqwest = { version = "0.11.23", features = ["blocking", "json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.111"
 serde_urlencoded = "0.7.1"
-tauri = { version = "1.5", features = [ "updater", "shell-open", "fs-read-dir", "notification-all", "devtools", "fs-read-file", "dialog-open", "reqwest-native-tls-vendored" ] }
+tauri = { version = "1.5", features = [ "wry", "objc-exception", "updater", "shell-open", "fs-read-dir", "notification-all", "devtools", "fs-read-file", "dialog-open", "reqwest-native-tls-vendored" ], default-features = false }
 tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
 tiny_http = "0.12.0"
 
