@@ -121,20 +121,22 @@ getRound();
           </div>
         </div>
       </div>
-    <div
-      v-if="!logs.roundHasGamespgnFile.get(round.round.id)"
-      class="bg-yellow-100 border-l-8 border-yellow-500 text-yellow-700 p-4 mb-4"
-    >
-      <p>
-        There is no <code>games.pgn</code> file found in that folder. If you're using DGT LiveChess, it is recommended to
-        enable that file (<a
-          class="underline"
-          href=""
-          @click.prevent="openPath('https://lichess.org/page/broadcaster-app#there-is-no-gamespgn-file-in-the-folder')"
-          >See instructions here</a
-        >)
-      </p>
-    </div>
+      <div
+        v-if="!logs.roundHasGamespgnFile.get(round.round.id)"
+        class="bg-yellow-100 border-l-8 border-yellow-500 text-yellow-700 p-4 mb-4"
+      >
+        <p>
+          There is no <code>games.pgn</code> file found in that folder. If you're using DGT LiveChess, it is recommended
+          to enable that file (<a
+            class="underline"
+            href=""
+            @click.prevent="
+              openPath('https://lichess.org/page/broadcaster-app#there-is-no-gamespgn-file-in-the-folder')
+            "
+            >See instructions here</a
+          >)
+        </p>
+      </div>
     </div>
     <div v-else class="border-gray-700 border-2 p-6 my-4">
       <h3 class="text-white text-xl mb-2">
