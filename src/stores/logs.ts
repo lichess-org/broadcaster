@@ -23,6 +23,7 @@ export const useLogStore = defineStore('logs', () => {
   const files = ref<Set<string>>(new Set());
   const moveCount = ref(0);
   const queueSize = ref(0);
+  const roundHasGamespgnFile = ref<Map<string, boolean>>(new Map());
 
   const watchProcesses = ref<Map<string, WatchProcess>>(new Map());
 
@@ -54,6 +55,7 @@ export const useLogStore = defineStore('logs', () => {
     moveCount,
     queueSize,
     watchProcesses,
+    roundHasGamespgnFile,
     info,
     error,
     clear,
