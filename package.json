@@ -15,10 +15,10 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
     "@heroicons/vue": "^2.1.5",
-    "@lichess-org/types": "^2.0.8",
     "@tailwindcss/forms": "^0.5.7",
     "@tauri-apps/api": "^1.6.0",
     "fetch-ndjson": "^1.1.7",
+    "openapi-fetch": "^0.11.1",
     "pinia": "^2.2.2",
     "pinia-plugin-persistedstate": "^3.2.1",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
@@ -29,8 +29,9 @@
   "devDependencies": {
     "@digitak/esrun": "^3.2.26",
     "@faker-js/faker": "^8.4.1",
+    "@lichess-org/types": "^2.0.10",
     "@tauri-apps/cli": "^1.6.0",
-    "@types/node": "^22.4.2",
+    "@types/node": "^22.5.0",
     "@vitejs/plugin-vue": "^5.1.2",
     "autoprefixer": "^10.4.20",
     "chess.js": "1.0.0-beta.8",
@@ -43,5 +44,5 @@
     "vitest": "^2.0.5",
     "vue-tsc": "^2.0.29"
   },
-  "packageManager": "pnpm@9.6.0+sha512.38dc6fba8dba35b39340b9700112c2fe1e12f10b17134715a4aa98ccf7bb035e76fd981cf0bb384dfa98f8d6af5481c2bef2f4266a24bfa20c34eb7147ce0b5e"
+  "packageManager": "pnpm@9.7.1+sha512.faf344af2d6ca65c4c5c8c2224ea77a81a5e8859cbc4e06b1511ddce2f0151512431dd19e6aff31f2c6a8f5f2aced9bd2273e1fed7dd4de1868984059d2c4247"
 }

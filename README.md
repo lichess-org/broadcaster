@@ -52,9 +52,15 @@ pnpm test
 pnpm test:watch
 ```
 
-### PGN Testing
+### Testing
 
-#### Simulate boards writing PGN to a folder:
+#### To seed a bunch of test broadcasts with rounds:
+
+```bash
+pnpm esrun sample-data/generate/add-broadcasts.ts
+```
+
+#### To simulate boards writing PGN to a folder:
 
 1. In the app, select a Round and start a folder watch.
 2. Run this to automatically write a bunch of PGN to the folder:
@@ -63,18 +69,10 @@ pnpm test:watch
 pnpm esrun sample-data/generate/index.ts games path/to/folder
 ```
 
-Test errors by writing bad PGN files:
+#### Test errors by writing bad PGN files:
 
 ```bash
 pnpm esrun sample-data/generate/index.ts errors path/to/folder
-```
-
-#### Bulk Broadcast + Round generation:
-
-To seed a bunch of test broadcasts with rounds:
-
-```bash
-pnpm esrun sample-data/generate/add-broadcasts.ts
 ```
 
 ### Icon Generation

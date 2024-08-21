@@ -1,5 +1,6 @@
+import createClient from 'openapi-fetch';
 import { faker } from '@faker-js/faker';
-import { paths } from '@lichess-org/types';
+import type { paths } from '@lichess-org/types';
 
 type NewBroadcast = paths['/broadcast/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
 type NewBroadcastRound =
@@ -8,20 +9,21 @@ type NewBroadcastRound =
 const lichess = 'http://localhost:8080';
 const token = 'lip_admin';
 
+const client = createClient<paths>({ baseUrl: lichess, headers: { Authorization: `Bearer ${token}` } });
+
+const handleRequestError = (error: Response) => {
+  console.error(`${error.status} ${error.statusText} at ${error.url}`);
+  process.exit(1);
+};
+
 for (let i = 1; i <= 100; i++) {
   const name = [
-    faker.helpers.arrayElement([
-      faker.company.name(),
-      faker.person.lastName(),
-      faker.location.city(),
-      faker.location.country(),
-    ]),
-    faker.helpers.arrayElement(['Cup', 'Championship', 'Open', 'Invitational', 'Classic', 'Rapid']),
+    faker.helpers.arrayElement([faker.person.lastName(), faker.location.city(), faker.location.country()]),
+    faker.helpers.arrayElement(['Cup', 'Championship', 'Open', 'Festival', 'Invitational', 'Classic', 'Rapid']),
   ].join(' ');
 
   const broadcast: NewBroadcast = {
     name,
-    description: faker.lorem.sentence(),
     autoLeaderboard: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
   };
@@ -30,22 +32,13 @@ for (let i = 1; i <= 100; i++) {
     broadcast.tier = faker.number.int({ min: 3, max: 5 });
   }
 
-  const response = await fetch(`${lichess}/broadcast/new`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(broadcast),
-  });
+  const broadcastResponse = await client.POST('/broadcast/new', { body: broadcast });
 
-  if (!response.ok) {
-    console.error(response.statusText);
-    process.exit(1);
+  if (!broadcastResponse.response.ok) {
+    handleRequestError(broadcastResponse.response);
   }
 
-  const broadcastResult = await response.json();
-  console.log(broadcastResult);
+  console.log(broadcastResponse.data);
 
   for (let j = 1; j <= faker.number.int({ min: 0, max: 10 }); j++) {
     const round: NewBroadcastRound = {
@@ -55,21 +48,15 @@ for (let i = 1; i <= 100; i++) {
       delay: 60 * faker.helpers.arrayElement([0, 1, 5, 10, 15]),
     };
 
-    const response = await fetch(`${lichess}/broadcast/${broadcastResult.tour.id}/new`, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(round),
+    const roundResponse = await client.POST('/broadcast/{broadcastTournamentId}/new', {
+      params: { path: { broadcastTournamentId: broadcastResponse.data!.tour.id } },
+      body: round,
     });
 
-    if (!response.ok) {
-      console.error(response.statusText);
-      process.exit(1);
+    if (!roundResponse.response.ok) {
+      handleRequestError(roundResponse.response);
     }
 
-    const roundResult = await response.json();
-    console.log(roundResult);
+    console.log(roundResponse.data);
   }
 }
