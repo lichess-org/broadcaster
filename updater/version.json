@@ -1,23 +1,23 @@
 {
-  "version": "v0.0.0",
-  "notes": "Test version",
-  "pub_date": "2024-02-22T19:25:57Z",
+  "version": "v0.17.0",
+  "notes": "Bug fixes and integration with latest Lichess API updates",
+  "pub_date": "2024-08-14T22:34:00Z",
   "platforms": {
     "darwin-x86_64": {
-      "signature": "Content of app.tar.gz.sig",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v1.0.0/app-x86_64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFoxSkhNa3RBaTM5UkQ3M1BWdXIvNUpBc0k5OGtkUUFpNEJYNDZLUUlmNmpOc1Jhb0FLZE9reDkyWXNkN21TRUdBYWx2aEhmWUxGQ3RQbWc1ODNnaWdZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIzNjc0MDA0CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6CndWTjk4Yk55RWt6WkN4ZDNIaTk2YkZQc2dFTEJJcUE4bEcralZJRnJqbnZoRFFzK1VXaFU5bms2Z2hCYmpLekNFYjlNUTJIZk1ua01HYnZvdGUrTUJRPT0K",
+      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-macos.app.tar.gz"
     },
     "darwin-aarch64": {
-      "signature": "Content of app.tar.gz.sig",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v1.0.0/app-aarch64.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFoxSkhNa3RBaTM5UkQ3M1BWdXIvNUpBc0k5OGtkUUFpNEJYNDZLUUlmNmpOc1Jhb0FLZE9reDkyWXNkN21TRUdBYWx2aEhmWUxGQ3RQbWc1ODNnaWdZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIzNjc0MDA0CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6CndWTjk4Yk55RWt6WkN4ZDNIaTk2YkZQc2dFTEJJcUE4bEcralZJRnJqbnZoRFFzK1VXaFU5bms2Z2hCYmpLekNFYjlNUTJIZk1ua01HYnZvdGUrTUJRPT0K",
+      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-macos.app.tar.gz"
     },
     "linux-x86_64": {
-      "signature": "Content of app.AppImage.tar.gz.sig",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v1.0.0/app-amd64.AppImage.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreGFSamxERjdPOTNqS0V4TkorVXdCbXRiRmt5c1ZXS1RSaHE5NVBKOUxxUU9sWW15WTY0Y1p6MU41ZWN3M0w5VXNaNThIWmpvbElqTGtaeW5TN3RwK2dvPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIzNjc0MjM5CWZpbGU6bGljaGVzcy1icm9hZGNhc3Rlcl8wLjE3LjBfYW1kNjQuQXBwSW1hZ2UudGFyLmd6Cks1eFRRQTlqd243OEZqMzVuNHZHUTB0NHZBMkpGY2NDQXhlMlp3WVpUQTl2WC9OUUtvV0VrMnhIS2d2ekNnZGZ1cjZOLzVlSFZMRWdiY0tWWXV2OEF3PT0K",
+      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-linux.AppImage.tar.gz"
     },
     "windows-x86_64": {
-      "signature": "Content of app-setup.nsis.sig or app.msi.sig, depending on the chosen format",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v1.0.0/app-x64-setup.nsis.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFMzNk4zRDdWeHBQejArWDA4Z2RWL0xtQkZOTTIxYWl6RUtSajladk4xeGFXWmFBYXMrL0E5NFc4OG5SS2o4STFmTnRoRWMyVkhQNkdQYzgzckRUVFFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIzNjc0ODY1CWZpbGU6TGljaGVzcy1Ccm9hZGNhc3Rlci13aW5kb3dzLm1zaQpIVGRxNDZ2d0FkTHhnUHovZWJzNGF2bHZocTI2RXVpcG91VzgrRHlzL1VXMHJscnJCejgzbldkQWJ2NnA0WVpWckVoS3hreUF6VFRTMjhvd09YYXNCZz09Cg==",
+      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-windows.msi"
     }
   }
 }
