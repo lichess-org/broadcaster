@@ -11,8 +11,6 @@ signatures['mac']     = requests.get('https://github.com/lichess-org/broadcaster
 signatures['linux']   = requests.get('https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-linux.AppImage.tar.gz.sig').text
 signatures['windows'] = requests.get('https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-windows.msi.zip.sig').text
 
-current_datetime = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
-
 released_at = requests.get('https://api.github.com/repos/lichess-org/broadcaster/releases/latest').json()['published_at']
 
 version_file = os.path.join(os.path.dirname(__file__), '../updater/version.json')
