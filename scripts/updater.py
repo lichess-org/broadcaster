@@ -7,9 +7,9 @@ with open('package.json') as f:
     app = json.load(f)
 
 signatures = {}
-signatures['mac']     = requests.get('https://github.com/lichess-org/broadcaster/releases/download/v0.17.0/Lichess-Broadcaster-macos.app.tar.gz.sig').text
-signatures['linux']   = requests.get('https://github.com/lichess-org/broadcaster/releases/download/v0.17.0/Lichess-Broadcaster-linux.AppImage.tar.gz.sig').text
-signatures['windows'] = requests.get('https://github.com/lichess-org/broadcaster/releases/download/v0.17.0/Lichess-Broadcaster-windows.msi.sig').text
+signatures['mac']     = requests.get('https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-macos.app.tar.gz.sig').text
+signatures['linux']   = requests.get('https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-linux.AppImage.tar.gz.sig').text
+signatures['windows'] = requests.get('https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-windows.msi.zip.sig').text
 
 current_datetime = datetime.datetime.now().isoformat()
 

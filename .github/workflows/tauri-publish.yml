@@ -88,15 +88,15 @@ jobs:
           wait-for-completion: true
           output-artifact-directory: 'artifacts'
 
-      - name: generate updater signature (windows)
-        if: matrix.platform == 'windows-latest'
-        shell: bash
-        run: pnpm tauri signer sign --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" --password "${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}" artifacts/Lichess-Broadcaster-windows.msi
-
       - name: zip msi for auto-updater (windows)
         if: matrix.platform == 'windows-latest'
         shell: pwsh
         run: Compress-Archive artifacts/Lichess-Broadcaster-windows.msi artifacts/Lichess-Broadcaster-windows.msi.zip
+
+      - name: generate updater signature (windows)
+        if: matrix.platform == 'windows-latest'
+        shell: bash
+        run: pnpm tauri signer sign --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" --password "${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}" artifacts/Lichess-Broadcaster-windows.msi.zip
 
       - name: upload release artifacts
         uses: actions/upload-artifact@v4
