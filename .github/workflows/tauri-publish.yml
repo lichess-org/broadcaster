@@ -93,6 +93,11 @@ jobs:
         shell: bash
         run: pnpm tauri signer sign --private-key "${{ secrets.TAURI_PRIVATE_KEY }}" --password "${{ secrets.TAURI_PRIVATE_KEY_PASSWORD }}" artifacts/Lichess-Broadcaster-windows.msi
 
+      - name: zip msi for auto-updater (windows)
+        if: matrix.platform == 'windows-latest'
+        run: |
+          zip -r artifacts/Lichess-Broadcaster-windows.msi.zip artifacts/Lichess-Broadcaster-windows.msi
+
       - name: upload release artifacts
         uses: actions/upload-artifact@v4
         with:
