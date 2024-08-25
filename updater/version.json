@@ -1,7 +1,7 @@
 {
   "version": "v0.19.0",
   "notes": "Bug fixes and integration with latest Lichess API updates",
-  "pub_date": "2024-08-24T21:32:38.256203",
+  "pub_date": "2024-08-14T23:34:00Z",
   "platforms": {
     "darwin-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreGVUdGtyOS90dTE5bm4vZGVJeklqcjBlTGpRVmtPeTIrVXZrZmdjTnk1aXd0VTFxemZpWTBBRThINGc2eFNCdVZtZ0R4VXZHakVFTXJNZDFYZjM1bEE4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzI0NTQ5MjE0CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6CjVDSlE5OUI3ZkJTQjhVYWpXWHV3VGVaaHZaM0lnZGNrMGRUYzF3Z1YwSFQvdk02OFVHZ0dCVUlKZk9jQ3NBekNCN0Nnd2kxWmt4Y1JWdHkzK3hTekFnPT0K",
