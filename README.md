@@ -100,3 +100,9 @@ Release artifacts are in `src-tauri/target/release/bundle/`
    - Approve the signing request in the SignPath dashboard when the workflow gets to that step.
 
 3. When ready to recommend the update, update the ["Check for Updates" endpoint](https://lichess-org.github.io/broadcaster/version.json) ([source](https://github.com/lichess-org/broadcaster/blob/main/updater/version.json))
+
+   ```bash
+   python scripts/updater.py
+
+   # then git push
+   ```
