@@ -17,7 +17,7 @@
     },
     "windows-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFMzNk4zRDdWeHBQejArWDA4Z2RWL0xtQkZOTTIxYWl6RUtSajladk4xeGFXWmFBYXMrL0E5NFc4OG5SS2o4STFmTnRoRWMyVkhQNkdQYzgzckRUVFFVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzIzNjc0ODY1CWZpbGU6TGljaGVzcy1Ccm9hZGNhc3Rlci13aW5kb3dzLm1zaQpIVGRxNDZ2d0FkTHhnUHovZWJzNGF2bHZocTI2RXVpcG91VzgrRHlzL1VXMHJscnJCejgzbldkQWJ2NnA0WVpWckVoS3hreUF6VFRTMjhvd09YYXNCZz09Cg==",
-      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-windows.msi"
+      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-windows.msi.zip"
     }
   }
 }
