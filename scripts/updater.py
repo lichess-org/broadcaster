@@ -3,7 +3,7 @@ import json
 import os
 import requests
 
-with open('package.json') as f:
+with open(os.path.join(os.path.dirname(__file__), '../package.json')) as f:
     app = json.load(f)
 
 signatures = {}
@@ -13,19 +13,21 @@ signatures['windows'] = requests.get('https://github.com/lichess-org/broadcaster
 
 current_datetime = datetime.datetime.now(datetime.timezone.utc).strftime('%Y-%m-%dT%H:%M:%SZ')
 
+released_at = requests.get('https://api.github.com/repos/lichess-org/broadcaster/releases/latest').json()['published_at']
+
 version_file = os.path.join(os.path.dirname(__file__), '../updater/version.json')
 
 with open(version_file) as f:
-    version = json.load(f)
+    updater = json.load(f)
 
-version['version'] = 'v' + app['version']
-version['pub_date'] = current_datetime
+updater['version'] = 'v' + app['version']
+updater['pub_date'] = released_at
 
-version['platforms']['darwin-x86_64']['signature']  = signatures['mac']
-version['platforms']['darwin-aarch64']['signature'] = signatures['mac']
-version['platforms']['linux-x86_64']['signature']   = signatures['linux']
-version['platforms']['windows-x86_64']['signature'] = signatures['windows']
+updater['platforms']['darwin-x86_64']['signature']  = signatures['mac']
+updater['platforms']['darwin-aarch64']['signature'] = signatures['mac']
+updater['platforms']['linux-x86_64']['signature']   = signatures['linux']
+updater['platforms']['windows-x86_64']['signature'] = signatures['windows']
 
 with open(version_file, 'w') as f:
-    json.dump(version, f, indent=2)
+    json.dump(updater, f, indent=2)
     f.write('\n')
