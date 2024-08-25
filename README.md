@@ -104,5 +104,6 @@ Release artifacts are in `src-tauri/target/release/bundle/`
    ```bash
    python scripts/updater.py
 
-   # then git push
+   # then push the changes to github
+   # github pages will automatically publish
    ```
