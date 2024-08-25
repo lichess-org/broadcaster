@@ -95,9 +95,8 @@ jobs:
 
       - name: zip msi for auto-updater (windows)
         if: matrix.platform == 'windows-latest'
-        shell: bash
-        run: |
-          zip -r artifacts/Lichess-Broadcaster-windows.msi.zip artifacts/Lichess-Broadcaster-windows.msi
+        shell: pwsh
+        run: Compress-Archive artifacts/Lichess-Broadcaster-windows.msi artifacts/Lichess-Broadcaster-windows.msi.zip
 
       - name: upload release artifacts
         uses: actions/upload-artifact@v4
