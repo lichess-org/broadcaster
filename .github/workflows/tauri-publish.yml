@@ -91,7 +91,7 @@ jobs:
       - name: zip msi for auto-updater (windows)
         if: matrix.platform == 'windows-latest'
         shell: pwsh
-        run: Compress-Archive artifacts/Lichess-Broadcaster-windows.msi artifacts/Lichess-Broadcaster-windows.msi.zip
+        run: Compress-Archive -Path artifacts/Lichess-Broadcaster-windows.msi -DestinationPath artifacts/Lichess-Broadcaster-windows.msi.zip -CompressionLevel NoCompression
 
       - name: generate updater signature (windows)
         if: matrix.platform == 'windows-latest'
