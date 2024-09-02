@@ -12,7 +12,6 @@ import { uploadMultiGameFileIfExists, uploadIndividualGames } from '../upload';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
-const showBoard = ref(false);
 const round = ref<LichessRound | null>(null);
 
 const watchedFolder = computed<string>(() => {
@@ -173,9 +172,13 @@ getRound();
     </div>
 
     <h3 class="text-white text-xl my-4">
-      Spectator View
+      Broadcast Round Embed
       <span class="text-gray-400">({{ round.games.length }} games)</span>
-
+      <iframe
+        :src="'https://lichess.org/embed/broadcast/_/_/' + round.round.id"
+        style="width: 100%; aspect-ratio: 4/3"
+        frameborder="0"
+      ></iframe>
       <!-- <div class="float-right">
         <SwitchGroup as="div" class="flex items-center">
           <Switch
