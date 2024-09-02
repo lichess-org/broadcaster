@@ -171,9 +171,6 @@ getRound();
       </div>
     </div>
 
-    <h3 class="text-white text-xl my-4">
-      Broadcast Round Embed
-      <span class="text-gray-400">({{ round.games.length }} games)</span>
       <iframe
         :src="'https://lichess.org/embed/broadcast/_/_/' + round.round.id"
         style="width: 100%; aspect-ratio: 4/3"
@@ -201,6 +198,5 @@ getRound();
           </SwitchLabel>
         </SwitchGroup>
       </div> -->
-    </h3>
   </template>
 </template>
