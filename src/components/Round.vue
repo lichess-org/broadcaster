@@ -173,8 +173,7 @@ getRound();
 
     <iframe
       :src="'https://lichess.org/embed/broadcast/_/_/' + round.round.id"
-      style="width: 100%; aspect-ratio: 4/3"
-      frameborder="0"
+      class="w-full aspect-[4/3] border-0"
     ></iframe>
   </template>
 </template>
