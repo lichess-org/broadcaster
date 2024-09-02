@@ -32,9 +32,6 @@ importers:
       vue-router:
         specifier: ^4.4.3
         version: 4.4.3(vue@3.4.38(typescript@5.5.4))
-      vue3-chessboard:
-        specifier: ^1.3.3
-        version: 1.3.3(vue@3.4.38(typescript@5.5.4))
     devDependencies:
       '@digitak/esrun':
         specifier: ^3.2.26
@@ -760,9 +757,6 @@ packages:
   chess.js@1.0.0-beta.8:
     resolution: {integrity: sha512-UngzUMXmexcQaQA/UEJuJj5vatEy34awYMD5YMOp/FW3HM7lqspp7ymYs5JAmquDq0WROtURRfSffoa/vrCCyw==}
 
-  chessground@9.1.1:
-    resolution: {integrity: sha512-X4xrBICrixaLATCn+jGEzk58UXcas+9QqJnwVq9nT7AaX2M1CJLMA0vC7noG0s6Tr2zoAHZ1FOviE5b05MgduQ==}
-
   chokidar@3.6.0:
     resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==}
     engines: {node: '>= 8.10.0'}
@@ -1482,11 +1476,6 @@ packages:
     peerDependencies:
       typescript: '>=5.0.0'
 
-  vue3-chessboard@1.3.3:
-    resolution: {integrity: sha512-bCAxzZESnRkmI3dlAS9U5v4OrCA8bvMO8p5FI9bJezcramZenmfhTjlSDZeCZds08OYDMAuXt3qPlUh9G7ShXg==}
-    peerDependencies:
-      vue: ^3.2.47
-
   vue@3.4.38:
     resolution: {integrity: sha512-f0ZgN+mZ5KFgVv9wz0f4OgVKukoXtS3nwET4c2vLBGQR50aI8G0cqbFtLlX9Yiyg3LFGBitruPHt2PxwTduJEw==}
     peerDependencies:
@@ -2076,8 +2065,6 @@ snapshots:
   check-error@2.1.1: {}
 
   chess.js@1.0.0-beta.8: {}
-
-  chessground@9.1.1: {}
 
   chokidar@3.6.0:
     dependencies:
@@ -2800,12 +2787,6 @@ snapshots:
       '@vue/language-core': 2.0.29(typescript@5.5.4)
       semver: 7.6.3
       typescript: 5.5.4
-
-  vue3-chessboard@1.3.3(vue@3.4.38(typescript@5.5.4)):
-    dependencies:
-      chess.js: 1.0.0-beta.8
-      chessground: 9.1.1
-      vue: 3.4.38(typescript@5.5.4)
 
   vue@3.4.38(typescript@5.5.4):
     dependencies:
