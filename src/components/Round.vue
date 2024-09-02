@@ -4,7 +4,6 @@ import { router } from '../router';
 import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
-import RoundBoard from './RoundBoard.vue';
 import { lichessFetch, openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
@@ -200,14 +199,5 @@ getRound();
         </SwitchGroup>
       </div> -->
     </h3>
-    <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
-      <RoundBoard
-        v-for="(game, index) in round.games"
-        v-model="round.games[index]"
-        :showBoard="showBoard"
-        :roundURL="round.round.url"
-        :key="game.id"
-      ></RoundBoard>
-    </div>
   </template>
 </template>
