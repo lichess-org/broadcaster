@@ -128,9 +128,7 @@ getRound();
           to enable that file (<a
             class="underline"
             href=""
-            @click.prevent="
-              openPath('https://lichess.org/page/broadcaster-app#there-is-no-gamespgn-file-in-the-folder')
-            "
+            @click.prevent="openPath('https://lichess.org/broadcast/app#there-is-no-gamespgn-file-in-the-folder')"
             >See instructions here</a
           >)
         </p>
