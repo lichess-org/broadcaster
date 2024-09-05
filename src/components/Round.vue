@@ -171,7 +171,7 @@ getRound();
 
     <iframe
       :src="settings.lichessUrl + '/embed/broadcast/_/_/' + round.round.id + '?evals=0'"
-      class="w-full aspect-[4/3] border-0"
+      class="w-full aspect-[4/3] border-0 pb-4"
     ></iframe>
   </template>
 </template>
