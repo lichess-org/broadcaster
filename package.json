@@ -18,7 +18,7 @@
     "@tailwindcss/forms": "^0.5.9",
     "@tauri-apps/api": "^1.6.0",
     "fetch-ndjson": "^1.1.7",
-    "openapi-fetch": "^0.11.3",
+    "openapi-fetch": "^0.12.0",
     "pinia": "^2.2.2",
     "pinia-plugin-persistedstate": "^3.2.3",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
