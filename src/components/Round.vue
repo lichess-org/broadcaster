@@ -5,7 +5,6 @@ import { router } from '../router';
 import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
-import RoundBoard from './RoundBoard.vue';
 import { lichessFetch, openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
@@ -14,7 +13,6 @@ import { uploadMultiGameFileIfExists, uploadIndividualGames } from '../upload';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
-const showBoard = ref(false);
 const round = ref<LichessRound | null>(null);
 
 const watchedFolder = computed<string>(() => {
@@ -134,9 +132,7 @@ getRound();
           to enable that file (<a
             class="underline"
             href=""
-            @click.prevent="
-              openPath('https://lichess.org/page/broadcaster-app#there-is-no-gamespgn-file-in-the-folder')
-            "
+            @click.prevent="openPath('https://lichess.org/broadcast/app#there-is-no-gamespgn-file-in-the-folder')"
             >See instructions here</a
           >)
         </p>
@@ -177,41 +173,9 @@ getRound();
       </div>
     </div>
 
-    <h3 class="text-white text-xl my-4">
-      Spectator View
-      <span class="text-gray-400">({{ round.games.length }} games)</span>
-
-      <!-- <div class="float-right">
-        <SwitchGroup as="div" class="flex items-center">
-          <Switch
-            v-model="showBoard"
-            :class="[
-              showBoard ? 'bg-indigo-600' : 'bg-gray-200',
-              'relative inline-flex h-6 w-11 flex-shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2',
-            ]"
-          >
-            <span
-              aria-hidden="true"
-              :class="[
-                showBoard ? 'translate-x-5' : 'translate-x-0',
-                'pointer-events-none inline-block h-5 w-5 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out',
-              ]"
-            />
-          </Switch>
-          <SwitchLabel as="span" class="ml-3 text-sm">
-            <span class="font-medium text-gray-400">Show boards</span>
-          </SwitchLabel>
-        </SwitchGroup>
-      </div> -->
-    </h3>
-    <div class="grid grid-cols-1 gap-2 sm:grid-cols-3">
-      <RoundBoard
-        v-for="(game, index) in round.games"
-        v-model="round.games[index]"
-        :showBoard="showBoard"
-        :roundURL="round.round.url"
-        :key="game.id"
-      ></RoundBoard>
-    </div>
+    <iframe
+      :src="settings.lichessUrl + '/embed/broadcast/_/_/' + round.round.id + '?evals=0'"
+      class="w-full aspect-[4/3] border-0 pb-4"
+    ></iframe>
   </template>
 </template>
