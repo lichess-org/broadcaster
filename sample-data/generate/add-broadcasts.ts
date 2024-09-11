@@ -24,12 +24,13 @@ for (let i = 1; i <= 100; i++) {
 
   const broadcast: NewBroadcast = {
     name,
-    autoLeaderboard: faker.datatype.boolean(0.2),
+    showScores: faker.datatype.boolean(0.2),
+    showRatingDiffs: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
   };
 
   if (faker.datatype.boolean(0.3)) {
-    broadcast.tier = faker.number.int({ min: 3, max: 5 });
+    broadcast.tier = faker.helpers.arrayElement([3, 4, 5, -1]);
   }
 
   const broadcastResponse = await client.POST('/broadcast/new', { body: broadcast });
