@@ -19,14 +19,14 @@
     "pinia": "^2.2.2",
     "pinia-plugin-persistedstate": "^4.0.2",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
-    "vue": "^3.5.8",
+    "vue": "^3.5.10",
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.26",
-    "@faker-js/faker": "^9.0.2",
+    "@faker-js/faker": "^9.0.3",
     "@tauri-apps/cli": "^1.6.2",
-    "@types/node": "^22.7.0",
+    "@types/node": "^22.7.4",
     "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",
     "chess.js": "1.0.0-beta.8",
