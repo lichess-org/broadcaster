@@ -19,29 +19,29 @@
     "@tauri-apps/api": "^1.6.0",
     "fetch-ndjson": "^1.1.7",
     "openapi-fetch": "^0.12.0",
-    "pinia": "^2.2.2",
-    "pinia-plugin-persistedstate": "^4.0.1",
+    "pinia": "^2.2.4",
+    "pinia-plugin-persistedstate": "^4.0.2",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
-    "vue": "^3.5.4",
-    "vue-router": "^4.4.4"
+    "vue": "^3.5.10",
+    "vue-router": "^4.4.5"
   },
   "devDependencies": {
     "@digitak/esrun": "^3.2.26",
-    "@faker-js/faker": "^9.0.0",
+    "@faker-js/faker": "^9.0.3",
     "@lichess-org/types": "^2.0.11",
-    "@tauri-apps/cli": "^1.6.1",
-    "@types/node": "^22.5.4",
-    "@vitejs/plugin-vue": "^5.1.3",
+    "@tauri-apps/cli": "^1.6.2",
+    "@types/node": "^22.7.4",
+    "@vitejs/plugin-vue": "^5.1.4",
     "autoprefixer": "^10.4.20",
     "chess.js": "1.0.0-beta.8",
-    "jsdom": "^25.0.0",
-    "postcss": "^8.4.45",
+    "jsdom": "^25.0.1",
+    "postcss": "^8.4.47",
     "prettier": "^3.3.3",
-    "tailwindcss": "^3.4.10",
+    "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2",
-    "vite": "^5.4.3",
-    "vitest": "^2.0.5",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.2",
     "vue-tsc": "^2.1.6"
   },
-  "packageManager": "pnpm@9.9.0+sha512.60c18acd138bff695d339be6ad13f7e936eea6745660d4cc4a776d5247c540d0edee1a563695c183a66eb917ef88f2b4feb1fc25f32a7adcadc7aaf3438e99c1"
+  "packageManager": "pnpm@9.12.0+sha512.4abf725084d7bcbafbd728bfc7bee61f2f791f977fd87542b3579dcb23504d170d46337945e4c66485cd12d588a0c0e570ed9c477e7ccdd8507cf05f3f92eaca"
 }

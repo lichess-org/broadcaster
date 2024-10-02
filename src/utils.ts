@@ -213,12 +213,12 @@ if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
 
   it('returns a PGN name', () => {
-    let tags: BroadcastPgnPushTags = { White: 'Magnus Carlsen' };
+    const tags: BroadcastPgnPushTags = { White: 'Magnus Carlsen' };
     expect(pgnTag('White', tags)).toBe('Magnus Carlsen');
   });
 
   it('returns a PGN tag', () => {
-    let tags: BroadcastPgnPushTags = { A: '1', B: '2', C: '3' };
+    const tags: BroadcastPgnPushTags = { A: '1', B: '2', C: '3' };
     expect(pgnTag('B', tags)).toBe('2');
     expect(pgnTag('D', tags)).toBeUndefined();
   });
