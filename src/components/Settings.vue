@@ -5,7 +5,7 @@ import { useUserStore } from '../stores/user';
 import { openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSystemStore } from '../stores/system';
-import UserAutocomplete from './UserAutocomplete.vue';
+import AddUserToSidebar from './AddUserToSidebar.vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -67,7 +67,7 @@ function logout() {
         Include broadcasts by other users in the app's sidebar. If you are a contributor to another user's broadcast,
         you can add their username here.
       </p>
-      <UserAutocomplete />
+      <AddUserToSidebar />
     </div>
   </div>
 

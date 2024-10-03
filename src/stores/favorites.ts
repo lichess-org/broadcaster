@@ -9,6 +9,7 @@ export const useFavoritesStore = defineStore('favorites', {
   }),
   actions: {
     add(user: string) {
+      if (this.users.includes(user)) return;
       this.users.push(user);
     },
     remove(user: string) {
