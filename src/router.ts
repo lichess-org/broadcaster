@@ -6,8 +6,8 @@ import Settings from './components/Settings.vue';
 
 const routes = [
   { path: '/', component: Status },
-  { path: '/broadcasts', component: Broadcasts },
-  { path: '/settings', component: Settings },
+  { path: '/settings', component: Settings, name: 'settings' },
+  { path: '/broadcasts/:username/page/:pageNum', component: Broadcasts, name: 'broadcasts' },
   { path: '/round/:id', component: Round, name: 'round' },
 ];
 

@@ -74,9 +74,10 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
 
             let html = RedirectTemplate {
                 error: None,
-                message: Some(
-                    format!("{} is ready to be used! You can close this window and return to the application.", app_handle.package_info().name.clone()),
-                ),
+                message: Some(format!(
+                    "You are ready to use {}!",
+                    app_handle.package_info().name.clone()
+                )),
             }
             .render()
             .unwrap();

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
+import { paths } from '@lichess-org/types';
 import { router } from '../router';
 import { LichessRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
@@ -29,10 +30,13 @@ function stopWatching() {
 
 function getRound() {
   lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
-    .then(response => response.json() as Promise<LichessRound>)
-    .then(data => {
-      round.value = data;
-    });
+    .then(
+      response =>
+        response.json() as Promise<
+          paths['/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}']['get']['responses']['200']['content']['application/json']
+        >,
+    )
+    .then(data => (round.value = data));
 }
 
 async function resetAndReupload() {

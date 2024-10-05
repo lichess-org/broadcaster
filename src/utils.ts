@@ -6,23 +6,22 @@ import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
 import { BroadcastPgnPushTags } from './types';
 
-export async function lichessFetch(path: string, options?: object, timeoutMs = 5_000): Promise<Response> {
+export async function lichessFetch(
+  path: string,
+  params?: Record<string, string>,
+  options?: RequestInit,
+): Promise<Response> {
   const settings = useSettingsStore();
   const user = useUserStore();
 
-  const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), timeoutMs);
-
-  const url = `${settings.lichessUrl}${path}`;
+  const url = `${settings.lichessUrl}${path}?${new URLSearchParams(params)}`;
   return fetch(url, {
     headers: new Headers({
       Authorization: `Bearer ${user.accessToken?.access_token}`,
     }),
-    signal: controller.signal,
     ...options,
   })
     .then(response => {
-      clearTimeout(timeout);
       if (!response.ok) handleFetchError(url, response);
       return response;
     })
@@ -97,8 +96,7 @@ if (import.meta.vitest) {
   const { it, expect, vi } = import.meta.vitest;
 
   it('shows relative time', () => {
-    const now = new Date(2000, 1, 1);
-    vi.setSystemTime(now);
+    vi.setSystemTime(new Date(2000, 1, 1));
 
     expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 0, 1).getTime())).toBe('in 1 second');
     expect(relativeTimeDisplay(new Date(2000, 1, 1, 0, 0, 2).getTime())).toBe('in 2 seconds');

@@ -1,56 +1,57 @@
 <script setup lang="ts">
-import ndjson from 'fetch-ndjson';
-import Broadcast from './Broadcast.vue';
-import { LichessMyRound } from '../types';
-import { useSettingsStore } from '../stores/settings';
-import { useUserStore } from '../stores/user';
 import { computed, ref } from 'vue';
+import { LichessPaginatedBroadcasts } from '../types';
+import { useSettingsStore } from '../stores/settings';
 import { lichessFetch, openPath } from '../utils';
-import { useBroadcastsStore } from '../stores/broadcasts';
+import { router } from '../router';
+import { onBeforeRouteUpdate } from 'vue-router';
 
-const broadcasts = useBroadcastsStore();
+import BroadcastSummary from './BroadcastSummary.vue';
+import Pagination from './Pagination.vue';
+import BroadcastDrawer from './BroadcastDrawer.vue';
+import { useUserStore } from '../stores/user';
+
 const settings = useSettingsStore();
 const user = useUserStore();
 
+const username = ref<string>(router.currentRoute.value.params.username as string);
+const pageNum = ref<number>(parseInt(router.currentRoute.value.params.pageNum as string));
+
 const isLoading = ref<boolean>(true);
+const broadcasts = ref<LichessPaginatedBroadcasts>();
 
-const hasBroadcasts = computed<boolean>(() => {
-  return broadcasts.broadcasts.length > 0;
-});
-
-async function getBroadcasts(callback: (value: LichessMyRound) => void) {
-  let response = await lichessFetch(`/api/broadcast/my-rounds`, {}, 60_000);
-
-  let reader = response.body!.getReader();
-  let gen = ndjson(reader);
-
-  while (true) {
-    let { done, value } = await gen.next();
-    if (done) return;
-    callback(value);
-  }
-}
+const pageHasBroadcasts = computed<boolean>(() =>
+  broadcasts.value?.currentPageResults ? broadcasts.value.currentPageResults.length > 0 : false,
+);
 
 function refresh() {
-  broadcasts.clear();
+  broadcasts.value = undefined;
   isLoading.value = true;
 
-  getBroadcasts(value => {
-    broadcasts.add(value);
-  }).finally(() => {
-    isLoading.value = false;
-  });
+  lichessFetch(`/api/broadcast/by/${username.value}`, {
+    page: pageNum.value.toString(),
+  })
+    .then(response => response.json() as Promise<LichessPaginatedBroadcasts>)
+    .then(data => {
+      broadcasts.value = data;
+    })
+    .finally(() => (isLoading.value = false));
 }
 
-if (!hasBroadcasts.value) {
+if (!pageHasBroadcasts.value) {
   refresh();
 }
+
+onBeforeRouteUpdate((to, _from) => {
+  username.value = to.params.username as string;
+  pageNum.value = parseInt(to.params.pageNum as string);
+  refresh();
+});
 </script>
 
 <template>
-  <div class="md:flex md:items-center md:justify-between mb-4">
+  <!-- <div class="md:flex md:items-center md:justify-between mb-4">
     <div class="min-w-0 flex-1">
-      <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Your Broadcasts</h2>
     </div>
     <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
       <button
@@ -76,15 +77,19 @@ if (!hasBroadcasts.value) {
         &plus; New Broadcast
       </button>
     </div>
-  </div>
+  </div> -->
 
-  <div v-if="hasBroadcasts" class="overflow-y-auto">
+  <Pagination :broadcasts="broadcasts" />
+
+  <BroadcastDrawer />
+
+  <div v-if="pageHasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">
-      <Broadcast v-for="broadcast in broadcasts.broadcasts" :broadcast="broadcast" />
+      <BroadcastSummary v-for="broadcast in broadcasts?.currentPageResults" :broadcast="broadcast" />
     </div>
   </div>
 
-  <div v-if="!hasBroadcasts && !isLoading" class="text-center mt-12">
+  <div v-if="!pageHasBroadcasts && !isLoading" class="text-center mt-12">
     <svg
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
@@ -101,20 +106,27 @@ if (!hasBroadcasts.value) {
     </svg>
 
     <h3 class="mt-2 text-sm font-semibold text-gray-200">No broadcasts</h3>
-    <p class="mt-1 text-sm text-gray-300">Get started by creating a new broadcast.</p>
-    <div class="mt-6">
-      <button
-        type="button"
-        @click="openPath(`${settings.lichessUrl}/broadcast/new`)"
-        class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-      >
-        <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-          <path
-            d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
-          />
-        </svg>
-        Create a new broadcast
-      </button>
-    </div>
+    <p class="mt-1 text-sm text-gray-300">
+      No broadcasts found for <span>{{ username }}</span
+      >.
+    </p>
+
+    <template v-if="user.is(username)">
+      <p class="mt-1 text-sm text-gray-300">Get started by creating a new broadcast.</p>
+      <div class="mt-6">
+        <button
+          type="button"
+          @click="openPath(`${settings.lichessUrl}/broadcast/new`)"
+          class="inline-flex items-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          <svg class="-ml-0.5 mr-1.5 h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path
+              d="M10.75 4.75a.75.75 0 00-1.5 0v4.5h-4.5a.75.75 0 000 1.5h4.5v4.5a.75.75 0 001.5 0v-4.5h4.5a.75.75 0 000-1.5h-4.5v-4.5z"
+            />
+          </svg>
+          Create a new broadcast
+        </button>
+      </div>
+    </template>
   </div>
 </template>
