@@ -8,7 +8,6 @@ import { onBeforeRouteUpdate } from 'vue-router';
 
 import BroadcastSummary from './BroadcastSummary.vue';
 import Pagination from './Pagination.vue';
-import BroadcastDrawer from './BroadcastDrawer.vue';
 import { useUserStore } from '../stores/user';
 
 const settings = useSettingsStore();
@@ -47,12 +46,17 @@ onBeforeRouteUpdate((to, _from) => {
   pageNum.value = parseInt(to.params.pageNum as string);
   refresh();
 });
+
+const viewOnLichessUrl = computed<string>(() => {
+  return username.value === 'broadcaster'
+    ? `${settings.lichessUrl}/broadcast`
+    : `${settings.lichessUrl}/broadcast/by/${username.value}`;
+});
 </script>
 
 <template>
-  <!-- <div class="md:flex md:items-center md:justify-between mb-4">
-    <div class="min-w-0 flex-1">
-    </div>
+  <div class="md:flex md:items-center md:justify-between mb-4">
+    <div class="min-w-0 flex-1"></div>
     <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
       <button
         type="button"
@@ -63,7 +67,7 @@ onBeforeRouteUpdate((to, _from) => {
       </button>
       <button
         type="button"
-        @click="openPath(`${settings.lichessUrl}/broadcast/by/${user.username}`)"
+        @click="openPath(viewOnLichessUrl)"
         class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-white/20"
       >
         View on Lichess
@@ -71,17 +75,14 @@ onBeforeRouteUpdate((to, _from) => {
       <button
         type="button"
         @click="openPath(`${settings.lichessUrl}/broadcast/new`)"
-        v-if="hasBroadcasts"
         class="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
       >
         &plus; New Broadcast
       </button>
     </div>
-  </div> -->
+  </div>
 
   <Pagination :broadcasts="broadcasts" />
-
-  <BroadcastDrawer />
 
   <div v-if="pageHasBroadcasts" class="overflow-y-auto">
     <div role="list" class="divide-y divide-white/5">
