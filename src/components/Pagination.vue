@@ -36,20 +36,28 @@ const rangeMax = computed<number>(() => {
     </div>
     <div class="flex flex-1 justify-between sm:justify-end">
       <router-link
-        v-if="broadcasts.previousPage"
         :to="{
           params: { pageNum: broadcasts.previousPage },
         }"
-        class="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+        :disabled="!broadcasts.previousPage"
+        class="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+        :class="{
+          'text-gray-900': broadcasts.previousPage,
+          'text-gray-400 pointer-events-none': !broadcasts.previousPage,
+        }"
       >
         Previous
       </router-link>
       <router-link
-        v-if="broadcasts.nextPage"
         :to="{
           params: { pageNum: broadcasts.nextPage },
         }"
-        class="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+        :disabled="!broadcasts.nextPage"
+        class="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
+        :class="{
+          'text-gray-900': broadcasts.nextPage,
+          'text-gray-400 pointer-events-none': !broadcasts.nextPage,
+        }"
       >
         Next
       </router-link>
