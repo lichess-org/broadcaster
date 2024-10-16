@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useLogStore } from '../stores/logs';
-import { lichessFetch, relativeTimeDisplay } from '../utils';
+import { lichessFetch, timestampToLocalDatetime } from '../utils';
 // import RoundTimes from './RoundTimes.vue';
 
 const logs = useLogStore();
@@ -59,8 +59,12 @@ function getBroadcast(id: string) {
         <h2 class="min-w-0 text-sm leading-6 text-white">
           <span class="flex gap-x-2">
             <span class="truncate font-semibold">{{ broadcast.tour.name }}</span>
-            <span class="text-gray-400">/</span>
-            <span class="whitespace-nowrap text-gray-500">{{ relativeTimeDisplay(broadcast.tour.createdAt) }}</span>
+            <template v-if="broadcast.tour.dates">
+              <span class="text-gray-400">/</span>
+              <span class="whitespace-nowrap text-gray-500">{{
+                timestampToLocalDatetime(broadcast.tour.dates[0])
+              }}</span>
+            </template>
             <span class="absolute inset-0"></span>
           </span>
         </h2>
