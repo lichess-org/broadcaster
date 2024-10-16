@@ -81,10 +81,14 @@ function getBroadcast(id: string) {
   </a>
   <div v-if="isExpanded">
     <template v-if="broadcastWithRounds">
-      <h3>Broadcast Info</h3>
-      <pre>{{ broadcastWithRounds.tour }}</pre>
-      <h3>Rounds</h3>
-      <pre>{{ broadcastWithRounds.rounds }}</pre>
+      <div v-for="round in broadcastWithRounds.rounds" :key="round.id">
+        <router-link
+          :to="{ name: 'round', params: { id: round.id } }"
+          class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
+        >
+          {{ round.name }}
+        </router-link>
+      </div>
     </template>
     <svg
       v-else
