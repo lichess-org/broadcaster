@@ -45,49 +45,8 @@ requestNotificationPermission();
 </script>
 
 <template>
-  <!-- <header class="mb-12 flex">
-    <router-link to="/">
-      <img src="./assets/lichess-white.svg" class="w-12 inline-block" alt="Lichess logo" />
-    </router-link>
-
-    <div class="grow">
-      <nav class="flex space-x-4 justify-end">
-        <router-link to="/" class="nav-item" active-class="active">Status</router-link>
-        <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()"
-          >Broadcasts</router-link
-        >
-        <router-link to="/settings" class="nav-item" active-class="active">Settings</router-link>
-      </nav>
-    </div>
-  </header>
-
-  <router-view /> -->
-
-  <!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/forms'),
-    ],
-  }
-  ```
--->
-  <!--
-  This example requires updating your template:
-
-  ```
-  <html class="h-full bg-white">
-  <body class="h-full">
-  ```
--->
   <div>
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-      <!-- Sidebar component, swap this element with another sidebar if you like -->
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
         <div class="flex h-16 shrink-0 items-center">
           <img class="h-8" src="./assets/lichess-white.svg" alt="Lichess logo" />
@@ -125,11 +84,6 @@ requestNotificationPermission();
             <li v-if="user.isLoggedIn()">
               <div class="text-xs font-semibold leading-6 text-gray-400">Broadcasts</div>
               <ul role="list" class="-mx-2 mt-2 space-y-1">
-                <!-- <li>
-                  <router-link to="/broadcasts" class="nav-item" active-class="active" v-if="user.isLoggedIn()"
-                    >Broadcasts</router-link
-                  >
-                </li> -->
                 <li v-for="u in favorites.sidebar">
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link

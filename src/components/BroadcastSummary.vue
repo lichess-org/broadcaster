@@ -4,7 +4,7 @@ import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useLogStore } from '../stores/logs';
 import { lichessFetch, timestampToLocalDatetime } from '../utils';
-// import RoundTimes from './RoundTimes.vue';
+import RoundTimes from './RoundTimes.vue';
 
 const logs = useLogStore();
 const isExpanded = ref<boolean>(false);
@@ -69,7 +69,6 @@ function getBroadcast(id: string) {
           </span>
         </h2>
       </div>
-      <!-- <RoundTimes :round="broadcast.round" /> -->
     </div>
     <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path
@@ -87,6 +86,7 @@ function getBroadcast(id: string) {
           class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
         >
           {{ round.name }}
+          <RoundTimes :round="round" />
         </router-link>
       </div>
     </template>

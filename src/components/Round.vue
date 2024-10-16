@@ -9,7 +9,6 @@ import { lichessFetch, openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSettingsStore } from '../stores/settings';
 import { uploadMultiGameFileIfExists, uploadIndividualGames } from '../upload';
-// import { Switch, SwitchGroup, SwitchLabel } from '@headlessui/vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
