@@ -77,7 +77,10 @@ function getBroadcast(id: string) {
   </a>
   <div v-if="isExpanded">
     <template v-if="broadcastWithRounds">
-      {{ broadcastWithRounds }}
+      <h3>Broadcast Info</h3>
+      <pre>{{ broadcastWithRounds.tour }}</pre>
+      <h3>Rounds</h3>
+      <pre>{{ broadcastWithRounds.rounds }}</pre>
     </template>
     <svg
       v-else
