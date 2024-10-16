@@ -7,7 +7,7 @@ const action = process.argv[2] as 'games' | 'errors';
 const outputFolder = process.argv[3];
 
 if (!action || !outputFolder) {
-  throw new Error('Usage: pnpm esrun index.ts <games|errors> <output-folder>');
+  throw new Error('Usage: pnpx tsx index.ts <games|errors> <output-folder>');
 }
 
 function writeToFile(filename: string | number, contents: string) {

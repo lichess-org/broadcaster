@@ -1,67 +1,66 @@
+import createClient from 'openapi-fetch';
 import { faker } from '@faker-js/faker';
+import type { paths } from '@lichess-org/types';
 
-interface NewBroadcast {
-  name: string;
-  description: string;
-  autoLeaderboard: boolean;
-  markdown?: string;
-  tier?: number;
-  players?: string;
-}
+type NewBroadcast = paths['/broadcast/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
+type NewBroadcastRound =
+  paths['/broadcast/{broadcastTournamentId}/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
 
-interface NewBroadcastRound {
-  name: string;
-  syncUrl?: string;
-  startsAt?: number;
-}
+const lichess = 'http://localhost:8080';
+const token = 'lip_admin';
 
-for (let i = 1; i <= 10; i++) {
+const client = createClient<paths>({ baseUrl: lichess, headers: { Authorization: `Bearer ${token}` } });
+
+const handleRequestError = (error: Response) => {
+  console.error(`${error.status} ${error.statusText} at ${error.url}`);
+  process.exit(1);
+};
+
+for (let i = 1; i <= 100; i++) {
+  const name = [
+    faker.helpers.arrayElement([faker.person.lastName(), faker.location.city(), faker.location.country()]),
+    faker.helpers.arrayElement(['Cup', 'Championship', 'Open', 'Festival', 'Invitational', 'Classic', 'Rapid']),
+  ].join(' ');
+
   const broadcast: NewBroadcast = {
-    name: `${faker.company.name()} Invitational`,
-    description: faker.lorem.sentence(),
-    autoLeaderboard: faker.datatype.boolean(0.2),
+    name,
+    showScores: faker.datatype.boolean(0.2),
+    showRatingDiffs: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
-    tier: faker.number.int({ min: 3, max: 5 }),
+    'info.fideTc': faker.helpers.arrayElement(['rapid', 'blitz', 'standard']),
+    'info.timeZone': faker.helpers.arrayElement(['UTC', 'America/New_York', 'Europe/Paris']),
+    'info.website': faker.internet.url(),
   };
 
-  const response = await fetch('http://localhost:8080/broadcast/new', {
-    method: 'POST',
-    headers: {
-      Authorization: 'Bearer lip_admin',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(broadcast),
-  });
-
-  if (!response.ok) {
-    console.error(response.statusText);
-    process.exit(1);
+  if (faker.datatype.boolean(0.3)) {
+    broadcast.tier = faker.helpers.arrayElement([3, 4, 5, -1]);
   }
 
-  const broadcastResult = await response.json();
-  console.log(broadcastResult);
+  const broadcastResponse = await client.POST('/broadcast/new', { body: broadcast });
 
-  for (let j = 1; j <= 5; j++) {
+  if (!broadcastResponse.response.ok) {
+    handleRequestError(broadcastResponse.response);
+  }
+
+  console.log(broadcastResponse.data);
+
+  for (let j = 1; j <= faker.number.int({ min: 0, max: 10 }); j++) {
     const round: NewBroadcastRound = {
       name: `Round ${j}`,
       startsAt: faker.date.future().getTime(),
+      finished: faker.datatype.boolean(0.2),
+      delay: 60 * faker.helpers.arrayElement([0, 1, 5, 10, 15]),
     };
 
-    const response = await fetch(`http://localhost:8080/broadcast/${broadcastResult.tour.id}/new`, {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer lip_admin',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(round),
+    const roundResponse = await client.POST('/broadcast/{broadcastTournamentId}/new', {
+      params: { path: { broadcastTournamentId: broadcastResponse.data!.tour.id } },
+      body: round,
     });
 
-    if (!response.ok) {
-      console.error(response.statusText);
-      process.exit(1);
+    if (!roundResponse.response.ok) {
+      handleRequestError(roundResponse.response);
     }
 
-    const roundResult = await response.json();
-    console.log(roundResult);
+    console.log(roundResponse.data);
   }
 }

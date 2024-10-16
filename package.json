@@ -14,8 +14,10 @@
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
+    "@heroicons/vue": "^2.1.5",
     "@tauri-apps/api": "^1.6.0",
     "fetch-ndjson": "^1.1.7",
+    "openapi-fetch": "^0.12.2",
     "pinia": "^2.2.4",
     "pinia-plugin-persistedstate": "^4.1.1",
     "tauri-plugin-fs-watch-api": "github:tauri-apps/tauri-plugin-fs-watch#v1",
@@ -23,8 +25,8 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@digitak/esrun": "^3.2.26",
     "@faker-js/faker": "^9.0.3",
+    "@lichess-org/types": "^2.0.15",
     "@tauri-apps/cli": "^1.6.2",
     "@types/node": "^22.7.5",
     "@vitejs/plugin-vue": "^5.1.4",

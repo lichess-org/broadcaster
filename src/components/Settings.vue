@@ -5,6 +5,7 @@ import { useUserStore } from '../stores/user';
 import { openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSystemStore } from '../stores/system';
+import AddUserToSidebar from './AddUserToSidebar.vue';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -32,14 +33,14 @@ function logout() {
 </script>
 
 <template>
-  <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
+  <h2 class="text-gray-400 text-2xl font-bold leading-7 sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
 
   <div
     class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
     v-if="user.isLoggedIn()"
   >
     <div>
-      <h2 class="text-base font-semibold leading-7 text-white">Session</h2>
+      <h2 class="text-gray-400 text-base font-semibold leading-7">Session</h2>
     </div>
 
     <div>
@@ -59,7 +60,20 @@ function logout() {
 
   <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
     <div>
-      <h2 class="text-base font-semibold leading-7 text-white">About</h2>
+      <h2 class="text-gray-400 text-base font-semibold leading-7">Sidebar</h2>
+    </div>
+    <div class="md:col-span-2">
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        Include broadcasts by other users in the app's sidebar. If you are a contributor to another user's broadcast,
+        you can add their username here.
+      </p>
+      <AddUserToSidebar />
+    </div>
+  </div>
+
+  <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+    <div>
+      <h2 class="text-gray-400 text-base font-semibold leading-7">About</h2>
     </div>
 
     <div class="md:col-span-2">
@@ -102,7 +116,7 @@ function logout() {
   <div class="divide-y divide-white/5">
     <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
       <div>
-        <h2 class="text-base font-semibold leading-7 text-white">Configuration</h2>
+        <h2 class="text-gray-400 text-base font-semibold leading-7">Configuration</h2>
       </div>
 
       <div class="md:col-span-2">

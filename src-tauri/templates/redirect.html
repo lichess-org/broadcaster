@@ -45,6 +45,7 @@
     {% match self.message %}
       {% when Some with (message) %}
         <div class="alert success">{{ message }}</div>
+        <div class="info">You can close this window and return to the application.</div>
       {% else %}
     {% endmatch %}
 
