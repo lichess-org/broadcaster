@@ -26,7 +26,6 @@
     "vue-router": "^4.4.5"
   },
   "devDependencies": {
-    "@digitak/esrun": "^3.2.26",
     "@faker-js/faker": "^9.0.3",
     "@lichess-org/types": "^2.0.15",
     "@tauri-apps/cli": "^1.6.2",

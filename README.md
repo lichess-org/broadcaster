@@ -57,7 +57,7 @@ pnpm test:watch
 #### To seed a bunch of test broadcasts with rounds:
 
 ```bash
-pnpm esrun sample-data/generate/add-broadcasts.ts
+pnpx tsx sample-data/generate/add-broadcasts.ts
 ```
 
 #### To simulate boards writing PGN to a folder:
@@ -66,13 +66,13 @@ pnpm esrun sample-data/generate/add-broadcasts.ts
 2. Run this to automatically write a bunch of PGN to the folder:
 
 ```bash
-pnpm esrun sample-data/generate/index.ts games path/to/folder
+pnpx tsx sample-data/generate/index.ts games path/to/folder
 ```
 
 #### Test errors by writing bad PGN files:
 
 ```bash
-pnpm esrun sample-data/generate/index.ts errors path/to/folder
+pnpx tsx sample-data/generate/index.ts errors path/to/folder
 ```
 
 ### Icon Generation
