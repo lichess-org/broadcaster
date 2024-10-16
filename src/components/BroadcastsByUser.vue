@@ -108,8 +108,7 @@ const viewOnLichessUrl = computed<string>(() => {
 
     <h3 class="mt-2 text-sm font-semibold text-gray-200">No broadcasts</h3>
     <p class="mt-1 text-sm text-gray-300">
-      No broadcasts found for <span>{{ username }}</span
-      >.
+      No broadcasts found for <span>{{ username }}</span>
     </p>
 
     <template v-if="user.is(username)">
