@@ -5,6 +5,8 @@ import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useLogStore } from '../stores/logs';
 import { lichessFetch, timestampToLocalDatetime } from '../utils';
 import RoundTimes from './RoundTimes.vue';
+import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
+import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
 
 const logs = useLogStore();
 const isExpanded = ref<boolean>(false);
@@ -80,15 +82,26 @@ function getBroadcast(id: string) {
   </a>
   <div v-if="isExpanded">
     <template v-if="broadcastWithRounds">
-      <div v-for="round in broadcastWithRounds.rounds" :key="round.id">
+      <div
+        v-if="broadcastWithRounds.rounds.length"
+        v-for="round in broadcastWithRounds.rounds"
+        :key="round.id"
+        class="ml-8"
+      >
         <router-link
           :to="{ name: 'round', params: { id: round.id } }"
           class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
         >
-          {{ round.name }}
+          <h3 class="min-w-0 text-sm leading-4 text-white">
+            <CheckIcon v-if="round.finished" class="size-6 inline-block text-green-600" />
+            <StopIcon v-else-if="round.ongoing" class="size-6 inline-block text-red-500" />
+            <StopIconOutline v-else class="size-6 inline-block text-gray-500" />
+            {{ round.name }}
+          </h3>
           <RoundTimes :round="round" />
         </router-link>
       </div>
+      <div v-else class="text-gray-400 ml-16 py-3">No rounds yet</div>
     </template>
     <svg
       v-else
