@@ -20,11 +20,11 @@ const rangeMax = computed<number>(() => {
 <template>
   <nav
     v-if="broadcasts?.nbResults"
-    class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+    class="flex items-center justify-between bg-gray-600 px-4 py-3 sm:px-6"
     aria-label="Pagination"
   >
     <div class="hidden sm:block">
-      <p class="text-sm text-gray-700">
+      <p class="text-sm text-gray-300">
         Showing
         <span class="font-medium">{{ rangeMin }}</span>
         to
