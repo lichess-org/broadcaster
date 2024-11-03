@@ -1,24 +1,20 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { ref } from 'vue';
 import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
-import { useLogStore } from '../stores/logs';
+import { useStatusStore } from '../stores/status';
 import { lichessFetch, timestampToLocalDatetime } from '../utils';
 import RoundTimes from './RoundTimes.vue';
 import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
 import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
 
-const logs = useLogStore();
+const status = useStatusStore();
 const isExpanded = ref<boolean>(false);
 const broadcastWithRounds = ref<LichessBroadcastWithRounds | null>(null);
 
 const props = defineProps<{
   broadcast: LichessBroadcastByUser;
 }>();
-
-const isBroadcasting = computed<boolean>(() => {
-  return logs.watchProcesses.has(props.broadcast.tour.id);
-});
 
 function expand() {
   if (isExpanded.value) {
@@ -44,16 +40,19 @@ function getBroadcast(id: string) {
 
 <template>
   <a
-    class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
     @click.prevent="expand"
     href=""
+    class="relative flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
+    :class="{
+      'bg-green-900': status.hasTournament(props.broadcast.tour.id),
+    }"
   >
     <div class="min-w-0 flex-auto">
       <div class="flex items-center gap-x-3">
         <div
           class="flex-none rounded-full p-1 text-gray-500 bg-gray-100/10"
           :class="{
-            'text-green-400 bg-green-400/10': isBroadcasting,
+            'text-green-400 bg-green-400/10': status.hasTournament(props.broadcast.tour.id),
           }"
         >
           <div class="h-2 w-2 rounded-full bg-current"></div>
@@ -91,6 +90,9 @@ function getBroadcast(id: string) {
         <router-link
           :to="{ name: 'round', params: { id: round.id } }"
           class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
+          :class="{
+            'bg-green-900': status.hasRound(round.id),
+          }"
         >
           <h3 class="min-w-0 text-sm leading-4 text-white">
             <CheckIcon v-if="round.finished" class="size-6 inline-block text-green-600" />
@@ -99,6 +101,7 @@ function getBroadcast(id: string) {
             {{ round.name }}
           </h3>
           <RoundTimes :round="round" />
+          <em v-if="status.hasRound(round.id)" class="text-gray-400">Watching folder for changes...</em>
         </router-link>
       </div>
       <div v-else class="text-gray-400 ml-16 py-3">No rounds yet</div>
