@@ -33,13 +33,13 @@ export async function lichessFetch(
 }
 
 function handleFetchError(url: string, response: Response) {
-  const logs = useLogStore();
-
-  logs.error(
-    response.status === 401
-      ? 'Error: Invalid/expired session. Please log out of this app on the Settings page and then log back in.'
-      : `Error: ${response.status} ${response.statusText} - ${url}`,
-  );
+  if (response.status === 401) {
+    const user = useUserStore();
+    user.logout();
+  } else {
+    const logs = useLogStore();
+    logs.error(`Error: ${response.status} ${response.statusText} - ${url}`);
+  }
 
   throw new Error(`${response.status} ${response.statusText}`);
 }
