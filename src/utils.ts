@@ -5,6 +5,7 @@ import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
 import { BroadcastPgnPushTags } from './types';
+import { describe } from 'node:test';
 
 export async function lichessFetch(
   path: string,
@@ -154,6 +155,20 @@ export function isMultiGamePgn(path: string): boolean {
   return path.endsWith('games.pgn');
 }
 
+/**
+ * Determine which files to upload.
+ * If there is a `games.pgn` file, upload only that.
+ * Otherwise, upload the individual game PGNs.
+ */
+export function multiOrSingleFilter(files: string[]): string[] {
+  const multiGamePgn = files.find(isMultiGamePgn);
+  if (multiGamePgn) {
+    return [multiGamePgn];
+  }
+
+  return files.filter(isSingleGamePgn);
+}
+
 if (import.meta.vitest) {
   const { it, expect } = import.meta.vitest;
   it('finds pgn files', () => {
@@ -165,6 +180,18 @@ if (import.meta.vitest) {
 
     expect(isSingleGamePgn('path/to/index.json')).toBe(false);
     expect(isMultiGamePgn('path/to/index.json')).toBe(false);
+  });
+
+  describe('multiOrSingleFilter', () => {
+    it('only includes games.pgn', () => {
+      const files = ['game-1.pgn', 'game-2.pgn', 'games.pgn'];
+      expect(multiOrSingleFilter(files)).toEqual(['games.pgn']);
+    });
+
+    it('includes all individual games', () => {
+      const files = ['game-1.pgn', 'game-2.pgn', 'game-3.pgn'];
+      expect(multiOrSingleFilter(files)).toEqual(['game-1.pgn', 'game-2.pgn', 'game-3.pgn']);
+    });
   });
 }
 

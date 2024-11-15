@@ -3,7 +3,7 @@ import { open } from '@tauri-apps/api/dialog';
 import { DebouncedEvent, watch } from 'tauri-plugin-fs-watch-api';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
-import { add_to_queue, isMultiGamePgn, isSingleGamePgn, lichessFetch, openPath } from '../utils';
+import { add_to_queue, isMultiGamePgn, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
 import { LichessRound } from '../types';
 import { getIndividualGamePgns, getMultiGamePgns } from '../upload';
 import { computed } from 'vue';
@@ -60,18 +60,17 @@ function handleFolderChange(events: DebouncedEvent): void {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
 
-  const files = events
-    .filter(event => event.kind === 'Any')
-    .filter(event => isSingleGamePgn(event.path))
-    .map(event => event.path);
+  const files = events.filter(event => event.kind === 'Any').map(event => event.path);
 
-  if (files.length === 0) {
+  const toUpload = multiOrSingleFilter(files);
+
+  if (toUpload.length === 0) {
     return;
   }
 
-  add_to_queue(props.round.round.id, files);
+  add_to_queue(props.round.round.id, toUpload);
 
-  const paths = files.map(file => file.split('/').pop());
+  const paths = toUpload.map(file => file.split('/').pop());
   logs.info(`Modified: ${paths.join(', ')}`);
 }
 
