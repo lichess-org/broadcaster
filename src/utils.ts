@@ -5,7 +5,6 @@ import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
 import { BroadcastPgnPushTags } from './types';
-import { describe } from 'node:test';
 
 export async function lichessFetch(
   path: string,
@@ -170,7 +169,7 @@ export function multiOrSingleFilter(files: string[]): string[] {
 }
 
 if (import.meta.vitest) {
-  const { it, expect } = import.meta.vitest;
+  const { it, expect, describe } = import.meta.vitest;
   it('finds pgn files', () => {
     expect(isSingleGamePgn('path/to/game-1.pgn')).toBe(true);
     expect(isMultiGamePgn('path/to/game-1.pgn')).toBe(false);
