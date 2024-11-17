@@ -95,7 +95,7 @@ function getBroadcast(id: string) {
           }"
         >
           <h3 class="min-w-0 text-sm leading-4 text-white">
-            <CheckIcon v-if="round.finished" class="size-6 inline-block text-green-600" />
+            <CheckIcon v-if="round.finishedAt" class="size-6 inline-block text-green-600" />
             <StopIcon v-else-if="round.ongoing" class="size-6 inline-block text-red-500" />
             <StopIconOutline v-else class="size-6 inline-block text-gray-500" />
             {{ round.name }}
