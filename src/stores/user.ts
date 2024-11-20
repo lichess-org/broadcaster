@@ -40,14 +40,16 @@ export const useUserStore = defineStore(
       return !tokenHasExpired();
     }
 
-    function logout() {
-      lichessFetch(
-        '/api/token',
-        {},
-        {
-          method: 'DELETE',
-        },
-      );
+    function logout(deleteRemoteToken = true) {
+      if (deleteRemoteToken) {
+        lichessFetch(
+          '/api/token',
+          {},
+          {
+            method: 'DELETE',
+          },
+        );
+      }
 
       accessToken.value = null;
       expiresAt.value = null;

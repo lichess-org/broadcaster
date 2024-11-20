@@ -35,7 +35,7 @@ export async function lichessFetch(
 function handleFetchError(url: string, response: Response) {
   if (response.status === 401) {
     const user = useUserStore();
-    user.logout();
+    user.logout(false);
   } else {
     const logs = useLogStore();
     logs.error(`Error: ${response.status} ${response.statusText} - ${url}`);
