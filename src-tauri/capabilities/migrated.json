@@ -1,0 +1,23 @@
+{
+  "identifier": "migrated",
+  "description": "permissions that were migrated from v1",
+  "local": true,
+  "windows": [
+    "main"
+  ],
+  "permissions": [
+    "core:default",
+    "fs:allow-read-file",
+    "fs:allow-read-dir",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        "*/**"
+      ]
+    },
+    "shell:allow-open",
+    "dialog:allow-open",
+    "notification:default",
+    "notification:default"
+  ]
+}

@@ -10,7 +10,7 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [build-dependencies]
-tauri-build = { version = "1.5", features = [] }
+tauri-build = { version = "2", features = [] }
 
 [dependencies]
 askama = "0.12.1"
@@ -20,11 +20,17 @@ reqwest = { version = "0.11.23", features = ["blocking", "json"] }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0.111"
 serde_urlencoded = "0.7.1"
-tauri = { version = "1.5", features = [ "wry", "objc-exception", "updater", "shell-open", "fs-read-dir", "notification-all", "devtools", "fs-read-file", "dialog-open", "reqwest-native-tls-vendored" ], default-features = false }
-tauri-plugin-fs-watch = { git = "https://github.com/tauri-apps/plugins-workspace", branch = "v1" }
+tauri = { version = "2", features = [ "wry", "objc-exception", "devtools", "native-tls-vendored"], default-features = false }
+tauri-plugin-dialog = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-shell = "2"
 tiny_http = "0.12.0"
 
 [features]
 # this feature is used for production builds or when `devPath` points to the filesystem
 # DO NOT REMOVE!!
 custom-protocol = ["tauri/custom-protocol"]
+
+[target.'cfg(not(any(target_os = "android", target_os = "ios")))'.dependencies]
+tauri-plugin-updater = "2"

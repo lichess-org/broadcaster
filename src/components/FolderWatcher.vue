@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { open } from '@tauri-apps/api/dialog';
-import { DebouncedEvent, watch } from 'tauri-plugin-fs-watch-api';
+import { open } from '@tauri-apps/plugin-dialog';
+import { DebouncedEvent, watch } from '@tauri-apps/plugin-fs';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
 import { add_to_queue, isMultiGamePgn, lichessFetch, multiOrSingleFilter, openPath } from '../utils';

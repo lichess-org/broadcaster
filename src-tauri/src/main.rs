@@ -55,6 +55,11 @@ fn main() {
     let arced_upload_queue = Arc::clone(&upload_queue_state);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_notification::init())
         .manage(upload_queue_state)
         .setup(|app| {
             let app_handle = app.handle();

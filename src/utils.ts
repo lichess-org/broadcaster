@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api';
-import { FileEntry, readDir } from '@tauri-apps/api/fs';
+import { FileEntry, readDir } from '@tauri-apps/plugin-fs';
 import { useLogStore } from './stores/logs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
