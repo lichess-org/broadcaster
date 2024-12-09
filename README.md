@@ -28,7 +28,7 @@ This program will not transfer any information to other networked systems unless
 
 ### Prerequisites
 
-1. Follow steps for installing Rust + Tauri here: https://tauri.app/v1/guides/getting-started/prerequisites
+1. Follow steps for installing Rust + Tauri here: https://tauri.app/start/prerequisites/
 2. Install pnpm
    ```bash
     npm install -g pnpm
