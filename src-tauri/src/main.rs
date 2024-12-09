@@ -15,7 +15,6 @@ use std::{
     io::Read,
     sync::{Arc, Mutex},
 };
-use tauri::Manager;
 
 use crate::oauth::start_oauth_flow;
 
