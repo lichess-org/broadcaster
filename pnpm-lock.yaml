@@ -18,19 +18,19 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       '@tauri-apps/plugin-dialog':
-        specifier: ~2
+        specifier: ~2.0.1
         version: 2.0.1
       '@tauri-apps/plugin-fs':
-        specifier: ~2
+        specifier: ~2.0.3
         version: 2.0.3
       '@tauri-apps/plugin-notification':
-        specifier: ~2
+        specifier: ~2.0.0
         version: 2.0.0
       '@tauri-apps/plugin-shell':
-        specifier: ~2
+        specifier: ~2.0.1
         version: 2.0.1
       '@tauri-apps/plugin-updater':
-        specifier: ~2
+        specifier: ~2.0.0
         version: 2.0.0
       fetch-ndjson:
         specifier: ^1.1.7

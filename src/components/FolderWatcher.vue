@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { open } from '@tauri-apps/plugin-dialog';
-import { DebouncedEvent, watch } from '@tauri-apps/plugin-fs';
+import { watch, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
 import { add_to_queue, isMultiGamePgn, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
@@ -55,14 +55,12 @@ function stopWatching() {
   status.stopRound(props.round.round.id);
 }
 
-function handleFolderChange(events: DebouncedEvent): void {
-  if (events.find(event => isMultiGamePgn(event.path))) {
+function handleFolderChange(event: WatchEvent): void {
+  if (event.paths.find(filename => isMultiGamePgn(filename))) {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
 
-  const files = events.filter(event => event.kind === 'Any').map(event => event.path);
-
-  const toUpload = multiOrSingleFilter(files);
+  const toUpload = multiOrSingleFilter(event.paths);
 
   if (toUpload.length === 0) {
     return;
