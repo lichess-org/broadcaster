@@ -2,57 +2,40 @@
   "build": {
     "beforeDevCommand": "pnpm dev",
     "beforeBuildCommand": "pnpm build",
-    "devPath": "http://localhost:1420",
-    "distDir": "../dist"
+    "frontendDist": "../dist",
+    "devUrl": "http://localhost:1420"
   },
-  "package": {
-    "productName": "Lichess Broadcaster",
-    "version": "../package.json"
+  "bundle": {
+    "active": true,
+    "targets": "all",
+    "icon": ["icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"],
+    "createUpdaterArtifacts": "v1Compatible"
   },
-  "tauri": {
-    "allowlist": {
-      "all": false,
-      "shell": {
-        "all": false,
-        "open": true
-      },
-      "dialog": {
-        "open": true
-      },
-      "fs": {
-        "readDir": true,
-        "readFile": true,
-        "scope": ["*/**"]
-      },
-      "notification": {
-        "all": true
-      }
-    },
-    "bundle": {
-      "active": true,
-      "targets": "all",
-      "identifier": "org.lichess.broadcaster",
-      "icon": ["icons/128x128.png", "icons/128x128@2x.png", "icons/icon.icns", "icons/icon.ico"]
-    },
-    "security": {
-      "csp": null
-    },
+  "productName": "Lichess Broadcaster",
+  "mainBinaryName": "Lichess Broadcaster",
+  "version": "../package.json",
+  "identifier": "org.lichess.broadcaster",
+  "plugins": {
     "updater": {
-      "active": true,
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM1QTQ0Q0YwOTc2NDZDQjQKUldTMGJHU1g4RXlreFdCMnZXUnlZU2h5WUVEWGpyV3pENzNhVVZTSE1qbU5GQjBpZUtzaEJqS1UK",
       "endpoints": [
         "https://lichess-org.github.io/broadcaster/version.json?target={{target}}&arch={{arch}}&current_version={{current_version}}"
-      ],
-      "dialog": true,
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM1QTQ0Q0YwOTc2NDZDQjQKUldTMGJHU1g4RXlreFdCMnZXUnlZU2h5WUVEWGpyV3pENzNhVVZTSE1qbU5GQjBpZUtzaEJqS1UK"
-    },
+      ]
+    }
+  },
+  "app": {
     "windows": [
       {
         "fullscreen": false,
         "resizable": true,
         "title": "Lichess Broadcaster",
         "width": 1400,
-        "height": 1200
+        "height": 1200,
+        "useHttpsScheme": true
       }
-    ]
+    ],
+    "security": {
+      "csp": null
+    }
   }
 }

@@ -15,7 +15,7 @@ use std::{
     io::Read,
     sync::{Arc, Mutex},
 };
-use tauri::Manager;
+use tauri::Emitter;
 
 use crate::oauth::start_oauth_flow;
 
@@ -55,16 +55,21 @@ fn main() {
     let arced_upload_queue = Arc::clone(&upload_queue_state);
 
     tauri::Builder::default()
+        .plugin(tauri_plugin_dialog::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_fs::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
+        .plugin(tauri_plugin_notification::init())
         .manage(upload_queue_state)
         .setup(|app| {
-            let app_handle = app.handle();
+            let app_handle = app.handle().clone();
 
             std::thread::spawn(move || loop {
                 match arced_upload_queue.lock() {
                     Ok(mut queue) => {
                         let queue_size = queue.jobs.len();
                         app_handle
-                            .emit_all("event::queue_size", queue_size)
+                            .emit("event::queue_size", queue_size)
                             .expect("failed to emit event");
 
                         let next_job = queue.jobs.pop_front();
@@ -74,7 +79,7 @@ fn main() {
                             Some(job) => match handle_upload_job(&job) {
                                 Ok(response) => {
                                     app_handle
-                                        .emit_all(
+                                        .emit(
                                             "event::upload_success",
                                             PgnPushResult {
                                                 response,
@@ -85,7 +90,7 @@ fn main() {
                                 }
                                 Err(err) => {
                                     app_handle
-                                        .emit_all("event::upload_error", err)
+                                        .emit("event::upload_error", err)
                                         .expect("failed to emit event");
                                 }
                             },
@@ -103,7 +108,6 @@ fn main() {
             open_path,
             start_oauth_flow
         ])
-        .plugin(tauri_plugin_fs_watch::init())
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

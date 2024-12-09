@@ -3,7 +3,7 @@ use oauth2::{
     basic::BasicClient, reqwest::http_client, AuthUrl, AuthorizationCode, ClientId, CsrfToken,
     PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
 };
-use tauri::{AppHandle, Manager};
+use tauri::{AppHandle, Emitter};
 use tiny_http::Server;
 
 #[derive(Template, Clone, Debug)]
@@ -27,7 +27,7 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
     println!("Local server started: {localhost_url}");
 
     let client = BasicClient::new(
-        ClientId::new(app_handle.config().tauri.bundle.identifier.clone()),
+        ClientId::new(app_handle.config().identifier.clone()),
         None,
         AuthUrl::new(oauth_url).unwrap(),
         Some(TokenUrl::new(token_url).unwrap()),
@@ -69,7 +69,7 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
                 .unwrap();
 
             app_handle
-                .emit_all("event::update_access_token", access_token)
+                .emit("event::update_access_token", access_token)
                 .expect("failed to emit event");
 
             let html = RedirectTemplate {
