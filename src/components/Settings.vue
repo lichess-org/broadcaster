@@ -107,7 +107,7 @@ function logout() {
           </button>
         </form>
         <p class="mt-2 text-sm leading-6 text-gray-400">
-          Clear all local data and reset app settings to their defaults
+          Clear all local data and reset app settings to their defaults. This will log you out.
         </p>
       </div>
     </div>
