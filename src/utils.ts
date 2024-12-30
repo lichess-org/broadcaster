@@ -194,13 +194,13 @@ if (import.meta.vitest) {
   });
 }
 
-export async function recursiveFileList(folder: string): Promise<string[]> {
+export async function fileList(folder: string, recursive: boolean = false): Promise<string[]> {
   const files: string[] = [];
   const entries = await readDir(folder);
 
   const traverse = async (entries: DirEntry[]) => {
     for (const entry of entries) {
-      if (entry.isDirectory) {
+      if (entry.isDirectory && recursive) {
         traverse(await readDir(entry.name));
       } else {
         files.push(entry.name);

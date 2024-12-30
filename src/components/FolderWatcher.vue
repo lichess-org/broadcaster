@@ -3,10 +3,10 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { watch, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
-import { add_to_queue, isMultiGamePgn, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
+import { add_to_queue, fileList, isMultiGamePgn, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
 import { LichessRound } from '../types';
 import { getIndividualGamePgns, getMultiGamePgns } from '../upload';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 
 const logs = useLogStore();
 const status = useStatusStore();
@@ -17,8 +17,12 @@ const props = defineProps<{
 
 const roundStatus = computed(() => status.getRound(props.round.round.id));
 
+const error = ref<string | null>(null);
+
 async function selectPgnFolder() {
-  open({ directory: true }).then(selected => {
+  error.value = null;
+
+  open({ directory: true }).then(async selected => {
     if (selected === null) {
       return;
     }
@@ -27,8 +31,21 @@ async function selectPgnFolder() {
       throw new Error('Expected a single folder to be selected');
     }
 
-    startWatchingFolder(selected);
+    if (await folderHasPgnFile(selected)) {
+      startWatchingFolder(selected);
+    } else {
+      const errorMsg = `No *.pgn file(s) found in the selected folder: ${selected}`;
+      error.value = errorMsg;
+      logs.error(errorMsg);
+      throw new Error(errorMsg);
+    }
   });
+}
+
+async function folderHasPgnFile(path: string): Promise<boolean> {
+  const files = await fileList(path);
+  console.log(path, files);
+  return files.some(file => file.endsWith('.pgn'));
 }
 
 async function startWatchingFolder(path: string) {
@@ -184,5 +201,12 @@ async function resetAndReupload() {
         Select Folder
       </button>
     </form>
+
+    <div v-if="error" class="bg-red-200 border-l-8 border-red-500 text-red-900 p-4 my-4">
+      <strong>Error:</strong> {{ error }}
+      <br />
+      Ensure you have selected the folder for the <strong>round</strong>'s PGN files and not the parent
+      <strong>tournament</strong> folder.
+    </div>
   </div>
 </template>
