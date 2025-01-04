@@ -72,6 +72,11 @@ function stopWatching() {
 }
 
 function handleFolderChange(event: WatchEvent): void {
+  console.log(event.type, event.paths);
+  if (event.type.access.mode !== 'write') {
+    return;
+  }
+
   if (event.paths.find(filename => isMultiGamePgn(filename))) {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
