@@ -51,6 +51,8 @@ struct PgnPushResult {
 }
 
 fn main() {
+    let _ = fix_path_env::fix();
+
     let upload_queue_state = Arc::new(Mutex::new(UploadQueue::default()));
     let arced_upload_queue = Arc::clone(&upload_queue_state);
 
