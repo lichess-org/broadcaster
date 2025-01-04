@@ -37,7 +37,6 @@ async function selectPgnFolder() {
       const errorMsg = `No *.pgn file(s) found in the selected folder: ${selected}`;
       error.value = errorMsg;
       logs.error(errorMsg);
-      throw new Error(errorMsg);
     }
   });
 }
