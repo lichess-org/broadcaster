@@ -69,6 +69,12 @@ pnpx tsx sample-data/generate/add-broadcasts.ts
 pnpx tsx sample-data/generate/index.ts games path/to/folder
 ```
 
+#### Test that `games.pgn` is given priority over any `game-*.pgn` files:
+
+```bash
+pnpx tsx sample-data/generate/index.ts multigame path/to/folder
+```
+
 #### Test errors by writing bad PGN files:
 
 ```bash
