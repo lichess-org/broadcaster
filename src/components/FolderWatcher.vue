@@ -79,24 +79,25 @@ function stopWatching() {
 
 function handleFolderChange(event: WatchEvent): void {
   const type = event.type;
-  if (typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write') {
-    if (event.paths.find(filename => isMultiGamePgn(filename))) {
-      status.setRoundHasMultiGamePgn(props.round.round.id);
-    }
+  const isWrite = typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write';
+  if (!isWrite) return;
 
-    const toUpload = multiOrSingleFilter(event.paths);
-
-    if (toUpload.length === 0) {
-      return;
-    }
-
-    status.setRoundContainsAtLeastOnePgn(props.round.round.id);
-
-    add_to_queue(props.round.round.id, toUpload);
-
-    const paths = toUpload.map(file => file.split('/').pop());
-    logs.info(`Modified: ${paths.join(', ')}`);
+  if (event.paths.find(filename => isMultiGamePgn(filename))) {
+    status.setRoundHasMultiGamePgn(props.round.round.id);
   }
+
+  const toUpload = multiOrSingleFilter(event.paths);
+
+  if (toUpload.length === 0) {
+    return;
+  }
+
+  status.setRoundContainsAtLeastOnePgn(props.round.round.id);
+
+  add_to_queue(props.round.round.id, toUpload);
+
+  const paths = toUpload.map(file => file.split('/').pop());
+  logs.info(`Modified: ${paths.join(', ')}`);
 }
 
 async function resetAndReupload() {
