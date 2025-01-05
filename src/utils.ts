@@ -1,5 +1,6 @@
 import { invoke } from '@tauri-apps/api/core';
-import { DirEntry, readDir } from '@tauri-apps/plugin-fs';
+import { join } from '@tauri-apps/api/path';
+import { readDir } from '@tauri-apps/plugin-fs';
 import { useLogStore } from './stores/logs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
@@ -198,17 +199,14 @@ export async function fileList(folder: string, recursive: boolean = false): Prom
   const files: string[] = [];
   const entries = await readDir(folder);
 
-  const traverse = async (entries: DirEntry[]) => {
-    for (const entry of entries) {
-      if (entry.isDirectory && recursive) {
-        traverse(await readDir(entry.name));
-      } else {
-        files.push(entry.name);
-      }
+  for (const entry of entries) {
+    if (entry.isDirectory && recursive) {
+      const subfolder = await join(folder, entry.name);
+      files.push(...(await fileList(subfolder, recursive)));
+    } else {
+      files.push(await join(folder, entry.name));
     }
-  };
-
-  traverse(entries);
+  }
 
   return files.reverse();
 }

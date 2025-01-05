@@ -15,6 +15,7 @@ export const useStatusStore = defineStore('status', () => {
       tourId: string;
       roundId: string;
       watchProcess: WatchProcess;
+      containsAtLeastOnePgn?: boolean;
       hasMultiGamePgn?: boolean;
     }[]
   >([]);
@@ -70,6 +71,18 @@ export const useStatusStore = defineStore('status', () => {
     return round?.hasMultiGamePgn ?? false;
   };
 
+  const setRoundContainsAtLeastOnePgn = (roundId: string) => {
+    const round = getRound(roundId);
+    if (round) {
+      round.containsAtLeastOnePgn = true;
+    }
+  };
+
+  const roundContainsAtLeastOnePgn = (roundId: string): boolean => {
+    const round = getRound(roundId);
+    return round?.containsAtLeastOnePgn ?? false;
+  };
+
   return {
     activeCount,
     friendly,
@@ -80,6 +93,8 @@ export const useStatusStore = defineStore('status', () => {
     stopRound,
     setRoundHasMultiGamePgn,
     roundHasMultiGamePgn,
+    setRoundContainsAtLeastOnePgn,
+    roundContainsAtLeastOnePgn,
   };
 });
 

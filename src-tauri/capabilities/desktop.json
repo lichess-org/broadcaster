@@ -9,7 +9,7 @@
     "fs:allow-app-read-recursive",
     {
       "identifier": "fs:scope",
-      "allow": ["*/**"]
+      "allow": [{ "path": "**" }]
     },
     "shell:allow-open",
     "dialog:allow-open",
