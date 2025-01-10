@@ -93,7 +93,7 @@ if (action === 'games') {
   // The app should only send the games.pgn file and ignore the others
   const games = new Map<number, Chess>();
 
-  for (let i = 1; i <= 16; i++) {
+  for (let i = 1; i <= 2; i++) {
     const game = newGame();
     games.set(i, game);
     writeToFile(`game-${i}.pgn`, game.pgn());

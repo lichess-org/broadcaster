@@ -77,7 +77,7 @@ function stopWatching() {
 }
 
 function handleFolderChange(event: WatchEvent): void {
-  console.log('debounced watch event:', event);
+  console.log('v2 WatchEvent:', event);
 
   const type = event.type;
   const isWrite = typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write';
