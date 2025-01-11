@@ -47,7 +47,7 @@ async function multipleGamesPgnFiles(path: string) {
 async function startWatchingFolder(path: string) {
   const stopWatching = await watch(path, handleFolderChange, {
     recursive: true,
-    delayMs: 5000,
+    delayMs: 1000,
   });
 
   status.startRound(props.round.tour.id, props.round.round.id, path, stopWatching);
@@ -77,8 +77,6 @@ function stopWatching() {
 }
 
 function handleFolderChange(event: WatchEvent): void {
-  console.log('v2 WatchEvent:', event);
-
   const type = event.type;
   const isWrite = typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write';
   if (!isWrite) return;
@@ -88,8 +86,6 @@ function handleFolderChange(event: WatchEvent): void {
   }
 
   const toUpload = multiOrSingleFilter(event.paths);
-
-  // console.log({ toUpload });
 
   if (toUpload.length === 0) {
     return;
