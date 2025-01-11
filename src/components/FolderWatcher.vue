@@ -41,7 +41,6 @@ async function selectPgnFolder() {
 
 async function multipleGamesPgnFiles(path: string) {
   const files = await fileList(path, true);
-  console.log('multipleGamesPgnFiles', path, files);
   return files.filter(file => file.endsWith('games.pgn')).length > 1;
 }
 
@@ -159,7 +158,7 @@ async function resetAndReupload() {
       class="bg-yellow-100 border-l-8 border-yellow-500 text-yellow-700 p-4 my-4"
     >
       <p>
-        No <code>*.pgn</code> file(s) found in the selected folder
+        Warning: No <code>*.pgn</code> file(s) found in the selected folder
         <br />
         Ensure you have selected the folder for the <strong>round</strong>'s PGN files and not the parent
         <strong>tournament</strong> folder.
@@ -170,8 +169,8 @@ async function resetAndReupload() {
       class="bg-yellow-100 border-l-8 border-yellow-500 text-yellow-700 p-4 my-4"
     >
       <p>
-        There is no <code>games.pgn</code> file found in that folder. If you're using DGT LiveChess, it is recommended
-        to enable that file (<a
+        Warning: There is no <code>games.pgn</code> file found in that folder. If you're using DGT LiveChess, it is
+        recommended to enable that file (<a
           class="underline"
           href=""
           @click.prevent="openPath('https://lichess.org/broadcast/app#there-is-no-gamespgn-file-in-the-folder')"
