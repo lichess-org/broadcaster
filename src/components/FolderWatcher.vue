@@ -7,6 +7,7 @@ import { add_to_queue, fileList, isMultiGamePgn, lichessFetch, multiOrSingleFilt
 import { LichessRound } from '../types';
 import { getIndividualGamePgns, getMultiGamePgns } from '../upload';
 import { computed } from 'vue';
+import debounce from 'debounce';
 
 const logs = useLogStore();
 const status = useStatusStore();
@@ -76,6 +77,8 @@ function stopWatching() {
   status.stopRound(props.round.round.id);
 }
 
+let modifiedFiles: string[] = [];
+
 function handleFolderChange(event: WatchEvent): void {
   const type = event.type;
   const isWrite = typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write';
@@ -85,18 +88,17 @@ function handleFolderChange(event: WatchEvent): void {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
 
-  const toUpload = multiOrSingleFilter(event.paths);
+  modifiedFiles.push(...event.paths);
 
-  if (toUpload.length === 0) {
-    return;
-  }
-
+  logs.info(`Modified: ${event.paths.map(file => file.split('/').pop()).join(', ')}`);
   status.setRoundContainsAtLeastOnePgn(props.round.round.id);
 
-  add_to_queue(props.round.round.id, toUpload);
-
-  const paths = toUpload.map(file => file.split('/').pop());
-  logs.info(`Modified: ${paths.join(', ')}`);
+  debounce(() => {
+    const toUpload = multiOrSingleFilter(modifiedFiles);
+    if (toUpload.length === 0) return;
+    add_to_queue(props.round.round.id, toUpload);
+    modifiedFiles = [];
+  }, 5000)();
 }
 
 async function resetAndReupload() {
