@@ -21,6 +21,7 @@
     "@tauri-apps/plugin-notification": "~2.2.0",
     "@tauri-apps/plugin-shell": "~2.2.0",
     "@tauri-apps/plugin-updater": "~2.3.1",
+    "debounce": "^2.2.0",
     "fetch-ndjson": "^1.1.7",
     "openapi-fetch": "^0.13.4",
     "pinia": "^2.3.0",
@@ -31,7 +32,7 @@
   "devDependencies": {
     "@faker-js/faker": "^9.3.0",
     "@lichess-org/types": "^2.0.21",
-    "@tauri-apps/cli": "^2.2.3",
+    "@tauri-apps/cli": "^2.2.4",
     "@types/node": "^22.10.5",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.20",
