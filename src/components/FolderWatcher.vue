@@ -98,7 +98,7 @@ function handleFolderChange(event: WatchEvent): void {
     if (toUpload.length === 0) return;
     add_to_queue(props.round.round.id, toUpload);
     modifiedFiles = [];
-  }, 5000)();
+  }, 1000)();
 }
 
 async function resetAndReupload() {
