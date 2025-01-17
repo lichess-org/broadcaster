@@ -80,6 +80,7 @@ function stopWatching() {
 let modifiedFiles: string[] = [];
 
 function handleFolderChange(event: WatchEvent): void {
+  console.log(event);
   const type = event.type;
   const isWrite = typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write';
   if (!isWrite) return;
