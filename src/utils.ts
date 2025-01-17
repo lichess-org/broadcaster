@@ -296,7 +296,7 @@ if (import.meta.vitest) {
       create: { type: { create: { kind: 'file' } }, paths: ['/path/to/file.txt'], attrs: {} },
       copyFileToFolder: {
         type: { modify: { kind: 'rename', mode: 'to' } },
-        paths: ['/home/trev/Desktop/test-29/game-2.pgn'],
+        paths: ['/path/to/game-2.pgn'],
         attrs: { tracker: 174927 },
       },
       open: { type: { access: { kind: 'open', mode: 'any' } }, paths: ['/path/to/file.txt'], attrs: {} },
