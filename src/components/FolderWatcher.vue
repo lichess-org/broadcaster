@@ -3,7 +3,7 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { watch, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
-import { add_to_queue, fileList, isMultiGamePgn, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
+import { add_to_queue, fileList, isMultiGamePgn, isWrite, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
 import { LichessRound } from '../types';
 import { getIndividualGamePgns, getMultiGamePgns } from '../upload';
 import { computed } from 'vue';
@@ -80,9 +80,7 @@ function stopWatching() {
 let modifiedFiles: string[] = [];
 
 function handleFolderChange(event: WatchEvent): void {
-  const type = event.type;
-  const isWrite = typeof type !== 'string' && 'access' in type && 'mode' in type.access && type.access.mode === 'write';
-  if (!isWrite) return;
+  if (!isWrite(event)) return;
 
   if (event.paths.find(filename => isMultiGamePgn(filename))) {
     status.setRoundHasMultiGamePgn(props.round.round.id);
