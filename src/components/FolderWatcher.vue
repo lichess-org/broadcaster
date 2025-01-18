@@ -82,18 +82,19 @@ let modifiedFiles: string[] = [];
 function handleFolderChange(event: WatchEvent): void {
   if (!isWrite(event)) return;
 
-  if (event.paths.find(filename => isMultiGamePgn(filename))) {
-    status.setRoundHasMultiGamePgn(props.round.round.id);
-  }
-
   modifiedFiles.push(...event.paths);
-
-  logs.info(`Modified: ${event.paths.map(file => file.split('/').pop()).join(', ')}`);
-  status.setRoundContainsAtLeastOnePgn(props.round.round.id);
 
   debounce(() => {
     const toUpload = multiOrSingleFilter(modifiedFiles);
     if (toUpload.length === 0) return;
+
+    logs.info(`Modified: ${toUpload.map(file => file.split('/').pop()).join(', ')}`);
+    status.setRoundContainsAtLeastOnePgn(props.round.round.id);
+
+    if (toUpload.find(filename => isMultiGamePgn(filename))) {
+      status.setRoundHasMultiGamePgn(props.round.round.id);
+    }
+
     add_to_queue(props.round.round.id, toUpload);
     modifiedFiles = [];
   }, 1000)();
