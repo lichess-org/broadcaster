@@ -30,20 +30,20 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.3.0",
+    "@faker-js/faker": "^9.4.0",
     "@lichess-org/types": "^2.0.21",
     "@tauri-apps/cli": "^2.2.4",
-    "@types/node": "^22.10.6",
+    "@types/node": "^22.10.7",
     "@vitejs/plugin-vue": "^5.2.1",
     "autoprefixer": "^10.4.20",
     "chess.js": "1.0.0",
     "jsdom": "^26.0.0",
-    "postcss": "^8.5.0",
+    "postcss": "^8.5.1",
     "prettier": "^3.4.2",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
     "vite": "^6.0.7",
-    "vitest": "^2.1.8",
+    "vitest": "^3.0.2",
     "vue-tsc": "^2.2.0"
   },
   "packageManager": "pnpm@9.15.2+sha512.93e57b0126f0df74ce6bff29680394c0ba54ec47246b9cf321f0121d8d9bb03f750a705f24edc3c1180853afd7c2c3b94196d0a3d53d3e069d9e2793ef11f321"
