@@ -8,6 +8,7 @@ import { LichessRound } from '../types';
 import { getIndividualGamePgns, getMultiGamePgns } from '../upload';
 import { computed } from 'vue';
 import debounce from 'debounce';
+import { sep } from '@tauri-apps/api/path';
 
 const logs = useLogStore();
 const status = useStatusStore();
@@ -88,7 +89,7 @@ function handleFolderChange(event: WatchEvent): void {
     const toUpload = multiOrSingleFilter(modifiedFiles);
     if (toUpload.length === 0) return;
 
-    logs.info(`Modified: ${toUpload.map(file => file.split('/').pop()).join(', ')}`);
+    logs.info(`Modified: ${toUpload.map(file => file.split(sep()).pop()).join(', ')}`);
     status.setRoundContainsAtLeastOnePgn(props.round.round.id);
 
     if (toUpload.find(filename => isMultiGamePgn(filename))) {
