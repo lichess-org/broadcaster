@@ -140,14 +140,14 @@ async function resetAndReupload() {
             <button
               type="button"
               @click="stopWatching"
-              class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400"
+              class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-400"
             >
               Stop watching this folder
             </button>
             <button
               type="button"
               @click="resetAndReupload"
-              class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-400"
+              class="rounded-md bg-gray-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-400"
             >
               Reset round + Re-upload game PGNs
             </button>
@@ -204,7 +204,7 @@ async function resetAndReupload() {
     <form class="mt-2">
       <button
         @click="selectPgnFolder"
-        class="rounded-md bg-teal-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+        class="rounded-md bg-teal-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
         type="button"
       >
         <svg
