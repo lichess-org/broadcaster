@@ -79,13 +79,12 @@ function getBroadcast(id: string) {
       />
     </svg>
   </a>
-  <div v-if="isExpanded">
+  <div v-if="isExpanded" class="ml-8">
     <template v-if="broadcastWithRounds">
       <div
         v-if="broadcastWithRounds.rounds.length"
         v-for="round in broadcastWithRounds.rounds"
         :key="round.id"
-        class="ml-8"
       >
         <router-link
           :to="{ name: 'round', params: { id: round.id } }"
@@ -108,7 +107,7 @@ function getBroadcast(id: string) {
     </template>
     <svg
       v-else
-      class="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+      class="animate-spin m-4 h-5 w-5 text-white"
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 24 24"
