@@ -81,11 +81,7 @@ function getBroadcast(id: string) {
   </a>
   <div v-if="isExpanded" class="ml-8">
     <template v-if="broadcastWithRounds">
-      <div
-        v-if="broadcastWithRounds.rounds.length"
-        v-for="round in broadcastWithRounds.rounds"
-        :key="round.id"
-      >
+      <div v-if="broadcastWithRounds.rounds.length" v-for="round in broadcastWithRounds.rounds" :key="round.id">
         <router-link
           :to="{ name: 'round', params: { id: round.id } }"
           class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
