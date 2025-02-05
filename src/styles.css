@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 .nav-item {
   @apply text-indigo-100 hover:text-indigo-800 hover:bg-indigo-200 rounded-md px-3 py-2 text-sm font-medium;

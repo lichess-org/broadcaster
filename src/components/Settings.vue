@@ -50,7 +50,7 @@ function logout() {
       <form class="flex items-start md:col-span-2" @submit.prevent="logout()">
         <button
           type="submit"
-          class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400"
+          class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400"
         >
           Logout
         </button>
@@ -101,7 +101,7 @@ function logout() {
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
           <button
             type="submit"
-            class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-gray-500"
+            class="rounded-md bg-gray-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-gray-500"
           >
             Reset All Settings
           </button>
@@ -143,7 +143,7 @@ function logout() {
           <div class="mt-4 flex">
             <button
               type="submit"
-              class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+              class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
             >
               Save
             </button>
