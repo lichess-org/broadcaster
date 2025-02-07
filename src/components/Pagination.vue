@@ -30,7 +30,7 @@ const rangeMax = computed<number>(() => {
         to
         <span class="font-medium">{{ rangeMax }}</span>
         of
-        <span class="font-medium">{{ broadcasts.nbResults }}</span>
+        <span class="font-medium">{{ broadcasts.nbResults.toLocaleString() }}</span>
         {{ broadcasts.nbResults === 1 ? 'result' : 'results' }}
       </p>
     </div>
