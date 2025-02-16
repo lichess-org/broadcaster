@@ -58,8 +58,8 @@ importers:
         specifier: ^9.4.0
         version: 9.4.0
       '@lichess-org/types':
-        specifier: ^2.0.24
-        version: 2.0.24
+        specifier: ^2.0.27
+        version: 2.0.27
       '@tailwindcss/postcss':
         specifier: ^4.0.6
         version: 4.0.6
@@ -391,8 +391,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.25':
     resolution: {integrity: sha512-vNk6aEwybGtawWmy/PzwnGDOjCkLWSD2wqvjGGAgOAwCGWySYXfYoxt00IJkTF+8Lb57DwOb3Aa0o9CApepiYQ==}
 
-  '@lichess-org/types@2.0.24':
-    resolution: {integrity: sha512-2yRd54jTiYlfKxMeRijJ5kX7faB4wXxPdhC486ylR8FNe7eyE9AYhmaK/xNGNoCW3mZqacXs9MX0UfdIAIK4WA==}
+  '@lichess-org/types@2.0.27':
+    resolution: {integrity: sha512-SHm3qEY/H0PXwb2ncTsksjrDSD0E3BCzp082bSUplFn9Ug4BQ0tw404p8ADgFVD1ee+MIzWfNLlAw43RvfMYNg==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1860,7 +1860,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.0
 
-  '@lichess-org/types@2.0.24': {}
+  '@lichess-org/types@2.0.27': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:

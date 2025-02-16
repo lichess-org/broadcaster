@@ -1,10 +1,6 @@
 import createClient from 'openapi-fetch';
 import { faker } from '@faker-js/faker';
-import type { paths } from '@lichess-org/types';
-
-type NewBroadcast = paths['/broadcast/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
-type NewBroadcastRound =
-  paths['/broadcast/{broadcastTournamentId}/new']['post']['requestBody']['content']['application/x-www-form-urlencoded'];
+import type { components, paths } from '@lichess-org/types';
 
 const lichess = 'http://localhost:8080';
 const token = 'lip_admin';
@@ -22,7 +18,7 @@ for (let i = 1; i <= 100; i++) {
     faker.helpers.arrayElement(['Cup', 'Championship', 'Open', 'Festival', 'Invitational', 'Classic', 'Rapid']),
   ].join(' ');
 
-  const broadcast: NewBroadcast = {
+  const broadcast: components['schemas']['BroadcastForm'] = {
     name,
     showScores: faker.datatype.boolean(0.2),
     showRatingDiffs: faker.datatype.boolean(0.2),
@@ -45,10 +41,10 @@ for (let i = 1; i <= 100; i++) {
   console.log(broadcastResponse.data);
 
   for (let j = 1; j <= faker.number.int({ min: 0, max: 10 }); j++) {
-    const round: NewBroadcastRound = {
+    const round: components['schemas']['BroadcastRoundForm'] = {
       name: `Round ${j}`,
       startsAt: faker.date.future().getTime(),
-      finished: faker.datatype.boolean(0.2),
+      status: faker.helpers.arrayElement(['new', 'started', 'finished']),
       delay: 60 * faker.helpers.arrayElement([0, 1, 5, 10, 15]),
     };
 
