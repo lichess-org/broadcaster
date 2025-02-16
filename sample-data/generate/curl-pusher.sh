@@ -28,7 +28,7 @@ function pushCombined() {
 $1
 "
   done
-  curl -X POST -H "Authorization: Bearer $API_TOKEN" -H "Content-Type: text/plain" -d "$PGN" \
+  curl -X POST -A "Lichess Broadcaster/0.0.1 tauri:2.2.5 os:windows as:admin" -H "Authorization: Bearer $API_TOKEN" -H "Content-Type: text/plain" -d "$PGN" \
   "$LICHESS_URL/api/broadcast/round/$BROADCAST_ROUND_ID/push"
 }
 function pushSingle() {
@@ -36,7 +36,7 @@ function pushSingle() {
   echo "Pushing individual PGNs... $1"
   for n in $(seq 1 $NUMBER_OF_GAMES); do
 
-  curl -X POST -H "Authorization: Bearer $API_TOKEN" -H "Content-Type: text/plain" -d "
+  curl -X POST -A "Lichess Broadcaster/0.0.0 tauri:2.2.5" -H "Authorization: Bearer $API_TOKEN" -H "Content-Type: text/plain" -d "
 [Event \"Game $n\"]
 [White \"White $n\"]
 [Black \"Black $n\"]
