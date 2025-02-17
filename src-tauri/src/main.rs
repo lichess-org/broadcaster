@@ -15,7 +15,7 @@ use std::{
     io::Read,
     sync::{Arc, Mutex},
 };
-use tauri::{Emitter, Manager};
+use tauri::{AppHandle, Emitter, Manager};
 
 use crate::oauth::start_oauth_flow;
 
@@ -188,8 +188,9 @@ fn open_path(path: String) {
     open::that_in_background(path);
 }
 
+#[allow(clippy::needless_pass_by_value)]
 #[tauri::command]
-fn open_dev_tools(app_handle: tauri::AppHandle) {
+fn open_dev_tools(app_handle: AppHandle) {
     #[cfg(debug_assertions)]
     {
         let window = app_handle.get_webview_window("main").unwrap();
