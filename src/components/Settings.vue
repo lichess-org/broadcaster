@@ -102,7 +102,8 @@ async function openDevTools() {
         >.
       </p>
       <p class="mb-2 text-sm leading-6 text-gray-400">
-        Click here to <a href="#" class="underline" @click.prevent="openDevTools()">open dev tools</a> to check for console errors.
+        Click here to <a href="#" class="underline" @click.prevent="openDevTools()">open dev tools</a> to check for
+        console errors.
       </p>
       <div class="mt-8">
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
