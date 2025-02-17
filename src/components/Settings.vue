@@ -6,6 +6,7 @@ import { openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSystemStore } from '../stores/system';
 import AddUserToSidebar from './AddUserToSidebar.vue';
+import { invoke } from '@tauri-apps/api/core';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -29,6 +30,10 @@ function clearAllData() {
 function logout() {
   user.logout();
   logs.clear();
+}
+
+async function openDevTools() {
+  await invoke('open_dev_tools');
 }
 </script>
 
@@ -96,7 +101,10 @@ function logout() {
           Lichess Content Discord</a
         >.
       </p>
-
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        Click here to <a href="#" class="underline" @click.prevent="openDevTools()">open dev tools</a> to check for
+        console errors.
+      </p>
       <div class="mt-8">
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
           <button
