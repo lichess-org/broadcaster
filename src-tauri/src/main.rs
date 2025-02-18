@@ -191,14 +191,11 @@ fn open_path(path: String) {
 #[allow(clippy::needless_pass_by_value)]
 #[tauri::command]
 fn open_dev_tools(app_handle: AppHandle) {
-    #[cfg(debug_assertions)]
-    {
-        let window = app_handle.get_webview_window("main").unwrap();
-        if window.is_devtools_open() {
-            window.close_devtools();
-        } else {
-            window.open_devtools();
-        }
+    let window = app_handle.get_webview_window("main").unwrap();
+    if window.is_devtools_open() {
+        window.close_devtools();
+    } else {
+        window.open_devtools();
     }
 }
 
