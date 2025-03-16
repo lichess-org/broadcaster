@@ -3,21 +3,22 @@ import { open } from '@tauri-apps/plugin-dialog';
 import { watch, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
-import { add_to_queue, fileList, isMultiGamePgn, isWrite, lichessFetch, multiOrSingleFilter, openPath } from '../utils';
-import { LichessRound } from '../types';
-import { getIndividualGamePgns, getMultiGamePgns } from '../upload';
+import { fileList, isMultiGamePgn, isWrite, lichessApiClient, openPath, uploadFolderToRound } from '../utils';
 import { computed } from 'vue';
 import debounce from 'debounce';
 import { sep } from '@tauri-apps/api/path';
+import { ref } from 'vue';
+import { BroadcastRound } from '../types';
 
 const logs = useLogStore();
 const status = useStatusStore();
 
 const props = defineProps<{
-  round: LichessRound;
+  round: BroadcastRound;
 }>();
 
 const roundStatus = computed(() => status.getRound(props.round.round.id));
+const watchedFolder = ref('');
 
 async function selectPgnFolder() {
   open({ directory: true }).then(async selected => {
@@ -52,10 +53,11 @@ async function startWatchingFolder(path: string) {
     delayMs: 1000,
   });
 
+  watchedFolder.value = path;
+
   status.startRound(props.round.tour.id, props.round.round.id, path, stopWatching);
 
   await checkForExistingPgnFiles(path);
-  await uploadMultiGamePgn(path);
 }
 
 async function checkForExistingPgnFiles(path: string) {
@@ -65,15 +67,6 @@ async function checkForExistingPgnFiles(path: string) {
   }
 }
 
-async function uploadMultiGamePgn(path: string) {
-  const multiGamePgns = await getMultiGamePgns(path);
-  if (multiGamePgns.length > 0) {
-    add_to_queue(props.round.round.id, multiGamePgns);
-    status.setRoundHasMultiGamePgn(props.round.round.id);
-  }
-  return multiGamePgns;
-}
-
 function stopWatching() {
   status.stopRound(props.round.round.id);
 }
@@ -81,23 +74,24 @@ function stopWatching() {
 let modifiedFiles: string[] = [];
 
 function handleFolderChange(event: WatchEvent): void {
+  console.log('folder change');
   if (!isWrite(event)) return;
+  console.log('is write');
 
-  modifiedFiles.push(...event.paths);
+  modifiedFiles.push(...event.paths.filter(file => file.endsWith('.pgn')));
 
   debounce(() => {
-    const toUpload = multiOrSingleFilter(modifiedFiles);
-    if (toUpload.length === 0) return;
+    if (modifiedFiles.length === 0) return;
 
-    logs.info(`Modified: ${toUpload.map(file => file.split(sep()).pop()).join(', ')}`);
+    logs.info(`Modified: ${props.round.round.name} ${modifiedFiles.map(file => file.split(sep()).pop()).join(', ')}`);
+
+    uploadFolderToRound(props.round.round.id, watchedFolder.value);
+    modifiedFiles = [];
+
     status.setRoundContainsAtLeastOnePgn(props.round.round.id);
-
-    if (toUpload.find(filename => isMultiGamePgn(filename))) {
+    if (modifiedFiles.find(filename => isMultiGamePgn(filename))) {
       status.setRoundHasMultiGamePgn(props.round.round.id);
     }
-
-    add_to_queue(props.round.round.id, toUpload);
-    modifiedFiles = [];
   }, 1000)();
 }
 
@@ -106,20 +100,13 @@ async function resetAndReupload() {
 
   logs.info('Resetting round and re-uploading PGNs');
 
-  await lichessFetch(
-    `/api/broadcast/round/${props.round.round.id}/reset`,
-    {},
-    {
-      method: 'POST',
+  lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/reset', {
+    params: {
+      path: {
+        broadcastRoundId: props.round.round.id,
+      },
     },
-  );
-
-  const multiGameFiles = await uploadMultiGamePgn(roundStatus.value.watchProcess.folder);
-  if (multiGameFiles.length === 0) {
-    logs.info('No multi-game PGNs found, uploading individual games');
-    const singleGameFiles = await getIndividualGamePgns(roundStatus.value.watchProcess.folder);
-    add_to_queue(props.round.round.id, singleGameFiles);
-  }
+  });
 }
 </script>
 
@@ -204,7 +191,7 @@ async function resetAndReupload() {
     <form class="mt-2">
       <button
         @click="selectPgnFolder"
-        class="rounded-md bg-teal-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-teal-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
+        class="rounded-md bg-teal-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-teal-600 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-teal-500"
         type="button"
       >
         <svg

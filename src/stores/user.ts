@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
-import { AccessTokenResponse, LichessUser } from '../types';
-import { lichessFetch } from '../utils';
+import { AccessTokenResponse } from '../types';
+import { lichessApiClient } from '../utils';
 
 export const useUserStore = defineStore(
   'user',
@@ -18,10 +18,12 @@ export const useUserStore = defineStore(
     }
 
     function updateUser() {
-      lichessFetch('/api/account')
-        .then(response => response.json() as Promise<LichessUser>)
-        .then(data => {
-          username.value = data.username;
+      lichessApiClient()
+        .GET('/api/account')
+        .then(response => {
+          if (response.data?.username) {
+            username.value = response.data.username;
+          }
         });
     }
 
@@ -42,13 +44,7 @@ export const useUserStore = defineStore(
 
     function logout(deleteRemoteToken = true) {
       if (deleteRemoteToken) {
-        lichessFetch(
-          '/api/token',
-          {},
-          {
-            method: 'DELETE',
-          },
-        );
+        lichessApiClient().DELETE('/api/token');
       }
 
       accessToken.value = null;

@@ -1,25 +1,31 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { paths } from '@lichess-org/types';
 import { router } from '../router';
-import { LichessRound } from '../types';
+import { BroadcastRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
-import { lichessFetch, openPath } from '../utils';
+import { lichessApiClient, openPath } from '../utils';
 import { useSettingsStore } from '../stores/settings';
 
 const settings = useSettingsStore();
-const round = ref<LichessRound | null>(null);
+const round = ref<BroadcastRound | null>(null);
 
 function getRound() {
-  lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
-    .then(
-      response =>
-        response.json() as Promise<
-          paths['/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}']['get']['responses']['200']['content']['application/json']
-        >,
-    )
-    .then(data => (round.value = data));
+  lichessApiClient()
+    .GET('/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}', {
+      params: {
+        path: {
+          broadcastTournamentSlug: '-',
+          broadcastRoundSlug: '-',
+          broadcastRoundId: router.currentRoute.value.params.id as string,
+        },
+      },
+    })
+    .then(response => {
+      if (response.data) {
+        round.value = response.data;
+      }
+    });
 }
 
 getRound();

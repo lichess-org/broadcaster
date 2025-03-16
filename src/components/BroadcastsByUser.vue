@@ -2,7 +2,7 @@
 import { computed, ref } from 'vue';
 import { LichessPaginatedBroadcasts } from '../types';
 import { useSettingsStore } from '../stores/settings';
-import { lichessFetch, openPath } from '../utils';
+import { lichessApiClient, openPath } from '../utils';
 import { router } from '../router';
 import { onBeforeRouteUpdate } from 'vue-router';
 
@@ -27,14 +27,22 @@ function refresh() {
   broadcasts.value = undefined;
   isLoading.value = true;
 
-  lichessFetch(`/api/broadcast/by/${username.value}`, {
-    page: pageNum.value.toString(),
-  })
-    .then(response => response.json() as Promise<LichessPaginatedBroadcasts>)
-    .then(data => {
-      broadcasts.value = data;
+  lichessApiClient()
+    .GET('/api/broadcast/by/{username}', {
+      params: {
+        path: {
+          username: username.value,
+        },
+      },
     })
-    .finally(() => (isLoading.value = false));
+    .then(response => {
+      if (response.data) {
+        broadcasts.value = response.data;
+      }
+    })
+    .finally(() => {
+      isLoading.value = false;
+    });
 }
 
 if (!pageHasBroadcasts.value) {

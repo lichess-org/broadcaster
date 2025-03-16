@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { lichessFetch } from '../utils';
-import { operations } from '@lichess-org/types';
+import { lichessApiClient } from '../utils';
 import { useFavoritesStore } from '../stores/favorites';
 
 const username = ref('');
@@ -10,12 +9,18 @@ const error = ref('');
 const favorites = useFavoritesStore();
 
 function save() {
-  lichessFetch(`/api/user/${username.value}`)
-    .then(
-      response => response.json() as Promise<operations['apiUser']['responses']['200']['content']['application/json']>,
-    )
-    .then(data => {
-      favorites.add(data.username);
+  lichessApiClient()
+    .GET('/api/user/{username}', {
+      params: {
+        path: {
+          username: username.value,
+        },
+      },
+    })
+    .then(response => {
+      if (response.data?.username) {
+        favorites.add(response.data.username);
+      }
       username.value = '';
     })
     .catch(e => {
