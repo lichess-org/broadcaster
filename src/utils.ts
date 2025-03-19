@@ -1,5 +1,5 @@
 import { invoke } from '@tauri-apps/api/core';
-import { join } from '@tauri-apps/api/path';
+import { join, sep } from '@tauri-apps/api/path';
 import { readDir, readTextFile, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
@@ -133,12 +133,8 @@ export function delayDisplay(delay?: number): string {
     .join(' ');
 }
 
-export function isSingleGamePgn(path: string): boolean {
-  return path.endsWith('.pgn') && !path.endsWith('games.pgn');
-}
-
 export function isMultiGamePgn(path: string): boolean {
-  return path.endsWith('games.pgn');
+  return path.endsWith(`${sep()}games.pgn`);
 }
 
 export async function fileList(folder: string, recursive: boolean = false): Promise<string[]> {
@@ -154,7 +150,7 @@ export async function fileList(folder: string, recursive: boolean = false): Prom
     }
   }
 
-  return files.reverse();
+  return files;
 }
 
 export function sortFiles(files: string[]): string[] {

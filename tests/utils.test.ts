@@ -1,7 +1,50 @@
 import { expect, it, vi } from 'vitest';
-import { timestampToLocalDatetime, relativeTimeDisplay, delayDisplay, pgnTag, isWrite, sortFiles } from '../src/utils';
+import {
+  timestampToLocalDatetime,
+  relativeTimeDisplay,
+  delayDisplay,
+  pgnTag,
+  isWrite,
+  sortFiles,
+  isMultiGamePgn,
+  fileList,
+} from '../src/utils';
 import { BroadcastPgnPushTags } from '../src/types';
-import { WatchEvent } from '@tauri-apps/plugin-fs';
+import { DirEntry, WatchEvent } from '@tauri-apps/plugin-fs';
+import { mockIPC } from '@tauri-apps/api/mocks';
+
+it('lists files', async () => {
+  mockIPC((cmd, payload) => {
+    if (cmd === 'plugin:path|join') {
+      return (payload as Record<string, string[]>).paths.join('/');
+    } else if (cmd === 'plugin:fs|read_dir') {
+      return Promise.resolve<DirEntry[]>([
+        {
+          name: 'game-1.pgn',
+          isDirectory: false,
+          isFile: true,
+          isSymlink: false,
+        },
+        {
+          name: 'game-2.pgn',
+          isDirectory: false,
+          isFile: true,
+          isSymlink: false,
+        },
+        {
+          name: 'game-3.pgn',
+          isDirectory: false,
+          isFile: true,
+          isSymlink: false,
+        },
+      ]);
+    }
+    throw new Error(`Unexpected IPC call: ${cmd}`);
+  });
+
+  const files = await fileList('/path/to/round');
+  expect(files).toEqual(['/path/to/round/game-1.pgn', '/path/to/round/game-2.pgn', '/path/to/round/game-3.pgn']);
+});
 
 it('shows localized datetime', () => {
   expect(timestampToLocalDatetime(new Date(2024, 1, 10, 14, 30, 0).getTime(), 'en-US')).toBe(
@@ -32,6 +75,21 @@ it('computes delay value', () => {
   expect(delayDisplay(1)).toBe('1 second');
   expect(delayDisplay(15)).toBe('15 seconds');
   expect(delayDisplay(75)).toBe('1 minute 15 seconds');
+});
+
+it('detects multi-game pgn', () => {
+  Object.defineProperty(window, '__TAURI_INTERNALS__', {
+    value: {
+      plugins: {
+        path: {
+          sep: '/',
+        },
+      },
+    },
+  });
+
+  expect(isMultiGamePgn('/path/to/games.pgn')).toBe(true);
+  expect(isMultiGamePgn('/path/to/game-1.pgn')).toBe(false);
 });
 
 it('sorts files', () => {
