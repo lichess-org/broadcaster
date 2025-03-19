@@ -21,7 +21,7 @@ async function login() {
       <button
         type="button"
         @click="login"
-        class="inline-flex items-center rounded-md bg-indigo-600 px-8 py-3 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        class="inline-flex items-center rounded-md bg-indigo-600 px-8 py-3 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"

@@ -3,9 +3,11 @@ import { join } from '@tauri-apps/api/path';
 import { readDir, readTextFile, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
+import { useSystemStore } from './stores/system';
 import { BroadcastPgnPushTags } from './types';
 import createClient, { Middleware } from 'openapi-fetch';
 import { paths } from '@lichess-org/types';
+import { fetch } from '@tauri-apps/plugin-http';
 
 export async function uploadFolderToRound(roundId: string, folder: string) {
   const files = await fileList(folder, true);
@@ -44,25 +46,19 @@ async function pushPgnToRound(roundId: string, pgn: string) {
 
 export function lichessApiClient() {
   const settings = useSettingsStore();
+  const system = useSystemStore();
   const user = useUserStore();
 
   const client = createClient<paths>({
+    fetch,
     baseUrl: settings.lichessUrl,
-    headers: {
-      Authorization: `Bearer ${user.accessToken?.access_token}`,
-    },
   });
 
   const loggingMiddleware: Middleware = {
     async onRequest({ request }) {
-      request.headers.set('x-foo', 'bar');
-      request.headers.set('User-Agent', `LichessBroadcaster/x.y.z tauri:0.0.0`);
+      request.headers.set('Authorization', `Bearer ${user.accessToken?.access_token}`);
+      request.headers.set('User-Agent', system.uaPrefix() + ' as:' + user.username);
       return request;
-    },
-    async onResponse({ response }) {
-      const { body, ...resOptions } = response;
-      // change status of response
-      return new Response(body, { ...resOptions, status: 200 });
     },
     async onError({ error }) {
       console.error(error);

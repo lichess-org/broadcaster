@@ -9,12 +9,24 @@
     "fs:allow-app-read-recursive",
     {
       "identifier": "fs:scope",
-      "allow": [{ "path": "**" }]
+      "allow": [
+        {
+          "path": "**"
+        }
+      ]
     },
     "shell:allow-open",
     "dialog:allow-open",
     "notification:default",
     "notification:default",
-    "updater:default"
+    "updater:default",
+    {
+      "identifier": "http:default",
+      "allow": [
+        { "url": "https://*.lichess.org" },
+        { "url": "https://*.pipedream.net" },
+        { "url": "http://localhost:8080" }
+      ]
+    }
   ]
 }

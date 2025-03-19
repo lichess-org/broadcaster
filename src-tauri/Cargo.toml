@@ -22,6 +22,7 @@ serde_urlencoded = "0.7.1"
 tauri = { version = "2", features = [ "wry", "objc-exception", "devtools", "native-tls-vendored"], default-features = false }
 tauri-plugin-dialog = "2"
 tauri-plugin-fs = { version = "2", features = ["watch"] }
+tauri-plugin-http = "2"
 tauri-plugin-notification = "2"
 tauri-plugin-shell = "2"
 tiny_http = "0.12.0"

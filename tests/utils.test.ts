@@ -40,8 +40,15 @@ it('sorts files', () => {
 });
 
 it('sorts files with multiple digits', () => {
-  const files = ['game-1.pgn', 'game-10.pgn', 'game-2.pgn', 'game-20.pgn', 'game-3.pgn'];
-  expect(sortFiles(files)).toEqual(['game-1.pgn', 'game-2.pgn', 'game-3.pgn', 'game-10.pgn', 'game-20.pgn']);
+  const files = ['game-1.pgn', 'game-10.pgn', 'game-11.pgn', 'game-2.pgn', 'game-20.pgn', 'game-3.pgn'];
+  expect(sortFiles(files)).toEqual([
+    'game-1.pgn',
+    'game-2.pgn',
+    'game-3.pgn',
+    'game-10.pgn',
+    'game-11.pgn',
+    'game-20.pgn',
+  ]);
 });
 
 it('returns a PGN name', () => {
