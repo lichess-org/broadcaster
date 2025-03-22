@@ -2,11 +2,11 @@
 import { ref } from 'vue';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
-import { openPath } from '../utils';
 import { useLogStore } from '../stores/logs';
 import { useSystemStore } from '../stores/system';
 import AddUserToSidebar from './AddUserToSidebar.vue';
 import { invoke } from '@tauri-apps/api/core';
+import { openPath } from '@tauri-apps/plugin-opener';
 
 const logs = useLogStore();
 const settings = useSettingsStore();

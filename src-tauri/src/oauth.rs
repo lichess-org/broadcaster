@@ -4,6 +4,7 @@ use oauth2::{
     PkceCodeChallenge, RedirectUrl, Scope, TokenUrl,
 };
 use tauri::{AppHandle, Emitter};
+use tauri_plugin_opener::OpenerExt;
 use tiny_http::Server;
 
 #[derive(Template, Clone, Debug)]
@@ -42,7 +43,11 @@ pub fn start_oauth_flow<R: tauri::Runtime>(
         .set_pkce_challenge(code_challenge)
         .url();
 
-    open::that_detached(authorize_url.to_string()).expect("failed to open url");
+    // open::that_detached(authorize_url.to_string()).expect("failed to open url");
+    app_handle
+        .opener()
+        .open_path(authorize_url.to_string(), None::<&str>)
+        .expect("failed to open url");
 
     std::thread::spawn(move || {
         if let Some(request) = server.incoming_requests().next() {

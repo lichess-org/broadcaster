@@ -23,9 +23,20 @@
     {
       "identifier": "http:default",
       "allow": [
-        { "url": "https://*.lichess.org" },
-        { "url": "https://*.pipedream.net" },
-        { "url": "http://localhost:8080" }
+        {
+          "url": "https://*.lichess.org"
+        },
+        {
+          "url": "http://localhost:8080"
+        }
+      ]
+    },
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {
+          "path": "**"
+        }
       ]
     }
   ]

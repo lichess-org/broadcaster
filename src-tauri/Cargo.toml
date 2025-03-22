@@ -16,7 +16,6 @@ tauri-build = { version = "2", features = [] }
 askama = "0.12.1"
 fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 oauth2 = "4.4.2"
-open = "5.0.1"
 serde_json = "1.0.111"
 serde_urlencoded = "0.7.1"
 tauri = { version = "2", features = [ "wry", "objc-exception", "devtools", "native-tls-vendored"], default-features = false }
@@ -24,6 +23,7 @@ tauri-plugin-dialog = "2"
 tauri-plugin-fs = { version = "2", features = ["watch"] }
 tauri-plugin-http = "2"
 tauri-plugin-notification = "2"
+tauri-plugin-opener = "2"
 tauri-plugin-shell = "2"
 tiny_http = "0.12.0"
 

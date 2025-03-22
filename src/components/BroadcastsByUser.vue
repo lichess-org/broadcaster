@@ -3,7 +3,7 @@ import { computed, ref } from 'vue';
 import { LichessPaginatedBroadcasts } from '../types';
 import { useSettingsStore } from '../stores/settings';
 import { lichessApiClient } from '../client';
-import { openPath } from '../utils';
+import { openPath } from '@tauri-apps/plugin-opener';
 import { router } from '../router';
 import { onBeforeRouteUpdate } from 'vue-router';
 

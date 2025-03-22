@@ -4,7 +4,7 @@ import { router } from '../router';
 import { BroadcastRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
-import { openPath } from '../utils';
+import { openPath } from '@tauri-apps/plugin-opener';
 import { useSettingsStore } from '../stores/settings';
 import { lichessApiClient } from '../client';
 

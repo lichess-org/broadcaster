@@ -11,7 +11,7 @@ use crate::oauth::start_oauth_flow;
 fn main() {
     let _ = fix_path_env::fix();
 
-    let mut builder = tauri::Builder::default();
+    let mut builder = tauri::Builder::default().plugin(tauri_plugin_opener::init());
 
     #[cfg(desktop)]
     {
@@ -30,18 +30,9 @@ fn main() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_http::init())
-        .invoke_handler(tauri::generate_handler![
-            open_dev_tools,
-            open_path,
-            start_oauth_flow
-        ])
+        .invoke_handler(tauri::generate_handler![open_dev_tools, start_oauth_flow])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
-}
-
-#[tauri::command]
-fn open_path(path: String) {
-    open::that_in_background(path);
 }
 
 #[allow(clippy::needless_pass_by_value)]

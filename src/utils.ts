@@ -1,9 +1,4 @@
-import { invoke } from '@tauri-apps/api/core';
 import { WatchEvent } from '@tauri-apps/plugin-fs';
-
-export async function openPath(path: string): Promise<void> {
-  await invoke('open_path', { path });
-}
 
 export function isWrite(event: WatchEvent): boolean {
   const type = event.type;
