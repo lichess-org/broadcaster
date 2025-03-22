@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { AccessTokenResponse } from '../types';
-import { lichessApiClient } from '../utils';
+import { lichessApiClient } from '../client';
 
 export const useUserStore = defineStore(
   'user',

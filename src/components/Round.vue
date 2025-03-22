@@ -4,8 +4,9 @@ import { router } from '../router';
 import { BroadcastRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
-import { lichessApiClient, openPath } from '../utils';
+import { openPath } from '../utils';
 import { useSettingsStore } from '../stores/settings';
+import { lichessApiClient } from '../client';
 
 const settings = useSettingsStore();
 const round = ref<BroadcastRound | null>(null);

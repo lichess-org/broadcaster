@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { lichessApiClient } from '../utils';
+import { lichessApiClient } from '../client';
 import { useFavoritesStore } from '../stores/favorites';
 
 const username = ref('');

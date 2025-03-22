@@ -2,10 +2,11 @@
 import { ref } from 'vue';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useStatusStore } from '../stores/status';
-import { lichessApiClient, timestampToLocalDatetime } from '../utils';
 import RoundTimes from './RoundTimes.vue';
 import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
 import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
+import { lichessApiClient } from '../client';
+import { timestampToLocalDatetime } from '../dates';
 
 const status = useStatusStore();
 const isExpanded = ref<boolean>(false);

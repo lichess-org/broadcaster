@@ -2,7 +2,8 @@
 import { computed, ref } from 'vue';
 import { LichessPaginatedBroadcasts } from '../types';
 import { useSettingsStore } from '../stores/settings';
-import { lichessApiClient, openPath } from '../utils';
+import { lichessApiClient } from '../client';
+import { openPath } from '../utils';
 import { router } from '../router';
 import { onBeforeRouteUpdate } from 'vue-router';
 
