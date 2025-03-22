@@ -5,11 +5,13 @@ import { fetch } from '@tauri-apps/plugin-http';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useSystemStore } from './stores/system';
+import { useLogStore } from './stores/logs';
 
 export function lichessApiClient() {
   const settings = useSettingsStore();
   const system = useSystemStore();
   const user = useUserStore();
+  const logs = useLogStore();
 
   const client = createClient<paths>({
     fetch,
@@ -20,12 +22,12 @@ export function lichessApiClient() {
     async onRequest({ request }) {
       request.headers.set('Authorization', `Bearer ${user.accessToken?.access_token}`);
       request.headers.set('User-Agent', system.uaPrefix() + ' as:' + user.username);
-      console.log('requesting...', request);
       return request;
     },
     async onResponse({ response }) {
-      console.log('response...', response);
-      return response;
+      if (response.ok) return;
+      logs.error(`Error ${response.status} ${response.statusText} ${response.url}`);
+      console.error(response);
     },
     async onError({ error }) {
       console.error(error);
