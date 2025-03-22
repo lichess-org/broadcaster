@@ -15,7 +15,7 @@ export async function requestNotificationPermission(): Promise<boolean> {
   return permission === 'granted';
 }
 
-export async function notify(title: string, body: string) {
+export async function notify(title: string, body: string): Promise<void> {
   const permissionGranted = await canNotify();
 
   if (!permissionGranted) {

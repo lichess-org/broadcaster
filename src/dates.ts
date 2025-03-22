@@ -1,4 +1,4 @@
-export function timestampToLocalDatetime(timestamp?: number, locales?: Intl.LocalesArgument) {
+export function timestampToLocalDatetime(timestamp?: number, locales?: Intl.LocalesArgument): string {
   if (!timestamp) {
     return '';
   }
@@ -15,7 +15,7 @@ export function timestampToLocalDatetime(timestamp?: number, locales?: Intl.Loca
   });
 }
 
-export function relativeTimeDisplay(timestamp?: number) {
+export function relativeTimeDisplay(timestamp?: number): string {
   if (!timestamp) {
     return '';
   }
@@ -47,8 +47,6 @@ export function delayDisplay(delay?: number): string {
     },
   ]
     .filter(({ value }) => value > 0)
-    .map(({ value, label }) => {
-      return `${value} ${label}${value > 1 ? 's' : ''}`;
-    })
+    .map(({ value, label }) => `${value} ${label}${value > 1 ? 's' : ''}`)
     .join(' ');
 }

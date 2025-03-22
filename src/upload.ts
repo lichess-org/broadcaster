@@ -37,7 +37,7 @@ export function filesToUpload(files: string[]): string[] {
   }
 }
 
-export async function uploadFolderToRound(roundId: string, folder: string) {
+export async function uploadFolderToRound(roundId: string, folder: string): Promise<void> {
   const files = await fileList(folder, true);
 
   const toUpload = filesToUpload(files);
@@ -47,7 +47,7 @@ export async function uploadFolderToRound(roundId: string, folder: string) {
   });
 }
 
-async function pushPgnToRound(roundId: string, pgn: string) {
+async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
   const pushResponse = await lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/push', {
     params: { path: { broadcastRoundId: roundId } },
     headers: {
