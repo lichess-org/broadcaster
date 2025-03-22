@@ -1,6 +1,6 @@
 import { expect, it } from 'vitest';
 import { WatchEvent } from '@tauri-apps/plugin-fs';
-import { isWrite } from '../src/utils';
+import { isWrite } from '../src/watcher';
 
 const events: {
   linux: {

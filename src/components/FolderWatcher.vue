@@ -4,7 +4,7 @@ import { watch, WatchEvent } from '@tauri-apps/plugin-fs';
 import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
 import { fileList, isMultiGamePgn, uploadFolderToRound } from '../upload';
-import { isWrite } from '../utils';
+import { isWrite } from '../watcher';
 import { computed } from 'vue';
 import debounce from 'debounce';
 import { sep } from '@tauri-apps/api/path';
