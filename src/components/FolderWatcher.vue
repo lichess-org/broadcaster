@@ -80,12 +80,12 @@ function handleFolderChange(event: WatchEvent): void {
 
   modifiedFiles.push(...event.paths.filter(file => file.endsWith('.pgn')));
 
-  debounce(() => {
+  debounce(async () => {
     if (modifiedFiles.length === 0) return;
 
     logs.info(`Modified: ${props.round.round.name} ${modifiedFiles.map(file => file.split(sep()).pop()).join(', ')}`);
 
-    uploadFolderToRound(props.round.round.id, watchedFolder.value);
+    await uploadFolderToRound(props.round.round.id, watchedFolder.value);
     modifiedFiles = [];
 
     status.setRoundContainsAtLeastOnePgn(props.round.round.id);

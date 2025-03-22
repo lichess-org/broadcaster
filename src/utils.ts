@@ -9,18 +9,24 @@ import createClient, { Middleware } from 'openapi-fetch';
 import { paths } from '@lichess-org/types';
 import { fetch } from '@tauri-apps/plugin-http';
 
+export function filesToUpload(files: string[]): string[] {
+  const multiGamePgn = files.find(isMultiGamePgn);
+
+  if (multiGamePgn) {
+    return [multiGamePgn];
+  } else {
+    return sortFiles(files.filter(isPgnFile));
+  }
+}
+
 export async function uploadFolderToRound(roundId: string, folder: string) {
   const files = await fileList(folder, true);
 
-  const multiGamePgn = files.find(isMultiGamePgn);
+  const toUpload = filesToUpload(files);
 
-  const body = multiGamePgn
-    ? await readTextFile(multiGamePgn)
-    : sortFiles(files)
-        .map(file => readTextFile(file))
-        .join('\n\n');
-
-  pushPgnToRound(roundId, body);
+  await Promise.all(toUpload.map(async file => await readTextFile(file))).then(async body => {
+    await pushPgnToRound(roundId, body.join('\n\n'));
+  });
 }
 
 async function pushPgnToRound(roundId: string, pgn: string) {
@@ -58,7 +64,12 @@ export function lichessApiClient() {
     async onRequest({ request }) {
       request.headers.set('Authorization', `Bearer ${user.accessToken?.access_token}`);
       request.headers.set('User-Agent', system.uaPrefix() + ' as:' + user.username);
+      console.log('requesting...', request);
       return request;
+    },
+    async onResponse({ response }) {
+      console.log('response...', response);
+      return response;
     },
     async onError({ error }) {
       console.error(error);
@@ -131,6 +142,10 @@ export function delayDisplay(delay?: number): string {
       return `${value} ${label}${value > 1 ? 's' : ''}`;
     })
     .join(' ');
+}
+
+function isPgnFile(path: string): boolean {
+  return path.endsWith('.pgn');
 }
 
 export function isMultiGamePgn(path: string): boolean {

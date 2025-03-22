@@ -1,4 +1,4 @@
-import { expect, it, vi } from 'vitest';
+import { beforeAll, describe, expect, it, vi } from 'vitest';
 import {
   timestampToLocalDatetime,
   relativeTimeDisplay,
@@ -8,10 +8,36 @@ import {
   sortFiles,
   isMultiGamePgn,
   fileList,
+  filesToUpload,
 } from '../src/utils';
 import { BroadcastPgnPushTags } from '../src/types';
 import { DirEntry, WatchEvent } from '@tauri-apps/plugin-fs';
 import { mockIPC } from '@tauri-apps/api/mocks';
+
+beforeAll(() => {
+  Object.defineProperty(window, '__TAURI_INTERNALS__', {
+    value: {
+      plugins: {
+        path: {
+          sep: '/',
+        },
+      },
+    },
+    writable: true,
+  });
+});
+
+describe('filters files to upload', () => {
+  it('returns a single multi-game PGN', () => {
+    expect(filesToUpload(['/path/to/games.pgn', '/path/to/game-1.pgn'])).toEqual(['/path/to/games.pgn']);
+  });
+
+  it('returns a list of PGN files', () => {
+    expect(
+      filesToUpload(['/path/to/game-1.pgn', '/path/to/game-2.pgn', '/path/to/game-3.pgn', '/path/to/image.jpg']),
+    ).toEqual(['/path/to/game-1.pgn', '/path/to/game-2.pgn', '/path/to/game-3.pgn']);
+  });
+});
 
 it('lists files', async () => {
   mockIPC((cmd, payload) => {
@@ -78,16 +104,6 @@ it('computes delay value', () => {
 });
 
 it('detects multi-game pgn', () => {
-  Object.defineProperty(window, '__TAURI_INTERNALS__', {
-    value: {
-      plugins: {
-        path: {
-          sep: '/',
-        },
-      },
-    },
-  });
-
   expect(isMultiGamePgn('/path/to/games.pgn')).toBe(true);
   expect(isMultiGamePgn('/path/to/game-1.pgn')).toBe(false);
 });
