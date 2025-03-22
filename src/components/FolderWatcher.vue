@@ -45,7 +45,7 @@ async function selectPgnFolder() {
   });
 }
 
-async function multipleGamesPgnFiles(path: string) {
+async function multipleGamesPgnFiles(path: string): Promise<boolean> {
   const files = await fileList(path, true);
   return files.filter(file => file.endsWith('games.pgn')).length > 1;
 }

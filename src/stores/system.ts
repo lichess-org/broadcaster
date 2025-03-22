@@ -1,4 +1,4 @@
-import { getName, getTauriVersion, getVersion } from '@tauri-apps/api/app';
+import { getName, getVersion } from '@tauri-apps/api/app';
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 
@@ -13,14 +13,7 @@ export const useSystemStore = defineStore('system', () => {
     appVersion.value = version;
   });
 
-  const tauriVersion = ref<string>('');
-  getTauriVersion().then(version => {
-    tauriVersion.value = version;
-  });
-
-  const uaPrefix = () => {
-    return `${appName.value}/${appVersion.value} tauri:${tauriVersion.value}`;
-  };
+  const uaPrefix = (): string => `${appName.value}/${appVersion.value}`;
 
   return {
     appVersion,
