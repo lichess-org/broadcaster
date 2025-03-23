@@ -4,12 +4,17 @@ import { fetch } from '@tauri-apps/plugin-http';
 
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
-import { useSystemStore } from './stores/system';
 import { useLogStore } from './stores/logs';
+import { getName, getVersion } from '@tauri-apps/api/app';
+
+export const uaPrefix = async () => {
+  let appName = await getName();
+  let appVersion = await getVersion();
+  return `${appName}/${appVersion}`;
+}
 
 export function lichessApiClient() {
   const settings = useSettingsStore();
-  const system = useSystemStore();
   const user = useUserStore();
   const logs = useLogStore();
 
@@ -20,8 +25,10 @@ export function lichessApiClient() {
 
   const loggingMiddleware: Middleware = {
     async onRequest({ request }) {
-      request.headers.set('Authorization', `Bearer ${user.accessToken?.access_token}`);
-      request.headers.set('User-Agent', system.uaPrefix() + ' as:' + user.username);
+      request.headers.set('User-Agent', (await uaPrefix()) + ' as:' + user.username);
+      if (user.accessToken) {
+        request.headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
+      }
       return request;
     },
     async onResponse({ response }) {
