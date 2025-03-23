@@ -1,13 +1,13 @@
 import { WatchEvent } from '@tauri-apps/plugin-fs';
 
 export function isWrite(event: WatchEvent): boolean {
-  const type = event.type;
-
-  if (typeof type === 'string') return false;
-  if ('modify' in type && type.modify.kind === 'metadata') return false;
-  if ('access' in type && type.access.kind === 'close') return false;
+  if (typeof event.type === 'string') return false;
+  if ('modify' in event.type && event.type.modify.kind === 'metadata') return false;
+  if ('access' in event.type && event.type.access.kind === 'close') return false;
 
   return (
-    'create' in type || 'modify' in type || ('access' in type && 'mode' in type.access && type.access.mode === 'write')
+    'create' in event.type ||
+    'modify' in event.type ||
+    ('access' in event.type && 'mode' in event.type.access && event.type.access.mode === 'write')
   );
 }

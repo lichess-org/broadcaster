@@ -6,11 +6,12 @@ import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 import { useLogStore } from './stores/logs';
 import { getName, getVersion } from '@tauri-apps/api/app';
+import { platform } from '@tauri-apps/plugin-os';
 
 export const uaPrefix = async () => {
   let appName = await getName();
   let appVersion = await getVersion();
-  return `${appName}/${appVersion}`;
+  return `${appName}/${appVersion} os:${platform()}`;
 };
 
 export function lichessApiClient() {

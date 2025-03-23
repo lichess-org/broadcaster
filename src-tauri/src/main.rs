@@ -11,7 +11,7 @@ use crate::oauth::start_oauth_flow;
 fn main() {
     let _ = fix_path_env::fix();
 
-    let mut builder = tauri::Builder::default().plugin(tauri_plugin_opener::init());
+    let mut builder = tauri::Builder::default();
 
     #[cfg(desktop)]
     {
@@ -25,11 +25,13 @@ fn main() {
 
     builder
         .plugin(tauri_plugin_dialog::init())
-        .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_fs::init())
-        .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_notification::init())
         .plugin(tauri_plugin_http::init())
+        .plugin(tauri_plugin_notification::init())
+        .plugin(tauri_plugin_opener::init())
+        .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_shell::init())
+        .plugin(tauri_plugin_updater::Builder::new().build())
         .invoke_handler(tauri::generate_handler![open_dev_tools, start_oauth_flow])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
