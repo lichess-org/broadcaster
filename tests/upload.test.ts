@@ -92,5 +92,5 @@ it('returns a PGN name', () => {
 it('returns a PGN tag', () => {
   const tags: BroadcastPgnPushTags = { A: '1', B: '2', C: '3' };
   expect(pgnTag('B', tags)).toBe('2');
-  expect(pgnTag('D', tags)).toBeUndefined();
+  expect(pgnTag('D', tags)).toBe('<D>');
 });

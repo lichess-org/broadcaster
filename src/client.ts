@@ -11,7 +11,7 @@ export const uaPrefix = async () => {
   let appName = await getName();
   let appVersion = await getVersion();
   return `${appName}/${appVersion}`;
-}
+};
 
 export function lichessApiClient() {
   const settings = useSettingsStore();

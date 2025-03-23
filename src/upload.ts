@@ -2,6 +2,7 @@ import { readDir, readTextFile } from '@tauri-apps/plugin-fs';
 import { lichessApiClient } from './client';
 import { join, sep } from '@tauri-apps/api/path';
 import { BroadcastPgnPushTags } from './types';
+import { useLogStore } from './stores/logs';
 
 export const isPgnFile = (path: string): boolean => path.endsWith('.pgn');
 export const isMultiGamePgn = (path: string): boolean => path.endsWith(`${sep()}games.pgn`);
@@ -48,6 +49,8 @@ export async function uploadFolderToRound(roundId: string, folder: string): Prom
 }
 
 async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
+  const logs = useLogStore();
+
   const pushResponse = await lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/push', {
     params: { path: { broadcastRoundId: roundId } },
     headers: {
@@ -58,16 +61,17 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
   });
 
   pushResponse.data?.games.forEach(game => {
+    const gameName = `${pgnTag('Round', game.tags)} ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
     if (game.error) {
-      console.error(`PGN Error: ${game.error} in ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`);
+      logs.error(`PGN Error: ${game.error} in ${gameName}`);
     } else {
-      console.log(`Uploaded ${game.moves} moves for ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`);
+      logs.info(`Uploaded ${game.moves} moves for ${gameName}`);
     }
   });
 
-  console.log(pushResponse);
+  console.log('pushResponse:', pushResponse);
 }
 
-export function pgnTag(tag: string, tags: BroadcastPgnPushTags): string | undefined {
-  return tags[tag];
+export function pgnTag(tag: string, tags: BroadcastPgnPushTags): string {
+  return tags[tag] ?? `<${tag}>`;
 }
