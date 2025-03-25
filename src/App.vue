@@ -36,7 +36,7 @@ requestNotificationPermission();
                 <li>
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
-                    to="/"
+                    to="{ name: 'home' }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                     active-class="bg-gray-800 text-white"
                   >
@@ -101,7 +101,7 @@ requestNotificationPermission();
             </li>
             <li class="mt-auto">
               <router-link
-                to="/settings"
+                to="{ name: 'settings' }"
                 class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                 active-class="bg-gray-800 text-white"
               >
