@@ -7,7 +7,6 @@ import { fileList, isMultiGamePgn, uploadFolderToRound } from '../upload';
 import { isWrite } from '../watcher';
 import { computed } from 'vue';
 import debounce from 'debounce';
-import { sep } from '@tauri-apps/api/path';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { ref } from 'vue';
 import { BroadcastRound } from '../types';
@@ -74,27 +73,23 @@ function stopWatching() {
   status.stopRound(props.round.round.id);
 }
 
-let modifiedFiles: string[] = [];
+let modifiedFiles = new Set<string>();
 
 function handleFolderChange(event: WatchEvent): void {
-  console.log('folder change');
   if (!isWrite(event)) return;
-  console.log('is write');
 
-  modifiedFiles.push(...event.paths.filter(file => file.endsWith('.pgn')));
+  event.paths.filter(file => file.endsWith('.pgn')).forEach(file => modifiedFiles.add(file));
+  if (event.paths.find(filename => isMultiGamePgn(filename))) {
+    status.setRoundHasMultiGamePgn(props.round.round.id);
+  }
 
   debounce(async () => {
-    if (modifiedFiles.length === 0) return;
-
-    logs.info(`Modified: ${props.round.round.name} ${modifiedFiles.map(file => file.split(sep()).pop()).join(', ')}`);
+    if (modifiedFiles.size === 0) return;
 
     await uploadFolderToRound(props.round.round.id, watchedFolder.value);
-    modifiedFiles = [];
+    modifiedFiles.clear();
 
     status.setRoundContainsAtLeastOnePgn(props.round.round.id);
-    if (modifiedFiles.find(filename => isMultiGamePgn(filename))) {
-      status.setRoundHasMultiGamePgn(props.round.round.id);
-    }
   }, 1000)();
 }
 

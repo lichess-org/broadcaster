@@ -60,16 +60,24 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
     bodySerializer: body => body,
   });
 
+  const moves: string[] = [];
+  const errors: string[] = [];
+
   pushResponse.data?.games.forEach(game => {
-    const gameName = `${pgnTag('Round', game.tags)} ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
+    const gameName = `[${pgnTag('Round', game.tags)}] ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
     if (game.error) {
-      logs.error(`PGN Error: ${game.error} in ${gameName}`);
-    } else {
-      logs.info(`Uploaded ${game.moves} moves for ${gameName}`);
+      errors.push(`${gameName}: ${game.error}`);
+    } else if (game.moves && game.moves > 0) {
+      moves.push(`${gameName}: ${game.moves} moves`);
     }
   });
 
-  console.log('pushResponse:', pushResponse);
+  if (errors.length) {
+    logs.error(`Errors: ${errors.join(', ')}`);
+  }
+  if (moves.length) {
+    logs.info(`Success: ${moves.join(', ')}`);
+  }
 }
 
 export function pgnTag(tag: string, tags: BroadcastPgnPushTags): string {

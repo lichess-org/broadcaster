@@ -1,17 +1,11 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue';
 import { useLogStore } from '../stores/logs';
+import { watch } from 'vue';
 
 const logs = useLogStore();
 const logViewer = ref<HTMLElement | null>(null);
-
-function isScrolledToBottom(): boolean {
-  if (logViewer.value) {
-    return logViewer.value.scrollHeight - logViewer.value.scrollTop - logViewer.value.clientHeight < 100;
-  }
-
-  return false;
-}
+const autoScroll = ref<boolean>(true);
 
 function scrollToBottom(): void {
   if (logViewer.value) {
@@ -23,7 +17,13 @@ onMounted(() => {
   scrollToBottom();
 });
 
-logs.$subscribe(() => isScrolledToBottom() && scrollToBottom());
+logs.$subscribe(() => autoScroll.value && scrollToBottom());
+
+watch(autoScroll, value => {
+  if (value) {
+    scrollToBottom();
+  }
+});
 </script>
 
 <template>
@@ -45,4 +45,10 @@ logs.$subscribe(() => isScrolledToBottom() && scrollToBottom());
       {{ log.message }}
     </li>
   </ol>
+  <div class="text-white text-right">
+    <label>
+      <input type="checkbox" v-model="autoScroll" class="mt-2" />
+      Auto-scroll
+    </label>
+  </div>
 </template>
