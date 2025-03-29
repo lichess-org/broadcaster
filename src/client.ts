@@ -9,7 +9,7 @@ import { getName, getVersion } from '@tauri-apps/api/app';
 import { platform } from '@tauri-apps/plugin-os';
 
 export const uaPrefix = async () => {
-  let appName = await getName();
+  let appName = (await getName()) ?? 'Lichess Broadcaster';
   let appVersion = await getVersion();
   return `${appName}/${appVersion} os:${platform()}`;
 };
