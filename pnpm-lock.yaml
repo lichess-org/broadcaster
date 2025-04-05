@@ -70,8 +70,8 @@ importers:
         specifier: ^9.6.0
         version: 9.6.0
       '@lichess-org/types':
-        specifier: ^2.0.28
-        version: 2.0.28
+        specifier: ^2.0.29
+        version: 2.0.29
       '@tauri-apps/cli':
         specifier: ^2.4.0
         version: 2.4.0
@@ -324,8 +324,8 @@ packages:
   '@jridgewell/sourcemap-codec@1.5.0':
     resolution: {integrity: sha512-gv3ZRaISU3fjPAgNsriBRqGWQL6quFx04YMPW/zD8XMLsU32mhCCbfbO6KZFLjvYpCZ8zyDEgqsgf+PwPaM7GQ==}
 
-  '@lichess-org/types@2.0.28':
-    resolution: {integrity: sha512-Y2OqAmp3pwJFkXedgOKB4N+0Cag1ZMlpF9+wK1wkMQqNJQ/iXNt2T19mbP5bDTHeUm1Eg+2tTOqBskJng8caQQ==}
+  '@lichess-org/types@2.0.29':
+    resolution: {integrity: sha512-cc7ESTJscQ/z2m9s2k+TZRJzbDBdvC8wNsGl583ds1SYMPYHU0C/13HXd8jM57gwy1x2X5GlaExutFynj5GTuA==}
 
   '@nodelib/fs.scandir@2.1.5':
     resolution: {integrity: sha512-vq24Bq3ym5HEQm2NKCr3yXDwjc7vTsEThRDnkp2DK9p1uqLR+DHurm/NOTo0KG7HYHU7eppKZj3MyqYuMBf62g==}
@@ -1719,7 +1719,7 @@ snapshots:
 
   '@jridgewell/sourcemap-codec@1.5.0': {}
 
-  '@lichess-org/types@2.0.28': {}
+  '@lichess-org/types@2.0.29': {}
 
   '@nodelib/fs.scandir@2.1.5':
     dependencies:
