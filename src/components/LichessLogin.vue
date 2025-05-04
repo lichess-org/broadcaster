@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { start, onUrl } from '@fabianlars/tauri-plugin-oauth';
+import pkceChallenge from 'pkce-challenge';
 import { useSettingsStore } from '../stores/settings';
 import { appName } from '../client';
-import { paths } from '@lichess-org/types';
+import { operations } from '@lichess-org/types';
 
 const settings = useSettingsStore();
 
@@ -10,12 +11,14 @@ async function login() {
   try {
     const port = await start();
 
-    let qs: paths['/oauth']['get']['parameters']['query'] = {
+    const challenge = await pkceChallenge(128);
+
+    let qs: operations['oauth']['parameters']['query'] = {
       response_type: 'code',
       client_id: await appName(),
       redirect_uri: `http://localhost:${port}`,
       code_challenge_method: 'S256',
-      code_challenge: 'code_challenge',
+      code_challenge: challenge.code_challenge,
       scope: ['study:read', 'study:write'].join(' '),
     };
 
