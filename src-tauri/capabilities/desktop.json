@@ -4,6 +4,7 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
+    "dialog:allow-open",
     "fs:allow-read-file",
     "fs:allow-read-dir",
     "fs:allow-app-read-recursive",
@@ -15,12 +16,6 @@
         }
       ]
     },
-    "shell:allow-open",
-    "dialog:allow-open",
-    "notification:default",
-    "notification:default",
-    "oauth:allow-start",
-    "updater:default",
     {
       "identifier": "http:default",
       "allow": [
@@ -32,6 +27,9 @@
         }
       ]
     },
+    "notification:default",
+    "notification:default",
+    "oauth:allow-start",
     {
       "identifier": "opener:allow-open-path",
       "allow": [
@@ -40,6 +38,16 @@
         }
       ]
     },
-    "os:default"
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "**"
+        }
+      ]
+    },
+    "os:default",
+    "shell:allow-open",
+    "updater:default"
   ]
 }

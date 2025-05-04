@@ -1,19 +1,10 @@
 <script setup lang="ts">
 import { useUserStore } from './stores/user';
-import { listen } from '@tauri-apps/api/event';
-import { AccessTokenResponse } from './types';
-import { useLogStore } from './stores/logs';
 import { requestNotificationPermission } from './notify';
 import { useFavoritesStore } from './stores/favorites';
 
-const logs = useLogStore();
 const user = useUserStore();
 const favorites = useFavoritesStore();
-
-listen<AccessTokenResponse>('event::update_access_token', event => {
-  logs.clear();
-  user.setAccessToken(event.payload);
-});
 
 if (user.isLoggedIn()) {
   user.validateToken();

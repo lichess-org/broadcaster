@@ -4,19 +4,25 @@ import pkceChallenge from 'pkce-challenge';
 import { useSettingsStore } from '../stores/settings';
 import { appName } from '../client';
 import { operations } from '@lichess-org/types';
+import { lichessApiClient } from '../client';
+import { useUserStore } from '../stores/user';
+import { openUrl } from '@tauri-apps/plugin-opener';
 
 const settings = useSettingsStore();
+const user = useUserStore();
 
 async function login() {
   try {
     const port = await start();
 
+    const clientId = await appName();
+    const redirectUri = `http://localhost:${port}`;
     const challenge = await pkceChallenge(128);
 
     let qs: operations['oauth']['parameters']['query'] = {
       response_type: 'code',
-      client_id: await appName(),
-      redirect_uri: `http://localhost:${port}`,
+      client_id: clientId,
+      redirect_uri: redirectUri,
       code_challenge_method: 'S256',
       code_challenge: challenge.code_challenge,
       scope: ['study:read', 'study:write'].join(' '),
@@ -25,12 +31,38 @@ async function login() {
     const url = new URL(settings.lichessUrl);
     url.pathname = '/oauth';
     url.search = new URLSearchParams(qs).toString();
-    console.log('OAuth URL:', url.toString());
+    const urlToOpen = url.toString();
+    console.log('Opening OAuth URL:', urlToOpen);
 
-    // Set up listeners for OAuth results
+    await openUrl(urlToOpen);
+
     await onUrl(url => {
       console.log('Received OAuth URL:', url);
-      // Handle the OAuth redirect
+      const receivedUrl = URL.parse(url);
+      const code = receivedUrl?.searchParams.get('code');
+
+      console.log('Received code:', code);
+
+      if (!code) {
+        throw new Error('No code received in OAuth callback');
+      }
+
+      lichessApiClient()
+        .POST('/api/token', {
+          body: {
+            grant_type: 'authorization_code',
+            code,
+            code_verifier: challenge.code_verifier,
+            redirect_uri: redirectUri,
+            client_id: clientId,
+          },
+        })
+        .then(response => {
+          console.log('Received token response:', response);
+          if (response.data) {
+            user.setAccessToken(response.data);
+          }
+        });
     });
   } catch (error) {
     console.error('Error starting OAuth server:', error);
