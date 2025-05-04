@@ -19,6 +19,7 @@
     "dialog:allow-open",
     "notification:default",
     "notification:default",
+    "oauth:allow-start",
     "updater:default",
     {
       "identifier": "http:default",

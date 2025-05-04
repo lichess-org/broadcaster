@@ -8,8 +8,10 @@ import { useLogStore } from './stores/logs';
 import { getName, getVersion } from '@tauri-apps/api/app';
 import { platform } from '@tauri-apps/plugin-os';
 
+export const appName = async () => (await getName()) ?? 'Lichess Broadcaster';
+
 export const uaPrefix = async () => {
-  let appName = (await getName()) ?? 'Lichess Broadcaster';
+  let appName = await getName();
   let appVersion = await getVersion();
   return `${appName}/${appVersion} os:${platform()}`;
 };

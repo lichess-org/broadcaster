@@ -1,15 +1,37 @@
 <script setup lang="ts">
-import { invoke } from '@tauri-apps/api/core';
+import { start, onUrl } from '@fabianlars/tauri-plugin-oauth';
 import { useSettingsStore } from '../stores/settings';
+import { appName } from '../client';
+import { paths } from '@lichess-org/types';
 
 const settings = useSettingsStore();
 
 async function login() {
-  await invoke('start_oauth_flow', {
-    oauthUrl: `${settings.lichessUrl}/oauth`,
-    tokenUrl: `${settings.lichessUrl}/api/token`,
-    scopes: ['study:read', 'study:write'],
-  });
+  try {
+    const port = await start();
+
+    let qs: paths['/oauth']['get']['parameters']['query'] = {
+      response_type: 'code',
+      client_id: await appName(),
+      redirect_uri: `http://localhost:${port}`,
+      code_challenge_method: 'S256',
+      code_challenge: 'code_challenge',
+      scope: ['study:read', 'study:write'].join(' '),
+    };
+
+    const url = new URL(settings.lichessUrl);
+    url.pathname = '/oauth';
+    url.search = new URLSearchParams(qs).toString();
+    console.log('OAuth URL:', url.toString());
+
+    // Set up listeners for OAuth results
+    await onUrl(url => {
+      console.log('Received OAuth URL:', url);
+      // Handle the OAuth redirect
+    });
+  } catch (error) {
+    console.error('Error starting OAuth server:', error);
+  }
 }
 </script>
 

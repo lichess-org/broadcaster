@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@fabianlars/tauri-plugin-oauth':
+        specifier: ^2.0.0
+        version: 2.0.0
       '@headlessui/vue':
         specifier: ^1.7.23
         version: 1.7.23(vue@3.5.13(typescript@5.8.3))
@@ -305,6 +308,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fabianlars/tauri-plugin-oauth@2.0.0':
+    resolution: {integrity: sha512-I1s08ZXrsFuYfNWusAcpLyiCfr5TCvaBrRuKfTG+XQrcaqnAcwjdWH0U5J9QWuMDLwCUMnVxdobtMJzPR8raxQ==}
 
   '@faker-js/faker@9.7.0':
     resolution: {integrity: sha512-aozo5vqjCmDoXLNUJarFZx2IN/GgGaogY4TMJ6so/WLZOWpSV7fvj2dmrV6sEAnUm1O7aCrhTibjpzeDFgNqbg==}
@@ -1640,6 +1646,10 @@ snapshots:
 
   '@esbuild/win32-x64@0.25.3':
     optional: true
+
+  '@fabianlars/tauri-plugin-oauth@2.0.0':
+    dependencies:
+      '@tauri-apps/api': 2.5.0
 
   '@faker-js/faker@9.7.0': {}
 
