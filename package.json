@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^9.7.0",
-    "@lichess-org/types": "^2.0.38",
+    "@lichess-org/types": "^2.0.39",
     "@tauri-apps/cli": "^2.5.0",
     "@types/node": "^22.15.3",
     "@vitejs/plugin-vue": "^5.2.3",

@@ -62,6 +62,9 @@ async function login() {
           if (response.data) {
             user.setAccessToken(response.data);
           }
+        })
+        .catch(error => {
+          console.error('Error fetching token:', error);
         });
     });
   } catch (error) {
