@@ -13,7 +13,56 @@ const user = useUserStore();
 
 async function login() {
   try {
-    const port = await start();
+    const port = await start({
+      response: `<!doctype html>
+<html lang="en">
+  <head>
+    <title>Lichess Broadcaster</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        background-color: rgb(31 41 55);
+        padding: 1rem;
+        text-align: center;
+        margin-top: 5rem;
+      }
+      a,
+      div {
+        color: rgb(229 231 235);
+      }
+      .alert {
+        font-size: 2rem;
+        font-weight: 600;
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .error {
+        background-color: #fca5a5;
+        color: #991b1b;
+      }
+      .info {
+        margin-top: 2rem;
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <div class="alert success">{{ message }}</div> -->
+    <div class="info">You can close this window and return to the application.</div>
+
+    <div class="info">
+      For help getting started, read <a href="https://lichess.org/broadcast/help">https://lichess.org/broadcast/help</a>
+      or join the <a href="https://discord.gg/Syx9CbN8Jv">Lichess Content Discord</a>.
+    </div>
+  </body>
+</html>
+`,
+    });
 
     const clientId = await appName();
     const redirectUri = `http://localhost:${port}`;
