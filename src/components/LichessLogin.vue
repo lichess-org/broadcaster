@@ -32,16 +32,12 @@ async function login() {
     url.pathname = '/oauth';
     url.search = new URLSearchParams(qs).toString();
     const urlToOpen = url.toString();
-    console.log('Opening OAuth URL:', urlToOpen);
 
     await openUrl(urlToOpen);
 
     await onUrl(url => {
-      console.log('Received OAuth URL:', url);
       const receivedUrl = URL.parse(url);
       const code = receivedUrl?.searchParams.get('code');
-
-      console.log('Received code:', code);
 
       if (!code) {
         throw new Error('No code received in OAuth callback');
@@ -58,7 +54,6 @@ async function login() {
           },
         })
         .then(response => {
-          console.log('Received token response:', response);
           if (response.data) {
             user.setAccessToken(response.data);
           }
