@@ -2541,6 +2541,12 @@
           "markdownDescription": "Enables the set_app_theme command without any pre-configured scope."
         },
         {
+          "description": "Enables the set_dock_visibility command without any pre-configured scope.",
+          "type": "string",
+          "const": "core:app:allow-set-dock-visibility",
+          "markdownDescription": "Enables the set_dock_visibility command without any pre-configured scope."
+        },
+        {
           "description": "Enables the tauri_version command without any pre-configured scope.",
           "type": "string",
           "const": "core:app:allow-tauri-version",
@@ -2599,6 +2605,12 @@
           "type": "string",
           "const": "core:app:deny-set-app-theme",
           "markdownDescription": "Denies the set_app_theme command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the set_dock_visibility command without any pre-configured scope.",
+          "type": "string",
+          "const": "core:app:deny-set-dock-visibility",
+          "markdownDescription": "Denies the set_dock_visibility command without any pre-configured scope."
         },
         {
           "description": "Denies the tauri_version command without any pre-configured scope.",
@@ -6409,6 +6421,30 @@
           "type": "string",
           "const": "notification:deny-show",
           "markdownDescription": "Denies the show command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the cancel command without any pre-configured scope.",
+          "type": "string",
+          "const": "oauth:allow-cancel",
+          "markdownDescription": "Enables the cancel command without any pre-configured scope."
+        },
+        {
+          "description": "Enables the start command without any pre-configured scope.",
+          "type": "string",
+          "const": "oauth:allow-start",
+          "markdownDescription": "Enables the start command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the cancel command without any pre-configured scope.",
+          "type": "string",
+          "const": "oauth:deny-cancel",
+          "markdownDescription": "Denies the cancel command without any pre-configured scope."
+        },
+        {
+          "description": "Denies the start command without any pre-configured scope.",
+          "type": "string",
+          "const": "oauth:deny-start",
+          "markdownDescription": "Denies the start command without any pre-configured scope."
         },
         {
           "description": "This permission set allows opening `mailto:`, `tel:`, `https://` and `http://` urls using their default application\nas well as reveal file in directories using default file explorer\n#### This default permission set includes:\n\n- `allow-open-url`\n- `allow-reveal-item-in-dir`\n- `allow-default-urls`",
