@@ -2,7 +2,7 @@
 
 LICHESS_URL="http://localhost:8080"
 API_TOKEN="lip_admin" # with study:write permission
-BROADCAST_ROUND_ID="36e77FYv"
+BROADCAST_ROUND_ID="fyV3UNud"
 
 #### Part A ####
 echo "Pushing each game individually..."

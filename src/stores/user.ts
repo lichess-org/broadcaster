@@ -44,8 +44,7 @@ export const useUserStore = defineStore(
 
     async function logout(deleteRemoteToken = true) {
       if (deleteRemoteToken) {
-        // can uncomment once https://github.com/tauri-apps/plugins-workspace/pull/2636 is released
-        // await lichessApiClient().DELETE('/api/token');
+        await lichessApiClient().DELETE('/api/token');
       }
 
       accessToken.value = null;
