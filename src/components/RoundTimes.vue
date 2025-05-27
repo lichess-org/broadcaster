@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { BroadcastRoundInfo } from '../types';
-import { delayDisplay, relativeTimeDisplay, timestampToLocalDatetime } from '../utils';
+import { delayDisplay, relativeTimeDisplay, timestampToLocalDatetime } from '../dates';
 
 const props = defineProps<{
   round: BroadcastRoundInfo;

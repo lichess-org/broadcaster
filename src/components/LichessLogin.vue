@@ -1,15 +1,119 @@
 <script setup lang="ts">
-import { invoke } from '@tauri-apps/api/core';
+import { start, onUrl } from '@fabianlars/tauri-plugin-oauth';
+import pkceChallenge from 'pkce-challenge';
 import { useSettingsStore } from '../stores/settings';
+import { appName } from '../client';
+import { operations } from '@lichess-org/types';
+import { lichessApiClient } from '../client';
+import { useUserStore } from '../stores/user';
+import { openUrl } from '@tauri-apps/plugin-opener';
 
 const settings = useSettingsStore();
+const user = useUserStore();
 
 async function login() {
-  await invoke('start_oauth_flow', {
-    oauthUrl: `${settings.lichessUrl}/oauth`,
-    tokenUrl: `${settings.lichessUrl}/api/token`,
-    scopes: ['study:read', 'study:write'],
-  });
+  try {
+    const port = await start({
+      response: `<!doctype html>
+<html lang="en">
+  <head>
+    <title>Lichess Broadcaster</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        background-color: rgb(31 41 55);
+        padding: 1rem;
+        text-align: center;
+        margin-top: 5rem;
+      }
+      a,
+      div {
+        color: rgb(229 231 235);
+      }
+      .alert {
+        font-size: 2rem;
+        font-weight: 600;
+        margin: 1rem;
+        padding: 1rem;
+      }
+      .error {
+        background-color: #fca5a5;
+        color: #991b1b;
+      }
+      .info {
+        margin-top: 2rem;
+        font-size: 1.5rem;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- <div class="alert success">{{ message }}</div> -->
+    <div class="info">You can close this window and return to the application.</div>
+
+    <div class="info">
+      For help getting started, read <a href="https://lichess.org/broadcast/help">https://lichess.org/broadcast/help</a>
+      or join the <a href="https://discord.gg/Syx9CbN8Jv">Lichess Content Discord</a>.
+    </div>
+  </body>
+</html>
+`,
+    });
+
+    const clientId = await appName();
+    const redirectUri = `http://localhost:${port}`;
+    const challenge = await pkceChallenge(128);
+
+    let qs: operations['oauth']['parameters']['query'] = {
+      response_type: 'code',
+      client_id: clientId,
+      redirect_uri: redirectUri,
+      code_challenge_method: 'S256',
+      code_challenge: challenge.code_challenge,
+      scope: ['study:read', 'study:write'].join(' '),
+    };
+
+    const url = new URL(settings.lichessUrl);
+    url.pathname = '/oauth';
+    url.search = new URLSearchParams(qs).toString();
+    const urlToOpen = url.toString();
+
+    await openUrl(urlToOpen);
+
+    await onUrl(url => {
+      const receivedUrl = URL.parse(url);
+      const code = receivedUrl?.searchParams.get('code');
+
+      if (!code) {
+        throw new Error('No code received in OAuth callback');
+      }
+
+      lichessApiClient()
+        .POST('/api/token', {
+          body: {
+            grant_type: 'authorization_code',
+            code,
+            code_verifier: challenge.code_verifier,
+            redirect_uri: redirectUri,
+            client_id: clientId,
+          },
+        })
+        .then(response => {
+          if (response.data) {
+            user.setAccessToken(response.data);
+          }
+        })
+        .catch(error => {
+          console.error('Error fetching token:', error);
+        });
+    });
+  } catch (error) {
+    console.error('Error starting OAuth server:', error);
+  }
 }
 </script>
 
@@ -21,7 +125,7 @@ async function login() {
       <button
         type="button"
         @click="login"
-        class="inline-flex items-center rounded-md bg-indigo-600 px-8 py-3 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        class="inline-flex items-center rounded-md bg-indigo-600 px-8 py-3 font-semibold text-white shadow-xs hover:bg-indigo-500 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
