@@ -133,12 +133,12 @@ fn read_pgn_file(path: &str) -> Result<String, String> {
         Err(err) => return Err(err.to_string()),
     };
 
-    let mut file_content = String::new();
-    if let Err(err) = file.read_to_string(&mut file_content) {
+    let mut file_content = Vec::new();
+    if let Err(err) = file.read_to_end(&mut file_content) {
         return Err(err.to_string());
     }
 
-    Ok(file_content)
+    Ok(String::from_utf8_lossy(&file_content).to_string())
 }
 
 fn handle_upload_job(job: &UploadJob) -> Result<LichessPushResponse, String> {
