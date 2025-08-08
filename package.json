@@ -17,10 +17,10 @@
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
     "@tailwindcss/vite": "^4.1.11",
-    "@tauri-apps/api": "^2.6.0",
-    "@tauri-apps/plugin-dialog": "~2.3.0",
-    "@tauri-apps/plugin-fs": "~2.4.0",
-    "@tauri-apps/plugin-http": "~2.5.0",
+    "@tauri-apps/api": "^2.7.0",
+    "@tauri-apps/plugin-dialog": "~2.3.2",
+    "@tauri-apps/plugin-fs": "~2.4.1",
+    "@tauri-apps/plugin-http": "~2.5.1",
     "@tauri-apps/plugin-notification": "~2.3.0",
     "@tauri-apps/plugin-opener": "~2.4.0",
     "@tauri-apps/plugin-os": "~2.3.0",
@@ -32,28 +32,31 @@
     "pinia": "^3.0.3",
     "pinia-plugin-persistedstate": "^4.4.1",
     "pkce-challenge": "^5.0.0",
-    "vue": "^3.5.17",
+    "vue": "^3.5.18",
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@faker-js/faker": "^9.9.0",
-    "@lichess-org/types": "^2.0.63",
-    "@tauri-apps/cli": "^2.6.2",
-    "@types/node": "^24.0.15",
-    "@vitejs/plugin-vue": "^6.0.0",
+    "@lichess-org/types": "^2.0.67",
+    "@tauri-apps/cli": "^2.7.1",
+    "@types/node": "^24.2.0",
+    "@vitejs/plugin-vue": "^6.0.1",
     "chess.js": "^1.4.0",
     "jsdom": "^26.1.0",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.11",
-    "typescript": "^5.8.3",
-    "vite": "^7.0.5",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.1",
     "vitest": "^3.2.4",
-    "vue-tsc": "^3.0.3"
+    "vue-tsc": "^3.0.5"
   },
-  "packageManager": "pnpm@10.11.0+sha512.6540583f41cc5f628eb3d9773ecee802f4f9ef9923cc45b69890fb47991d4b092964694ec3a4f738a420c918a333062c8b925d312f42e4f0c263eb603551f977",
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
+      "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
       "esbuild"
     ]
   }

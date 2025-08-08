@@ -12,7 +12,7 @@ tour_id=$(echo $tour | jq '.tour.id' | tr -d '"')
 
 round=$(http -A bearer -a "$API_TOKEN" \
   "$LICHESS_URL/broadcast/$tour_id/new" \
-  "name=round1")
+  "name=Round 1")
 round_id=$(echo $round | jq '.round.id' | tr -d '"')
 round_url=$(echo $round | jq '.round.url' | tr -d '"')
 
