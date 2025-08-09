@@ -29,7 +29,7 @@ for (let i = 1; i <= 100; i++) {
   };
 
   if (faker.datatype.boolean(0.3)) {
-    broadcast.tier = faker.helpers.arrayElement([3, 4, 5, -1]);
+    broadcast.tier = faker.helpers.arrayElement([3, 4, 5]);
   }
 
   const broadcastResponse = await client.POST('/broadcast/new', { body: broadcast });

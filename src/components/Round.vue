@@ -1,25 +1,32 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { paths } from '@lichess-org/types';
 import { router } from '../router';
-import { LichessRound } from '../types';
+import { BroadcastRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
-import { lichessFetch, openPath } from '../utils';
+import { openPath } from '@tauri-apps/plugin-opener';
 import { useSettingsStore } from '../stores/settings';
+import { lichessApiClient } from '../client';
 
 const settings = useSettingsStore();
-const round = ref<LichessRound | null>(null);
+const round = ref<BroadcastRound | null>(null);
 
 function getRound() {
-  lichessFetch(`/api/broadcast/-/-/${router.currentRoute.value.params.id}`)
-    .then(
-      response =>
-        response.json() as Promise<
-          paths['/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}']['get']['responses']['200']['content']['application/json']
-        >,
-    )
-    .then(data => (round.value = data));
+  lichessApiClient()
+    .GET('/api/broadcast/{broadcastTournamentSlug}/{broadcastRoundSlug}/{broadcastRoundId}', {
+      params: {
+        path: {
+          broadcastTournamentSlug: '-',
+          broadcastRoundSlug: '-',
+          broadcastRoundId: router.currentRoute.value.params.id as string,
+        },
+      },
+    })
+    .then(response => {
+      if (response.data) {
+        round.value = response.data;
+      }
+    });
 }
 
 getRound();
@@ -55,7 +62,7 @@ getRound();
         <button
           type="button"
           @click="openPath(`${settings.lichessUrl}/broadcast/${round?.tour.id}/new`)"
-          class="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
+          class="inline-flex items-center rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-500"
         >
           &plus; New Round
         </button>

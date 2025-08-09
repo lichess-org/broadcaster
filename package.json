@@ -13,38 +13,51 @@
     "tsc": "vue-tsc --noEmit"
   },
   "dependencies": {
+    "@fabianlars/tauri-plugin-oauth": "^2.0.0",
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.2.0",
-    "@tauri-apps/api": "^2.2.0",
-    "@tauri-apps/plugin-dialog": "~2.2.0",
-    "@tauri-apps/plugin-fs": "~2.2.0",
-    "@tauri-apps/plugin-notification": "~2.2.1",
-    "@tauri-apps/plugin-shell": "~2.2.0",
-    "@tauri-apps/plugin-updater": "~2.5.0",
+    "@tailwindcss/vite": "^4.1.11",
+    "@tauri-apps/api": "^2.7.0",
+    "@tauri-apps/plugin-dialog": "~2.3.2",
+    "@tauri-apps/plugin-fs": "~2.4.1",
+    "@tauri-apps/plugin-http": "~2.5.1",
+    "@tauri-apps/plugin-notification": "~2.3.0",
+    "@tauri-apps/plugin-opener": "~2.4.0",
+    "@tauri-apps/plugin-os": "~2.3.0",
+    "@tauri-apps/plugin-shell": "~2.3.0",
+    "@tauri-apps/plugin-updater": "~2.9.0",
     "debounce": "^2.2.0",
     "fetch-ndjson": "^1.1.7",
-    "openapi-fetch": "^0.13.4",
-    "pinia": "^3.0.1",
-    "pinia-plugin-persistedstate": "^4.2.0",
-    "vue": "^3.5.13",
-    "vue-router": "^4.5.0"
+    "openapi-fetch": "^0.14.0",
+    "pinia": "^3.0.3",
+    "pinia-plugin-persistedstate": "^4.4.1",
+    "pkce-challenge": "^5.0.0",
+    "vue": "^3.5.18",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@faker-js/faker": "^9.5.0",
-    "@lichess-org/types": "^2.0.27",
-    "@tailwindcss/postcss": "^4.0.6",
-    "@tauri-apps/cli": "^2.2.7",
-    "@types/node": "^22.13.4",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "chess.js": "1.0.0",
-    "jsdom": "^26.0.0",
-    "postcss": "^8.5.2",
-    "prettier": "^3.5.1",
-    "tailwindcss": "^4.0.6",
-    "typescript": "^5.7.3",
-    "vite": "^6.1.0",
-    "vitest": "^3.0.5",
-    "vue-tsc": "^2.2.2"
+    "@faker-js/faker": "^9.9.0",
+    "@lichess-org/types": "^2.0.67",
+    "@tauri-apps/cli": "^2.7.1",
+    "@types/node": "^24.2.0",
+    "@vitejs/plugin-vue": "^6.0.1",
+    "chess.js": "^1.4.0",
+    "jsdom": "^26.1.0",
+    "prettier": "^3.6.2",
+    "tailwindcss": "^4.1.11",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.1",
+    "vitest": "^3.2.4",
+    "vue-tsc": "^3.0.5"
   },
-  "packageManager": "pnpm@10.4.1+sha512.c753b6c3ad7afa13af388fa6d808035a008e30ea9993f58c6663e2bc5ff21679aa834db094987129aa4d488b86df57f7b634981b2f827cdcacc698cc0cfb88af"
+  "packageManager": "pnpm@10.14.0+sha512.ad27a79641b49c3e481a16a805baa71817a04bbe06a38d17e60e2eaee83f6a146c6a688125f5792e48dd5ba30e7da52a5cda4c3992b9ccf333f9ce223af84748",
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "esbuild"
+    ],
+    "ignoredBuiltDependencies": [
+      "esbuild"
+    ]
+  }
 }
