@@ -66,8 +66,6 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
   } = { games: 0, moves: 0 };
   const errors: string[] = [];
 
-  console.log(pushResponse);
-
   pushResponse.data?.games.forEach(game => {
     const gameName = `[Round ${pgnTag('Round', game.tags)}] ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
     if (game.error) {
