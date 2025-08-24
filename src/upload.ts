@@ -60,23 +60,29 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
     bodySerializer: body => body,
   });
 
-  const moves: string[] = [];
+  const successes: {
+    games: number;
+    moves: number;
+  } = { games: 0, moves: 0 };
   const errors: string[] = [];
 
+  console.log(pushResponse);
+
   pushResponse.data?.games.forEach(game => {
-    const gameName = `[${pgnTag('Round', game.tags)}] ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
+    const gameName = `[Round ${pgnTag('Round', game.tags)}] ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
     if (game.error) {
       errors.push(`${gameName}: ${game.error}`);
     } else if (game.moves && game.moves > 0) {
-      moves.push(`${gameName}: ${game.moves} moves`);
+      successes.games += 1;
+      successes.moves += game.moves;
     }
   });
 
   if (errors.length) {
     logs.error(`Errors: ${errors.join(', ')}`);
   }
-  if (moves.length) {
-    logs.info(`Success: ${moves.join(', ')}`);
+  if (successes.games > 0) {
+    logs.info(`Success: ${successes.games} games, ${successes.moves} moves`);
   }
 }
 
