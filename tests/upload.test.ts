@@ -63,6 +63,8 @@ it('lists files', async () => {
 });
 
 it('detects multi-game pgn', () => {
+  expect(isMultiGamePgn('games.pgn')).toBe(true);
+  expect(isMultiGamePgn('/games.pgn')).toBe(true);
   expect(isMultiGamePgn('/path/to/games.pgn')).toBe(true);
   expect(isMultiGamePgn('/path/to/game-1.pgn')).toBe(false);
 });

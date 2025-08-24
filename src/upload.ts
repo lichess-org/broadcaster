@@ -5,7 +5,7 @@ import { BroadcastPgnPushTags } from './types';
 import { useLogStore } from './stores/logs';
 
 export const isPgnFile = (path: string): boolean => path.endsWith('.pgn');
-export const isMultiGamePgn = (path: string): boolean => path.endsWith(`${sep()}games.pgn`);
+export const isMultiGamePgn = (path: string): boolean => path === 'games.pgn' || path.endsWith(`${sep()}games.pgn`);
 
 export async function fileList(folder: string, recursive: boolean = false): Promise<string[]> {
   const files: string[] = [];
