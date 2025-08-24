@@ -55,9 +55,16 @@ async function startWatchingFolder(path: string) {
     delayMs: 1000,
   });
 
+  const forceUpdateViaGamesPgn = setInterval(() => {
+    uploadMultiGamePgn(path);
+  }, 60 * 1000);
+
   watchedFolder.value = path;
 
-  status.startRound(props.round.tour.id, props.round.round.id, path, stopWatching);
+  status.startRound(props.round.tour.id, props.round.round.id, path, () => {
+    stopWatching();
+    clearInterval(forceUpdateViaGamesPgn);
+  });
 
   await checkForExistingPgnFiles(path);
 }
@@ -91,6 +98,14 @@ function handleFolderChange(event: WatchEvent): void {
 
     status.setRoundContainsAtLeastOnePgn(props.round.round.id);
   }, 1000)();
+}
+
+async function uploadMultiGamePgn(path: string): Promise<void> {
+  const files = await fileList(path);
+  const multiGamePgn = files.find(file => isMultiGamePgn(file));
+  if (multiGamePgn) {
+    await uploadFolderToRound(props.round.round.id, path);
+  }
 }
 
 async function resetAndReupload() {
