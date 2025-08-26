@@ -1,41 +1,10 @@
 <script setup lang="ts">
 import { useUserStore } from './stores/user';
-import { listen } from '@tauri-apps/api/event';
-import { AccessTokenResponse, PgnPushResult } from './types';
-import { useLogStore } from './stores/logs';
 import { requestNotificationPermission } from './notify';
-import { pgnTag } from './utils';
 import { useFavoritesStore } from './stores/favorites';
 
-const logs = useLogStore();
 const user = useUserStore();
 const favorites = useFavoritesStore();
-
-listen<AccessTokenResponse>('event::update_access_token', event => {
-  logs.clear();
-  user.setAccessToken(event.payload);
-});
-
-listen<number>('event::queue_size', event => {
-  logs.queueSize = event.payload;
-});
-
-listen<PgnPushResult>('event::upload_success', event => {
-  event.payload.files.forEach(file => {
-    logs.files.add(file);
-  });
-
-  logs.info(`Uploaded ${event.payload.files.join(', ')}`);
-
-  const errors = event.payload.response.games.filter(game => game.error);
-  errors.forEach(game => {
-    logs.error(`PGN Error: ${game.error} in ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`);
-  });
-});
-
-listen<string>('event::upload_error', event => {
-  logs.error(event.payload);
-});
 
 if (user.isLoggedIn()) {
   user.validateToken();
@@ -58,7 +27,7 @@ requestNotificationPermission();
                 <li>
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
-                    to="/"
+                    :to="{ name: 'home' }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                     active-class="bg-gray-800 text-white"
                   >
@@ -123,7 +92,7 @@ requestNotificationPermission();
             </li>
             <li class="mt-auto">
               <router-link
-                to="/settings"
+                :to="{ name: 'settings' }"
                 class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                 active-class="bg-gray-800 text-white"
               >

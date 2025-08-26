@@ -4,17 +4,50 @@
   "windows": ["main"],
   "permissions": [
     "core:default",
+    "dialog:allow-open",
     "fs:allow-read-file",
     "fs:allow-read-dir",
     "fs:allow-app-read-recursive",
     {
       "identifier": "fs:scope",
-      "allow": [{ "path": "**" }]
+      "allow": [
+        {
+          "path": "**"
+        }
+      ]
     },
+    {
+      "identifier": "http:default",
+      "allow": [
+        {
+          "url": "https://lichess.org"
+        },
+        {
+          "url": "http://localhost:8080"
+        }
+      ]
+    },
+    "notification:default",
+    "notification:default",
+    "oauth:allow-start",
+    {
+      "identifier": "opener:allow-open-path",
+      "allow": [
+        {
+          "path": "**"
+        }
+      ]
+    },
+    {
+      "identifier": "opener:allow-open-url",
+      "allow": [
+        {
+          "url": "**"
+        }
+      ]
+    },
+    "os:default",
     "shell:allow-open",
-    "dialog:allow-open",
-    "notification:default",
-    "notification:default",
     "updater:default"
   ]
 }

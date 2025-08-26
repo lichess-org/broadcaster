@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { paths } from '@lichess-org/types';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useStatusStore } from '../stores/status';
-import { lichessFetch, timestampToLocalDatetime } from '../utils';
 import RoundTimes from './RoundTimes.vue';
 import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
 import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
+import { lichessApiClient } from '../client';
+import { timestampToLocalDatetime } from '../dates';
 
 const status = useStatusStore();
 const isExpanded = ref<boolean>(false);
@@ -27,14 +27,19 @@ function expand() {
 }
 
 function getBroadcast(id: string) {
-  lichessFetch(`/api/broadcast/${id}`)
-    .then(
-      response =>
-        response.json() as Promise<
-          paths['/api/broadcast/{broadcastTournamentId}']['get']['responses']['200']['content']['application/json']
-        >,
-    )
-    .then(data => (broadcastWithRounds.value = data));
+  lichessApiClient()
+    .GET('/api/broadcast/{broadcastTournamentId}', {
+      params: {
+        path: {
+          broadcastTournamentId: id,
+        },
+      },
+    })
+    .then(response => {
+      if (response.data) {
+        broadcastWithRounds.value = response.data;
+      }
+    });
 }
 </script>
 
