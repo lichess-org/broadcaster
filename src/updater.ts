@@ -11,14 +11,17 @@ export async function checkForUpdates() {
   if (update) {
     console.log('New update available:', update);
 
+    const releaseNotes = (update.body || 'Bug fixes')
+      .split('\n')
+      .filter(line => line.trim())
+      .map(line => `  • ${line}`)
+      .join('\n');
+
     const yes = await ask(
       `${await appName()} ${update.version} is now available -- you have ${update.currentVersion}.
 
 Release notes:
-${(update.body || 'Bug fixes')
-  .split('\n')
-  .map(line => `  • ${line}`)
-  .join('\n')}
+${releaseNotes}
 `,
       {
         title: 'New Version Available',
