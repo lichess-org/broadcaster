@@ -5,6 +5,9 @@ import { router } from './router';
 
 import App from './App.vue';
 import './styles.css';
+import { checkForUpdates } from './updater';
+
+await checkForUpdates();
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
