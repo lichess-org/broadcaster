@@ -2,7 +2,6 @@ import { ask } from '@tauri-apps/plugin-dialog';
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
 import { appName } from './client';
-import { listen } from '@tauri-apps/api/event';
 
 export async function checkForUpdates() {
   const update = await check();
@@ -35,7 +34,3 @@ ${releaseNotes}
     }
   }
 }
-
-listen('tauri://update-status', function (res) {
-  console.log(res);
-});
