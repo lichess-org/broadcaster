@@ -15,7 +15,7 @@ requestNotificationPermission();
 
 <template>
   <div>
-    <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+    <div class="fixed inset-y-0 z-50 flex w-72 flex-col">
       <div class="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-4">
         <div class="flex h-16 shrink-0 items-center">
           <img class="h-8" src="./assets/lichess-white.svg" alt="Lichess logo" />
@@ -119,7 +119,7 @@ requestNotificationPermission();
       </div>
     </div>
 
-    <div class="lg:pl-72">
+    <div class="pl-72">
       <main class="py-10">
         <div class="px-4 sm:px-6 lg:px-8">
           <router-view />
