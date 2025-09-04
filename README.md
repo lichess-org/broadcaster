@@ -97,6 +97,7 @@ pnpm tauri icon src/assets/rounded.png
 ### Test Release Build
 
 ```bash
+export TAURI_SIGNING_PRIVATE_KEY="..."
 pnpm tauri build
 ```
 
