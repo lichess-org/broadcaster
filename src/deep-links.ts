@@ -3,7 +3,7 @@ import { DeepLink } from './types';
 import { router } from './router';
 
 export async function listenForDeepLinks() {
-  // check if deep link was requsted before the app was started
+  // check if deep link was requested before the app was started
   await onAppStart();
 
   // listen for deep links while the app is running
