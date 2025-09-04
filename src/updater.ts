@@ -6,11 +6,9 @@ import { listen } from '@tauri-apps/api/event';
 
 export async function checkForUpdates() {
   const update = await check();
-  console.log('update', update);
+  console.log('check-for-update response:', update);
 
   if (update) {
-    console.log('New update available:', update);
-
     const releaseNotes = (update.body || 'Bug fixes')
       .split('\n')
       .filter(line => line.trim())
@@ -38,6 +36,6 @@ ${releaseNotes}
   }
 }
 
-await listen('tauri://update', event => {
-  console.log('Update event received:', event);
+listen('tauri://update-status', function (res) {
+  console.log(res);
 });

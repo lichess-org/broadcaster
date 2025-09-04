@@ -7,7 +7,7 @@ import App from './App.vue';
 import './styles.css';
 import { checkForUpdates } from './updater';
 
-await checkForUpdates();
+checkForUpdates();
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);

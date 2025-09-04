@@ -49,6 +49,7 @@
     "os:default",
     "shell:allow-open",
     "updater:default",
-    "dialog:default"
+    "dialog:default",
+    "process:default"
   ]
 }

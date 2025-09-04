@@ -1,6 +1,6 @@
 {
   "name": "broadcaster",
-  "version": "0.28.0",
+  "version": "0.21.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -24,7 +24,7 @@
     "@tauri-apps/plugin-notification": "~2.3.1",
     "@tauri-apps/plugin-opener": "~2.5.0",
     "@tauri-apps/plugin-os": "~2.3.1",
-    "@tauri-apps/plugin-process": "^2.3.0",
+    "@tauri-apps/plugin-process": "~2",
     "@tauri-apps/plugin-shell": "~2.3.1",
     "@tauri-apps/plugin-updater": "~2.9.0",
     "debounce": "^2.2.0",
