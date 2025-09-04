@@ -9,3 +9,9 @@ export type LichessBroadcastWithRounds = components['schemas']['BroadcastWithRou
 export type BroadcastRoundInfo = components['schemas']['BroadcastRoundInfo'];
 export type BroadcastPgnPushTags = components['schemas']['BroadcastPgnPushTags'];
 export type BroadcastRound = components['schemas']['BroadcastRound'];
+
+export type DeepLink = {
+  tourSlug: string;
+  roundSlug: string;
+  roundId: string;
+};

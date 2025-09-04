@@ -6,8 +6,11 @@ import { router } from './router';
 import App from './App.vue';
 import './styles.css';
 import { checkForUpdates } from './updater';
+import { listenForDeepLinks } from './deep-links';
 
 checkForUpdates();
+
+await listenForDeepLinks();
 
 const pinia = createPinia();
 pinia.use(piniaPluginPersistedstate);
