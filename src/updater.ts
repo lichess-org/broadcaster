@@ -1,35 +1,38 @@
 import { ask } from '@tauri-apps/plugin-dialog';
 import { check } from '@tauri-apps/plugin-updater';
-import { relaunch } from "@tauri-apps/plugin-process";
+import { relaunch } from '@tauri-apps/plugin-process';
 import { appName } from './client';
 import { listen } from '@tauri-apps/api/event';
 
 export async function checkForUpdates() {
-    const update = await check();
-    console.log('update', update);
+  const update = await check();
+  console.log('update', update);
 
-    if (update) {
-        console.log('New update available:', update);
+  if (update) {
+    console.log('New update available:', update);
 
-        const yes = await ask(
-            `${await appName()} ${update.version} is now available -- you have ${update.currentVersion}.
+    const yes = await ask(
+      `${await appName()} ${update.version} is now available -- you have ${update.currentVersion}.
 
 Release notes:
-${(update.body || 'Bug fixes').split('\n').map(line => `  • ${line}`).join('\n')}
+${(update.body || 'Bug fixes')
+  .split('\n')
+  .map(line => `  • ${line}`)
+  .join('\n')}
 `,
-            {
-                title: 'New Version Available',
-                kind: 'info',
-                okLabel: 'Upgrade Now',
-                cancelLabel: 'Later',
-            },
-        )
+      {
+        title: 'New Version Available',
+        kind: 'info',
+        okLabel: 'Upgrade Now',
+        cancelLabel: 'Later',
+      },
+    );
 
-        if (yes) {
-            await update.downloadAndInstall();
-            await relaunch();
-        }
+    if (yes) {
+      await update.downloadAndInstall();
+      await relaunch();
     }
+  }
 }
 
 await listen('tauri://update', event => {
