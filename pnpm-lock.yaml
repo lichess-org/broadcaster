@@ -42,7 +42,7 @@ importers:
         specifier: ~2.3.1
         version: 2.3.1
       '@tauri-apps/plugin-process':
-        specifier: ~2
+        specifier: ~2.3.0
         version: 2.3.0
       '@tauri-apps/plugin-shell':
         specifier: ~2.3.1
