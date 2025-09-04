@@ -1,4 +1,5 @@
 use tauri::{AppHandle, Manager};
+use tauri_plugin_deep_link::DeepLinkExt;
 
 pub fn run() {
     let _ = fix_path_env::fix();
@@ -16,6 +17,7 @@ pub fn run() {
     }
 
     builder
+        .plugin(tauri_plugin_deep_link::init())
         .plugin(tauri_plugin_dialog::init())
         .plugin(tauri_plugin_fs::init())
         .plugin(tauri_plugin_http::init())
@@ -23,15 +25,18 @@ pub fn run() {
         .plugin(tauri_plugin_oauth::init())
         .plugin(tauri_plugin_opener::init())
         .plugin(tauri_plugin_os::init())
+        .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(tauri_plugin_process::init())
         .invoke_handler(tauri::generate_handler![open_dev_tools])
         .setup(|app| {
             if tauri::is_dev() {
                 let window = app.get_webview_window("main").expect("no main window");
                 window.open_devtools();
             }
+
+            app.deep_link().register_all()?;
+
             Ok(())
         })
         .run(tauri::generate_context!())
