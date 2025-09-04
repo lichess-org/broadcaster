@@ -28,7 +28,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![open_dev_tools])
         .setup(|app| {
             if tauri::is_dev() {
-                let window = app.get_webview_window("main").unwrap();
+                let window = app.get_webview_window("main").expect("no main window");
                 window.open_devtools();
             }
             Ok(())
@@ -40,7 +40,9 @@ pub fn run() {
 #[allow(clippy::needless_pass_by_value)]
 #[tauri::command]
 fn open_dev_tools(app_handle: AppHandle) {
-    let window = app_handle.get_webview_window("main").unwrap();
+    let window = app_handle
+        .get_webview_window("main")
+        .expect("no main window");
     if window.is_devtools_open() {
         window.close_devtools();
     } else {
