@@ -18,7 +18,7 @@ jobs:
           - platform: macos-latest
             target: universal-apple-darwin
             bundles: app,dmg
-          - platform: windows-latest
+          - platform: windows-2022
             target: x86_64-pc-windows-msvc
             bundles: msi
 
