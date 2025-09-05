@@ -7,6 +7,7 @@ import { operations } from '@lichess-org/types';
 import { lichessApiClient } from '../client';
 import { useUserStore } from '../stores/user';
 import { openUrl } from '@tauri-apps/plugin-opener';
+import { getQueryParam } from '../url';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -85,8 +86,7 @@ async function login() {
     await openUrl(urlToOpen);
 
     await onUrl(url => {
-      const receivedUrl = URL.parse(url);
-      const code = receivedUrl?.searchParams.get('code');
+      const code = getQueryParam('code', url);
 
       if (!code) {
         throw new Error('No code received in OAuth callback');
