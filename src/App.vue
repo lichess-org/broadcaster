@@ -2,6 +2,7 @@
 import { useUserStore } from './stores/user';
 import { requestNotificationPermission } from './notify';
 import { useFavoritesStore } from './stores/favorites';
+import { RouteNames } from './router';
 
 const user = useUserStore();
 const favorites = useFavoritesStore();
@@ -27,7 +28,7 @@ requestNotificationPermission();
                 <li>
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
-                    :to="{ name: 'home' }"
+                    :to="{ name: RouteNames.Home.toString() }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                     active-class="bg-gray-800 text-white"
                   >
@@ -57,7 +58,7 @@ requestNotificationPermission();
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
                     :to="{
-                      name: 'broadcasts',
+                      name: RouteNames['RelayTour.by'].toString(),
                       params: {
                         username: u.username,
                         pageNum: 1,
@@ -82,7 +83,7 @@ requestNotificationPermission();
                 </li>
                 <li>
                   <router-link
-                    :to="{ name: 'settings' }"
+                    :to="{ name: RouteNames.Settings.toString() }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                   >
                     <span class="truncate">+ Add</span>
@@ -92,7 +93,7 @@ requestNotificationPermission();
             </li>
             <li class="mt-auto">
               <router-link
-                :to="{ name: 'settings' }"
+                :to="{ name: RouteNames.Settings.toString() }"
                 class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                 active-class="bg-gray-800 text-white"
               >

@@ -7,6 +7,7 @@ import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
 import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
 import { lichessApiClient } from '../client';
 import { timestampToLocalDatetime } from '../dates';
+import { RouteNames } from '../router';
 
 const status = useStatusStore();
 const isExpanded = ref<boolean>(false);
@@ -88,7 +89,7 @@ function getBroadcast(id: string) {
     <template v-if="broadcastWithRounds">
       <div v-if="broadcastWithRounds.rounds.length" v-for="round in broadcastWithRounds.rounds" :key="round.id">
         <router-link
-          :to="{ name: 'round', params: { id: round.id } }"
+          :to="{ name: RouteNames['RelayRound.show'].toString(), params: { id: round.id } }"
           class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
           :class="{
             'bg-green-900': status.hasRound(round.id),
