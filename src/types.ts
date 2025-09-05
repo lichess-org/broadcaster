@@ -1,5 +1,4 @@
 import { components, operations } from '@lichess-org/types';
-import { RouteName } from './router';
 
 export type AccessTokenResponse = operations['apiToken']['responses']['200']['content']['application/json'];
 
@@ -13,12 +12,5 @@ export type BroadcastRound = components['schemas']['BroadcastRound'];
 
 export type DeepLink = {
   scheme: string;
-  route: RouteName;
-  chapterId?: string;
-  player?: string;
-  roundId?: string;
-  roundSlug?: string;
-  tourId?: string;
-  tourSlug?: string;
-  username?: string;
+  path: string;
 };

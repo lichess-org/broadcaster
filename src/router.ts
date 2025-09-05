@@ -7,17 +7,9 @@ import Settings from './components/Settings.vue';
 export enum RouteNames {
   Home,
   Settings,
-  'RelayRound.show',
   'RelayTour.by',
-  'RelayRound.chapter',
-  'RelayRound.teamsView',
-  'RelayTour.allPrivate',
-  'RelayTour.player',
-  'RelayTour.playersView',
-  'RelayTour.show',
-  'RelayTour.subscribed',
+  'RelayRound.show',
 }
-export type RouteName = keyof typeof RouteNames;
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -33,12 +25,12 @@ export const router = createRouter({
       name: RouteNames.Settings.toString(),
     },
     {
-      path: '/broadcasts/:username/page/:pageNum',
+      path: '/broadcast/by/:user',
       component: BroadcastsByUser,
       name: RouteNames['RelayTour.by'].toString(),
     },
     {
-      path: '/round/:id',
+      path: '/broadcast/:ts/:rs/:id',
       component: Round,
       name: RouteNames['RelayRound.show'].toString(),
     },

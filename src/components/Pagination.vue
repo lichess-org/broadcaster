@@ -37,7 +37,7 @@ const rangeMax = computed<number>(() => {
     <div class="flex flex-1 justify-between sm:justify-end">
       <router-link
         :to="{
-          params: { pageNum: broadcasts.previousPage },
+          query: { page: broadcasts.previousPage },
         }"
         :disabled="!broadcasts.previousPage"
         class="relative inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
@@ -50,7 +50,7 @@ const rangeMax = computed<number>(() => {
       </router-link>
       <router-link
         :to="{
-          params: { pageNum: broadcasts.nextPage },
+          query: { page: broadcasts.nextPage },
         }"
         :disabled="!broadcasts.nextPage"
         class="relative ml-3 inline-flex items-center rounded-md bg-white px-3 py-2 text-sm font-semibold ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:outline-offset-0"
