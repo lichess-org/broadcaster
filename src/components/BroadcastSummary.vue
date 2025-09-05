@@ -89,7 +89,14 @@ function getBroadcast(id: string) {
     <template v-if="broadcastWithRounds">
       <div v-if="broadcastWithRounds.rounds.length" v-for="round in broadcastWithRounds.rounds" :key="round.id">
         <router-link
-          :to="{ name: RouteNames['RelayRound.show'].toString(), params: { id: round.id } }"
+          :to="{
+            name: RouteNames['RelayRound.show'].toString(),
+            params: {
+              ts: '-',
+              rs: '-',
+              id: round.id,
+            },
+          }"
           class="flex items-center space-x-4 px-4 py-4 sm:px-6 lg:px-8 hover:bg-gray-700"
           :class="{
             'bg-green-900': status.hasRound(round.id),
