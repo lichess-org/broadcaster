@@ -11,7 +11,6 @@ export type BroadcastPgnPushTags = components['schemas']['BroadcastPgnPushTags']
 export type BroadcastRound = components['schemas']['BroadcastRound'];
 
 export type DeepLink = {
-  tourSlug: string;
-  roundSlug: string;
-  roundId: string;
+  scheme: string;
+  path: string;
 };

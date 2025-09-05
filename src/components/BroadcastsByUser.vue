@@ -14,8 +14,10 @@ import { useUserStore } from '../stores/user';
 const settings = useSettingsStore();
 const user = useUserStore();
 
-const username = ref<string>(router.currentRoute.value.params.username as string);
-const pageNum = ref<number>(parseInt(router.currentRoute.value.params.pageNum as string));
+const username = ref<string>(router.currentRoute.value.params.user as string);
+const currentPage = ref<number>(
+  router.currentRoute.value.query.page ? parseInt(router.currentRoute.value.query.page as string) : 1,
+);
 
 const isLoading = ref<boolean>(true);
 const broadcasts = ref<LichessPaginatedBroadcasts>();
@@ -34,6 +36,9 @@ function refresh() {
         path: {
           username: username.value,
         },
+        query: {
+          page: currentPage.value,
+        },
       },
     })
     .then(response => {
@@ -51,8 +56,8 @@ if (!pageHasBroadcasts.value) {
 }
 
 onBeforeRouteUpdate((to, _from) => {
-  username.value = to.params.username as string;
-  pageNum.value = parseInt(to.params.pageNum as string);
+  username.value = to.params.user as string;
+  currentPage.value = parseInt(to.query.page as string) || 1;
   refresh();
 });
 
