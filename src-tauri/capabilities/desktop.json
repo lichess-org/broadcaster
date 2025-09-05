@@ -20,10 +20,16 @@
       "identifier": "http:default",
       "allow": [
         {
-          "url": "https://lichess.org"
+          "url": "http://*"
         },
         {
-          "url": "http://localhost:8080"
+          "url": "https://*"
+        },
+        {
+          "url": "http://*:*"
+        },
+        {
+          "url": "https://*:*"
         }
       ]
     },
