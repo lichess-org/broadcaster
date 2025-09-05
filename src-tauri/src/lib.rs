@@ -35,6 +35,7 @@ pub fn run() {
                 window.open_devtools();
             }
 
+            #[cfg(not(target_os = "macos"))]
             app.deep_link().register_all()?;
 
             Ok(())
