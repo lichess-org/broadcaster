@@ -43,7 +43,7 @@ test.each([
     url: '/broadcast/:ts/:rs/$roundId<\w{8}>/$chapterId<\w{8}>',
     expected: {
       scheme: 'lichess-broadcaster',
-      route: 'RelayTour.player',
+      route: 'RelayRound.chapter',
       tourSlug: ':ts',
       roundSlug: ':rs',
       roundId: '$roundId%3Cw%7B8%7D%3E',
@@ -53,10 +53,9 @@ test.each([
   {
     url: '/broadcast/$roundId<\w{8}>/teams',
     expected: {
-      route: 'RelayTour.show',
       scheme: 'lichess-broadcaster',
-      tourId: 'teams',
-      tourSlug: '$roundId%3Cw%7B8%7D%3E',
+      route: 'RelayRound.teamsView',
+      roundId: '$roundId%3Cw%7B8%7D%3E',
     },
   },
 ])('lila route ($url)', ({ url, expected }) => {

@@ -88,6 +88,12 @@ export function parseDeepLink(url: string): DeepLink {
         tourId: parts[0],
         player: parts[2],
       };
+    } else if (parts.length === 2 && parts[1] === 'teams') {
+      return {
+        scheme,
+        route: 'RelayRound.teamsView',
+        roundId: parts[0],
+      };
     } else if (parts.length === 2) {
       return {
         scheme,
@@ -106,17 +112,11 @@ export function parseDeepLink(url: string): DeepLink {
     } else if (parts.length === 4) {
       return {
         scheme,
-        route: 'RelayTour.player',
+        route: 'RelayRound.chapter',
         tourSlug: parts[0],
         roundSlug: parts[1],
         roundId: parts[2],
         chapterId: parts[3],
-      };
-    } else if (parts.length === 2 && parts[1] === 'teams') {
-      return {
-        scheme,
-        route: 'RelayRound.teamsView',
-        roundId: parts[2],
       };
     }
   }
