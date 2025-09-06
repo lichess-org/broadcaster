@@ -18,6 +18,15 @@ async function onAppStart() {
   }
 }
 
+export function convertLichessUrlToDeepLink(url: string): DeepLink {
+  const parsedUrl = new URL(url);
+
+  return {
+    scheme: 'lichess-broadcaster',
+    path: parsedUrl.pathname,
+  };
+}
+
 export function openDeepLink(urls: string[]) {
   urls.forEach(url => {
     const deepLink = parseDeepLink(url);
