@@ -1,4 +1,6 @@
 use tauri::{AppHandle, Manager};
+
+#[cfg(not(target_os = "macos"))]
 use tauri_plugin_deep_link::DeepLinkExt;
 
 pub fn run() {
