@@ -100,6 +100,14 @@ requestNotificationPermission();
                     <span class="truncate">+ Add</span>
                   </router-link>
                 </li>
+                <li>
+                  <router-link
+                    :to="{ name: RouteNames.NavigateByUrl.toString() }"
+                    class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
+                  >
+                    <span class="truncate">Enter URL</span>
+                  </router-link>
+                </li>
               </ul>
             </li>
             <li class="mt-auto">
