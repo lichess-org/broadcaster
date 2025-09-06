@@ -3,9 +3,11 @@ import BroadcastsByUser from './components/BroadcastsByUser.vue';
 import Status from './components/Status.vue';
 import Round from './components/Round.vue';
 import Settings from './components/Settings.vue';
+import NavigateByUrl from './components/NavigateByUrl.vue';
 
 export enum RouteNames {
   Home,
+  NavigateByUrl,
   Settings,
   'RelayTour.by',
   'RelayRound.show',
@@ -18,6 +20,11 @@ export const router = createRouter({
       path: '/',
       component: Status,
       name: RouteNames.Home.toString(),
+    },
+    {
+      path: '/navigate-by-url',
+      component: NavigateByUrl,
+      name: RouteNames.NavigateByUrl.toString(),
     },
     {
       path: '/settings',
