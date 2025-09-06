@@ -7,8 +7,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [24, latest]
-        os: [ubuntu-latest]
+        node: [latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
@@ -23,7 +23,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [24, latest]
+        node: [latest]
         os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
@@ -39,8 +39,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node: [24, latest]
-        os: [ubuntu-latest]
+        node: [latest]
+        os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
