@@ -5,7 +5,7 @@ import { appName } from './client';
 
 export async function checkForUpdates() {
   const update = await check();
-  console.log('check-for-update response:', update);
+  console.log({ update });
 
   if (update) {
     const releaseNotes = (update.body || 'Bug fixes')
