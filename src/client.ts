@@ -28,7 +28,7 @@ export function lichessApiClient() {
 
   const loggingMiddleware: Middleware = {
     async onRequest({ request }) {
-      request.headers.set('User-Agent', (await uaPrefix()) + ' as:' + user.username);
+      request.headers.set('User-Agent', (await uaPrefix()) + ' as:' + (user.username ?? 'anon'));
       if (user.accessToken) {
         request.headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
       }
