@@ -3,6 +3,7 @@ import { useUserStore } from './stores/user';
 import { requestNotificationPermission } from './notify';
 import { useFavoritesStore } from './stores/favorites';
 import { RouteNames } from './router';
+import { lichessApiClient } from './client';
 
 const user = useUserStore();
 const favorites = useFavoritesStore();
@@ -12,6 +13,12 @@ if (user.isLoggedIn()) {
 }
 
 requestNotificationPermission();
+
+const client = lichessApiClient();
+// @ts-ignore
+const me = await client.GET('/get', {});
+// @ts-ignore
+console.log('your user agent is:', me.data.headers['User-Agent']);
 </script>
 
 <template>
