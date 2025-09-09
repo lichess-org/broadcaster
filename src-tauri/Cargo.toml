@@ -17,9 +17,9 @@ fix-path-env = { git = "https://github.com/tauri-apps/fix-path-env-rs" }
 serde_json = "1.0.111"
 tauri = { version = "2", features = [ "wry", "objc-exception", "devtools", "native-tls-vendored"], default-features = false }
 tauri-plugin-deep-link = "2"
-tauri-plugin-dialog = "2"
-tauri-plugin-fs = { version = "2", features = ["watch"] }
-tauri-plugin-http = { version = "2", features = ["unsafe-headers"] }
+tauri-plugin-dialog = { git = "https://github.com/fitztrev/plugins-workspace", branch = "http-user-agent" }
+tauri-plugin-fs = { git = "https://github.com/fitztrev/plugins-workspace", branch = "http-user-agent" }
+tauri-plugin-http = { git = "https://github.com/fitztrev/plugins-workspace", branch = "http-user-agent" }
 tauri-plugin-notification = "2"
 tauri-plugin-oauth = "2"
 tauri-plugin-opener = "2"

@@ -23,7 +23,7 @@ export function lichessApiClient() {
 
   const client = createClient<paths>({
     fetch,
-    baseUrl: 'https://httpbin.org',
+    baseUrl: 'https://httpbun.org',
   });
 
   const loggingMiddleware: Middleware = {
