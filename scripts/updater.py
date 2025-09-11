@@ -22,10 +22,19 @@ with open(version_file) as f:
 updater["version"] = release["tag_name"]
 updater["pub_date"] = release["published_at"]
 
-updater["platforms"]["darwin-x86_64"]["signature"] = signatures["mac"].text
-updater["platforms"]["darwin-aarch64"]["signature"] = signatures["mac"].text
-updater["platforms"]["linux-x86_64"]["signature"] = signatures["linux"].text
-updater["platforms"]["windows-x86_64"]["signature"] = signatures["windows"].text
+platforms = [
+    ("darwin-x86_64", "mac"),
+    ("darwin-aarch64", "mac"),
+    ("linux-x86_64", "linux"),
+    ("windows-x86_64", "windows"),
+]
+
+for key, platform in platforms:
+    updater["platforms"][key]["signature"] = signatures[platform].text
+    url = updater["platforms"][key].get("url")
+    response = requests.get(url)
+    if response.status_code != 200:
+        raise Exception(f"Error fetching URL {url} for {key}: {response.status_code}")
 
 with open(version_file, "w") as f:
     json.dump(updater, f, indent=2)
