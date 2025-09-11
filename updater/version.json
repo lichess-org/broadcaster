@@ -13,7 +13,7 @@
     },
     "linux-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFJHYWx0UHVHMHZGYlNHbzdMYWp3dCtvaHkwd3dUSWx5ZGZhZnNPYW5iWjVnSFpoZ2MvQ1NmNHg1RzBqYzhvbnVHSE85RmxZa0s3SFkrVXBvSHlDQ2c4PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzU3NTU0NTk5CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlcl8wLjMwLjJfYW1kNjQuQXBwSW1hZ2UKbFNqc1RHOVpmZTNoZG9za294Q1VMSDFJbkM2azVWN2pyc0ViTkNrVzU3QnArK21laWdlU2JOVnkxZ296WnZWKzZ2aG9iaERKT2FoUnhsblk5MmxQQ0E9PQo=",
-      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-linux.AppImage.tar.gz"
+      "url": "https://github.com/lichess-org/broadcaster/releases/latest/download/Lichess-Broadcaster-linux.AppImage"
     },
     "windows-x86_64": {
       "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFEzQmdtS25PSERXeUF3em9mTkNzWmdIdGcvQlhYU0pscENMa2RtTnVvRTB5d1F4MUcwYU95RlVYb2x1ZU9vVk9kTHVxZEVDZzdiMmFzTEJvSXBPV0FJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzU3NTU0NzA0CWZpbGU6TGljaGVzcy1Ccm9hZGNhc3Rlci13aW5kb3dzLm1zaS56aXAKUVhyMkxlN3J2cmFVMy9xV2NiNllySFl2bm94YXRwWGlaQ3h6b24zMnpwWkRiWFl6QW94MGRrQm03OXF0V2RPV3l1aCtWQXQrc1RIZWFwc1VFcEloQnc9PQo=",
