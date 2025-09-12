@@ -24,26 +24,26 @@ function newGame(): Chess {
 
   const game = new Chess();
 
-  game.header('Event', eventName);
-  game.header('Site', location);
-  game.header('Date', pgnDate);
-  game.header('Round', faker.number.int(10).toString());
-  game.header('TimeControl', '15 min/game + 10 sec/move');
-  game.header('White', faker.person.fullName());
-  game.header('Black', faker.person.fullName());
-  game.header('WhiteElo', faker.number.int({ min: 1000, max: 2700 }).toString());
-  game.header('BlackElo', faker.number.int({ min: 1000, max: 2700 }).toString());
+  game.setHeader('Event', eventName);
+  game.setHeader('Site', location);
+  game.setHeader('Date', pgnDate);
+  game.setHeader('Round', faker.number.int(10).toString());
+  game.setHeader('TimeControl', '15 min/game + 10 sec/move');
+  game.setHeader('White', faker.person.fullName());
+  game.setHeader('Black', faker.person.fullName());
+  game.setHeader('WhiteElo', faker.number.int({ min: 1000, max: 2700 }).toString());
+  game.setHeader('BlackElo', faker.number.int({ min: 1000, max: 2700 }).toString());
   for (const title of ['WhiteTitle', 'BlackTitle']) {
     faker.helpers.maybe(
       () => {
-        game.header(title, faker.helpers.arrayElement(['GM', 'IM', 'FM']));
+        game.setHeader(title, faker.helpers.arrayElement(['GM', 'IM', 'FM']));
       },
       {
         probability: 0.2,
       },
     );
   }
-  game.header('Result', '*');
+  game.setHeader('Result', '*');
 
   return game;
 }
@@ -84,7 +84,7 @@ if (action === 'games') {
         await sleep(faker.number.int({ min: 500, max: 2_000 }));
       }
 
-      game.header('Result', result(game));
+      game.setHeader('Result', result(game));
       writeToFile(`game-${i}.pgn`, game.pgn());
     }),
   );
