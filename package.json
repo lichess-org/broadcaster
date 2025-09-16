@@ -39,12 +39,12 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^10.0.0",
-    "@lichess-org/types": "^2.0.73",
+    "@lichess-org/types": "^2.0.74",
     "@tauri-apps/cli": "^2.8.4",
-    "@types/node": "^24.3.2",
+    "@types/node": "^24.5.0",
     "@vitejs/plugin-vue": "^6.0.1",
     "chess.js": "^1.4.0",
-    "jsdom": "^26.1.0",
+    "jsdom": "^27.0.0",
     "prettier": "^3.6.2",
     "tailwindcss": "^4.1.13",
     "typescript": "^5.9.2",
@@ -52,7 +52,7 @@
     "vitest": "^3.2.4",
     "vue-tsc": "^3.0.7"
   },
-  "packageManager": "pnpm@10.16.0+sha512.8066e7b034217b700a9a4dbb3a005061d641ba130a89915213a10b3ca4919c19c037bec8066afdc559b89635fdb806b16ea673f2468fbb28aabfa13c53e3f769",
+  "packageManager": "pnpm@10.16.1+sha512.0e155aa2629db8672b49e8475da6226aa4bdea85fdcdfdc15350874946d4f3c91faaf64cbdc4a5d1ab8002f473d5c3fcedcd197989cf0390f9badd3c04678706",
   "pnpm": {
     "onlyBuiltDependencies": [
       "@tailwindcss/oxide",
