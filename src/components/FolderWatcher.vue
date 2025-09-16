@@ -120,6 +120,8 @@ async function resetAndReupload() {
       },
     },
   });
+
+  await uploadFolderToRound(props.round.round.id, watchedFolder.value);
 }
 </script>
 
