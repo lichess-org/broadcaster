@@ -7,6 +7,22 @@ import { useSettingsStore } from './stores/settings';
 import { getName, getVersion } from '@tauri-apps/api/app';
 import { platform } from '@tauri-apps/plugin-os';
 
+import { fetch } from '@tauri-apps/plugin-http';
+
+(async () => {
+  const response = await fetch('https://httpbun.org/get', {
+    method: 'GET',
+    headers: {
+      'User-Agent': 'custom1',
+    },
+  });
+  const body = await response.json();
+  console.log({
+    body,
+    ua: body.headers['User-Agent'],
+  });
+})();
+
 const user = useUserStore();
 const favorites = useFavoritesStore();
 const settings = useSettingsStore();
