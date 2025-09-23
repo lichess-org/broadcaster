@@ -2,12 +2,12 @@
 import { start, onUrl } from '@fabianlars/tauri-plugin-oauth';
 import pkceChallenge from 'pkce-challenge';
 import { useSettingsStore } from '../stores/settings';
-import { appName } from '../client';
 import { operations } from '@lichess-org/types';
 import { lichessApiClient } from '../client';
 import { useUserStore } from '../stores/user';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { getQueryParam } from '../url';
+import { getIdentifier } from '@tauri-apps/api/app';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -65,7 +65,7 @@ async function login() {
 `,
     });
 
-    const clientId = await appName();
+    const clientId: string = await getIdentifier();
     const redirectUri = `http://localhost:${port}`;
     const challenge = await pkceChallenge(128);
 

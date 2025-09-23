@@ -1,21 +1,17 @@
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
 
-export const useSettingsStore = defineStore(
-  'settings',
-  () => {
-    const lichessUrl = ref<string>('https://lichess.org');
-
-    const setLichessUrl = (url: string) => {
-      lichessUrl.value = url.replace(/\/$/, '');
-    };
-
-    return {
-      lichessUrl,
-      setLichessUrl,
-    };
+export const useSettingsStore = defineStore('settings', {
+  state: () => ({
+    lichessUrl: 'https://lichess.org',
+    version: 'unknown',
+  }),
+  actions: {
+    setLichessUrl(url: string) {
+      this.lichessUrl = url.replace(/\/$/, '');
+    },
+    setVersion(v: string) {
+      this.version = v;
+    }
   },
-  {
-    persist: true,
-  },
-);
+  persist: true,
+});

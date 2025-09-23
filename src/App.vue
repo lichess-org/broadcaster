@@ -3,9 +3,21 @@ import { useUserStore } from './stores/user';
 import { requestNotificationPermission } from './notify';
 import { useFavoritesStore } from './stores/favorites';
 import { RouteNames } from './router';
+import { useSettingsStore } from './stores/settings';
+import { getName, getVersion } from '@tauri-apps/api/app';
+import { platform } from '@tauri-apps/plugin-os';
 
 const user = useUserStore();
 const favorites = useFavoritesStore();
+const settings = useSettingsStore();
+
+(async () => {
+  const appName: string = await getName();
+  const appVersion: string = await getVersion();
+  const platformName: string = platform();
+  const version: string = `${appName}/${appVersion} os:${platformName}`;
+  settings.setVersion(version);
+})();
 
 if (user.isLoggedIn()) {
   user.validateToken();

@@ -6,16 +6,10 @@ import { useLogStore } from '../stores/logs';
 import AddUserToSidebar from './AddUserToSidebar.vue';
 import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
-import { uaPrefix } from '../client';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
 const user = useUserStore();
-
-const userAgent = ref<string>('');
-uaPrefix().then(prefix => {
-  userAgent.value = prefix;
-});
 
 const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
@@ -86,7 +80,7 @@ async function openDevTools() {
     </div>
 
     <div class="md:col-span-2">
-      <p class="mb-2 text-sm leading-6 text-gray-400">You are using {{ userAgent }}</p>
+      <p class="mb-2 text-sm leading-6 text-gray-400">You are using {{ settings.version }}</p>
       <p class="mb-2 text-sm leading-6 text-gray-400">
         See the source and contribute to this
         <a href="#" class="underline" @click.prevent="openPath('https://github.com/lichess-org/broadcaster')"

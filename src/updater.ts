@@ -1,7 +1,9 @@
 import { ask } from '@tauri-apps/plugin-dialog';
 import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
-import { appName } from './client';
+import { getName } from '@tauri-apps/api/app';
+
+const appName: string = await getName();
 
 export async function checkForUpdates() {
   const update = await check();
@@ -15,7 +17,7 @@ export async function checkForUpdates() {
       .join('\n');
 
     const yes = await ask(
-      `${await appName()} ${update.version} is now available -- you have ${update.currentVersion}.
+      `${appName} ${update.version} is now available -- you have ${update.currentVersion}.
 
 Release notes:
 ${releaseNotes}
