@@ -11,7 +11,7 @@ export const useSettingsStore = defineStore('settings', {
     },
     setVersion(v: string) {
       this.version = v;
-    }
+    },
   },
   persist: true,
 });
