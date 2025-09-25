@@ -1,4 +1,4 @@
-import createClient, { HeadersOptions } from 'openapi-fetch';
+import createClient from 'openapi-fetch';
 import { paths } from '@lichess-org/types';
 import { fetch } from '@tauri-apps/plugin-http';
 
