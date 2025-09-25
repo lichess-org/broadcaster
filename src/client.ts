@@ -20,8 +20,7 @@ export function lichessApiClient() {
 
   const client = createClient<paths>({
     baseUrl: settings.lichessUrl,
-    fetch,
-    headers,
+    fetch: req => fetch(req, { headers }),
   });
 
   return client;

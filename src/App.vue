@@ -7,46 +7,6 @@ import { useSettingsStore } from './stores/settings';
 import { getName, getVersion } from '@tauri-apps/api/app';
 import { platform } from '@tauri-apps/plugin-os';
 
-import { fetch } from '@tauri-apps/plugin-http';
-import createClient from 'openapi-fetch';
-
-(async () => {
-  const response = await fetch('https://httpbun.org/get', {
-    method: 'GET',
-    headers: {
-      'User-Agent': 'custom1',
-      'X-User-Agent': 'custom1x',
-    },
-  });
-  const body = await response.json();
-  console.log('using fetch:', {
-    body,
-    ua: body.headers['User-Agent'],
-    xua: body.headers['X-User-Agent'],
-  });
-})();
-
-(async () => {
-  const headers: HeadersInit = new Headers();
-  headers.set('User-Agent', 'custom2');
-  headers.set('X-User-Agent', 'custom2x');
-
-  const client = createClient({
-    baseUrl: 'https://httpbun.org',
-    fetch: req => fetch(req, { headers }),
-  });
-
-  // @ts-ignore
-  const body = await client.GET('/get');
-  console.log('using openapi-fetch:', {
-    body,
-    // @ts-ignore
-    ua: body.data.headers['User-Agent'],
-    // @ts-ignore
-    xua: body.data.headers['X-User-Agent'],
-  });
-})();
-
 const user = useUserStore();
 const favorites = useFavoritesStore();
 const settings = useSettingsStore();
