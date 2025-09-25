@@ -33,8 +33,7 @@ import createClient from 'openapi-fetch';
 
   const client = createClient({
     baseUrl: 'https://httpbun.org',
-    fetch,
-    headers,
+    fetch: req => fetch(req, { headers }),
   });
 
   // @ts-ignore
