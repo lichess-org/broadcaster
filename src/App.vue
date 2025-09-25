@@ -8,6 +8,7 @@ import { getName, getVersion } from '@tauri-apps/api/app';
 import { platform } from '@tauri-apps/plugin-os';
 
 import { fetch } from '@tauri-apps/plugin-http';
+import createClient from 'openapi-fetch';
 
 (async () => {
   const response = await fetch('https://httpbun.org/get', {
@@ -17,9 +18,28 @@ import { fetch } from '@tauri-apps/plugin-http';
     },
   });
   const body = await response.json();
-  console.log({
+  console.log('using fetch:', {
     body,
     ua: body.headers['User-Agent'],
+  });
+})();
+
+(async () => {
+  const headers: HeadersInit = new Headers();
+  headers.set('User-Agent', 'custom2');
+
+  const client = createClient({
+    baseUrl: 'https://httpbun.org',
+    fetch,
+    headers,
+  });
+
+  // @ts-ignore
+  const body = await client.GET('/get');
+  console.log('using openapi-fetch:', {
+    body,
+    // @ts-ignore
+    ua: body.data.headers['User-Agent'],
   });
 })();
 

@@ -11,17 +11,16 @@ export function lichessApiClient() {
 
   const uaPrefix: string = settings.version;
 
-  const headers: HeadersOptions = {
-    'User-Agent': uaPrefix + ' as:' + (user.username ?? 'anon'),
-  };
+  const headers: HeadersInit = new Headers();
+  headers.set('User-Agent', uaPrefix + ' as:' + (user.username ?? 'anon'));
 
   if (user.accessToken) {
-    headers['Authorization'] = `Bearer ${user.accessToken.access_token}`;
+    headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
   }
 
   const client = createClient<paths>({
-    fetch,
     baseUrl: settings.lichessUrl,
+    fetch,
     headers,
   });
 
