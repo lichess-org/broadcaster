@@ -18,10 +18,8 @@ export function lichessApiClient() {
     headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
   }
 
-  const client = createClient<paths>({
+  return createClient<paths>({
     baseUrl: settings.lichessUrl,
     fetch: req => fetch(req, { headers }),
   });
-
-  return client;
 }
