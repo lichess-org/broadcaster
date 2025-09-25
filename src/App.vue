@@ -15,18 +15,21 @@ import createClient from 'openapi-fetch';
     method: 'GET',
     headers: {
       'User-Agent': 'custom1',
+      'X-User-Agent': 'custom1x',
     },
   });
   const body = await response.json();
   console.log('using fetch:', {
     body,
     ua: body.headers['User-Agent'],
+    xua: body.headers['X-User-Agent'],
   });
 })();
 
 (async () => {
   const headers: HeadersInit = new Headers();
   headers.set('User-Agent', 'custom2');
+  headers.set('X-User-Agent', 'custom2x');
 
   const client = createClient({
     baseUrl: 'https://httpbun.org',
@@ -40,6 +43,8 @@ import createClient from 'openapi-fetch';
     body,
     // @ts-ignore
     ua: body.data.headers['User-Agent'],
+    // @ts-ignore
+    xua: body.data.headers['X-User-Agent'],
   });
 })();
 
