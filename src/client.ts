@@ -1,4 +1,4 @@
-import createClient, { HeadersOptions } from 'openapi-fetch';
+import createClient from 'openapi-fetch';
 import { paths } from '@lichess-org/types';
 import { fetch } from '@tauri-apps/plugin-http';
 
@@ -11,19 +11,15 @@ export function lichessApiClient() {
 
   const uaPrefix: string = settings.version;
 
-  const headers: HeadersOptions = {
-    'User-Agent': uaPrefix + ' as:' + (user.username ?? 'anon'),
-  };
+  const headers: HeadersInit = new Headers();
+  headers.set('User-Agent', uaPrefix + ' as:' + (user.username ?? 'anon'));
 
   if (user.accessToken) {
-    headers['Authorization'] = `Bearer ${user.accessToken.access_token}`;
+    headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
   }
 
-  const client = createClient<paths>({
-    fetch,
+  return createClient<paths>({
     baseUrl: settings.lichessUrl,
-    headers,
+    fetch: req => fetch(req, { headers }),
   });
-
-  return client;
 }
