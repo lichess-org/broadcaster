@@ -3,8 +3,6 @@ import { check } from '@tauri-apps/plugin-updater';
 import { relaunch } from '@tauri-apps/plugin-process';
 import { getName } from '@tauri-apps/api/app';
 
-const appName: string = await getName();
-
 export async function checkForUpdates() {
   const update = await check();
   console.log({ update });
@@ -15,6 +13,8 @@ export async function checkForUpdates() {
       .filter(line => line.trim())
       .map(line => `  • ${line}`)
       .join('\n');
+
+    const appName: string = await getName();
 
     const yes = await ask(
       `${appName} ${update.version} is now available -- you have ${update.currentVersion}.
