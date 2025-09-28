@@ -51,11 +51,10 @@ export async function uploadFolderToRound(roundId: string, folder: string): Prom
 async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
   const logs = useLogStore();
 
-  const pushResponse = await lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/push', {
+  const pushResponse = await lichessApiClient({
+    'Content-Type': 'text/plain',
+  }).POST('/api/broadcast/round/{broadcastRoundId}/push', {
     params: { path: { broadcastRoundId: roundId } },
-    headers: {
-      'Content-Type': 'text/plain',
-    },
     body: pgn,
     bodySerializer: body => body,
   });
