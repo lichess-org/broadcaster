@@ -92,18 +92,18 @@ async function login() {
         throw new Error('No code received in OAuth callback');
       }
 
-      const body: operations['apiToken']['requestBody']['content']['application/x-www-form-urlencoded'] = {
-        grant_type: 'authorization_code',
-        code,
-        code_verifier: challenge.code_verifier,
-        redirect_uri: redirectUri,
-        client_id: clientId,
-      };
-
       lichessApiClient({
         'Content-Type': 'application/x-www-form-urlencoded',
       })
-        .POST('/api/token', { body })
+        .POST('/api/token', {
+          body: {
+            grant_type: 'authorization_code',
+            code,
+            code_verifier: challenge.code_verifier,
+            redirect_uri: redirectUri,
+            client_id: clientId,
+          },
+        })
         .then(response => {
           if (response.data) {
             user.setAccessToken(response.data);
