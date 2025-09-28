@@ -53,9 +53,6 @@ importers:
       '@tauri-apps/plugin-updater':
         specifier: ~2.9.0
         version: 2.9.0
-      debounce:
-        specifier: ^2.2.0
-        version: 2.2.0
       fetch-ndjson:
         specifier: ^1.1.7
         version: 1.1.7
@@ -892,10 +889,6 @@ packages:
 
   de-indent@1.0.2:
     resolution: {integrity: sha512-e/1zu3xH5MQryN2zdVaF0OrdNLUbvWxzMbi+iNA6Bky7l1RoP8a2fIbRocyHclXt/arDrrR6lL3TqFD9pMQTsg==}
-
-  debounce@2.2.0:
-    resolution: {integrity: sha512-Xks6RUDLZFdz8LIdR6q0MTH44k7FikOmnh5xkSjMig6ch45afc8sjTjRQf3P6ax8dMgcQrYO/AR2RGWURrruqw==}
-    engines: {node: '>=18'}
 
   debug@4.4.3:
     resolution: {integrity: sha512-RGwwWnwQvkVfavKVt22FGLw+xYSdzARwm0ru6DhTVA3umU5hZc28V3kO4stgYryrTlLpuvgI9GiijltAjNbcqA==}
@@ -2238,8 +2231,6 @@ snapshots:
       whatwg-url: 15.1.0
 
   de-indent@1.0.2: {}
-
-  debounce@2.2.0: {}
 
   debug@4.4.3:
     dependencies:

@@ -6,7 +6,6 @@ import { useStatusStore } from '../stores/status';
 import { fileList, isMultiGamePgn, uploadFolderToRound } from '../upload';
 import { isWrite } from '../watcher';
 import { computed } from 'vue';
-import debounce from 'debounce';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { ref } from 'vue';
 import { BroadcastRound } from '../types';
@@ -21,6 +20,8 @@ const props = defineProps<{
 
 const roundStatus = computed(() => status.getRound(props.round.round.id));
 const watchedFolder = ref('');
+
+let modifiedFiles = new Set<string>();
 
 async function selectPgnFolder() {
   open({ directory: true }).then(async selected => {
@@ -59,11 +60,22 @@ async function startWatchingFolder(path: string) {
     uploadMultiGamePgn(path);
   }, 60 * 1000);
 
+
+  const uploadIfModified = setInterval(async () => {
+    if (modifiedFiles.size === 0) return;
+
+    await uploadFolderToRound(props.round.round.id, watchedFolder.value);
+    modifiedFiles.clear();
+
+    status.setRoundContainsAtLeastOnePgn(props.round.round.id);
+  }, 1000);
+
   watchedFolder.value = path;
 
   status.startRound(props.round.tour.id, props.round.round.id, path, () => {
     stopWatching();
     clearInterval(forceUpdateViaGamesPgn);
+    clearInterval(uploadIfModified);
   });
 
   await checkForExistingPgnFiles(path);
@@ -80,8 +92,6 @@ function stopWatching() {
   status.stopRound(props.round.round.id);
 }
 
-let modifiedFiles = new Set<string>();
-
 function handleFolderChange(event: WatchEvent): void {
   if (!isWrite(event)) return;
 
@@ -89,15 +99,6 @@ function handleFolderChange(event: WatchEvent): void {
   if (event.paths.find(filename => isMultiGamePgn(filename))) {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
-
-  debounce(async () => {
-    if (modifiedFiles.size === 0) return;
-
-    await uploadFolderToRound(props.round.round.id, watchedFolder.value);
-    modifiedFiles.clear();
-
-    status.setRoundContainsAtLeastOnePgn(props.round.round.id);
-  }, 1000)();
 }
 
 async function uploadMultiGamePgn(path: string): Promise<void> {

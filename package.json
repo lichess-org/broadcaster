@@ -28,7 +28,6 @@
     "@tauri-apps/plugin-process": "~2.3.0",
     "@tauri-apps/plugin-shell": "~2.3.1",
     "@tauri-apps/plugin-updater": "~2.9.0",
-    "debounce": "^2.2.0",
     "fetch-ndjson": "^1.1.7",
     "openapi-fetch": "^0.14.0",
     "pinia": "^3.0.3",
