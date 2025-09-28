@@ -7,7 +7,6 @@ import { fileList, isMultiGamePgn, uploadFolderToRound } from '../upload';
 import { isWrite } from '../watcher';
 import { computed } from 'vue';
 import { openPath } from '@tauri-apps/plugin-opener';
-import { ref } from 'vue';
 import { BroadcastRound } from '../types';
 import { lichessApiClient } from '../client';
 
@@ -19,7 +18,6 @@ const props = defineProps<{
 }>();
 
 const roundStatus = computed(() => status.getRound(props.round.round.id));
-const watchedFolder = ref('');
 
 let modifiedFiles = new Set<string>();
 
@@ -63,13 +61,11 @@ async function startWatchingFolder(path: string) {
   const uploadIfModified = setInterval(async () => {
     if (modifiedFiles.size === 0) return;
 
-    await uploadFolderToRound(props.round.round.id, watchedFolder.value);
+    await uploadFolderToRound(props.round.round.id, path);
     modifiedFiles.clear();
 
     status.setRoundContainsAtLeastOnePgn(props.round.round.id);
   }, 1000);
-
-  watchedFolder.value = path;
 
   status.startRound(props.round.tour.id, props.round.round.id, path, () => {
     stopWatching();
@@ -121,7 +117,7 @@ async function resetAndReupload() {
     },
   });
 
-  await uploadFolderToRound(props.round.round.id, watchedFolder.value);
+  await uploadFolderToRound(props.round.round.id, roundStatus.value.watchProcess.folder);
 }
 </script>
 
