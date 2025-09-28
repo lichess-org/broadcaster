@@ -5,7 +5,7 @@ import { fetch } from '@tauri-apps/plugin-http';
 import { useSettingsStore } from './stores/settings';
 import { useUserStore } from './stores/user';
 
-export function lichessApiClient() {
+export function lichessApiClient(addlHeaders?: Record<string, string>) {
   const settings = useSettingsStore();
   const user = useUserStore();
 
@@ -16,6 +16,12 @@ export function lichessApiClient() {
 
   if (user.accessToken) {
     headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
+  }
+
+  if (addlHeaders) {
+    for (const [key, value] of Object.entries(addlHeaders)) {
+      headers.set(key, value);
+    }
   }
 
   return createClient<paths>({
