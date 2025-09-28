@@ -94,7 +94,7 @@ async function login() {
 
       const headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
-      }
+      };
       lichessApiClient(headers)
         .POST('/api/token', {
           body: {
