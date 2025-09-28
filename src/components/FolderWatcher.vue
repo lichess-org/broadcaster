@@ -60,7 +60,6 @@ async function startWatchingFolder(path: string) {
     uploadMultiGamePgn(path);
   }, 60 * 1000);
 
-
   const uploadIfModified = setInterval(async () => {
     if (modifiedFiles.size === 0) return;
 
