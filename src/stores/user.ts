@@ -21,7 +21,9 @@ export const useUserStore = defineStore(
       lichessApiClient()
         .GET('/api/account')
         .then(response => {
-          if (response.data?.username) {
+          if (!response.response.ok) {
+            logout(false);
+          } else if (response.data?.username) {
             username.value = response.data.username;
           }
         });
