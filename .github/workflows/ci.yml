@@ -18,9 +18,12 @@ jobs:
           - macos-latest
           - windows-latest
         script:
-          - pnpm tsc
-          - pnpx prettier --check .
-          - pnpm test
+          - tsc
+          - check-format
+          - test
+        exclude:
+          - os: windows-latest
+            script: check-format
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
@@ -29,4 +32,4 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: pnpm install
-      - run: ${{ matrix.script }}
+      - run: pnpm ${{ matrix.script }}

@@ -6,6 +6,7 @@
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "format": "prettier --write .",
+    "check-format": "prettier --check .",
     "preview": "vite preview",
     "tauri": "tauri",
     "test": "vitest run",
