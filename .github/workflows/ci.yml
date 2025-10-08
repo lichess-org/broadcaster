@@ -1,16 +1,29 @@
 name: CI
-permissions:
-  contents: read
 
 on: [push, pull_request]
 
+permissions:
+  contents: read
+
 jobs:
-  check-typescript:
+  ci:
     strategy:
       fail-fast: false
       matrix:
-        node: [latest]
-        os: [ubuntu-latest, macos-latest, windows-latest]
+        node:
+          - 24
+          - 22
+        os:
+          - ubuntu-latest
+          - macos-latest
+          - windows-latest
+        script:
+          - tsc
+          - check-format
+          - test
+        exclude:
+          - os: windows-latest
+            script: check-format
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v5
@@ -19,36 +32,4 @@ jobs:
         with:
           node-version: ${{ matrix.node }}
       - run: pnpm install
-      - run: pnpm tsc
-
-  check-formatting:
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [latest]
-        os: [ubuntu-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: ${{ matrix.node }}
-      - run: pnpm install
-      - run: pnpx prettier --check .
-
-  tests:
-    strategy:
-      fail-fast: false
-      matrix:
-        node: [latest]
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
-    steps:
-      - uses: actions/checkout@v5
-      - uses: pnpm/action-setup@v4
-      - uses: actions/setup-node@v5
-        with:
-          node-version: ${{ matrix.node }}
-      - run: pnpm install
-      - run: pnpm test
+      - run: pnpm ${{ matrix.script }}
