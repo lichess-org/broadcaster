@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { parseDeepLink } from '../src/deep-links';
+import { convertLichessUrlToDeepLink, parseDeepLink } from '../src/deep-links';
 
 // from lila's conf/routes:
 // GET   /broadcast/by/:user                     controllers.RelayTour.by(user: UserStr, page: Int ?= 1)
@@ -37,4 +37,13 @@ test('basic deep links', () => {
 
 test('invalid deep links', () => {
   expect(() => parseDeepLink('foo')).toThrowError('Invalid deep link: foo');
+});
+
+test('convert lichess url to deep link', () => {
+  expect(convertLichessUrlToDeepLink('http://localhost:8080/broadcast/suriname-festival/round-2/BEpc6OSp')).toEqual({
+    scheme: 'lichess-broadcaster',
+    path: '/broadcast/suriname-festival/round-2/BEpc6OSp',
+  });
+
+  expect(() => convertLichessUrlToDeepLink('foo')).toThrowError('Invalid URL: foo');
 });

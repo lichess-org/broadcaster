@@ -1,28 +1,43 @@
 import { getCurrent, onOpenUrl } from '@tauri-apps/plugin-deep-link';
 import { DeepLink } from './types';
-import { router } from './router';
+import { RouteNames, router } from './router';
 
 export async function listenForDeepLinks() {
   // check if deep link was requested before the app was started
   await onAppStart();
 
   // listen for deep links while the app is running
-  await onOpenUrl(openDeepLink);
+  await onOpenUrl(urls => {
+    const links = urls.map(parseDeepLink);
+    openDeepLink(links);
+  });
 }
 
 async function onAppStart() {
   const startUrls = await getCurrent();
 
   if (startUrls) {
-    openDeepLink(startUrls);
+    openDeepLink(startUrls.map(parseDeepLink));
   }
 }
 
-export function openDeepLink(urls: string[]) {
-  urls.forEach(url => {
-    const deepLink = parseDeepLink(url);
-    console.log('Opening deep link:', deepLink);
-    router.push(deepLink.path);
+export function convertLichessUrlToDeepLink(url: string): DeepLink {
+  const parsedUrl = new URL(url);
+
+  return {
+    scheme: 'lichess-broadcaster',
+    path: parsedUrl.pathname,
+  };
+}
+
+export function openDeepLink(links: DeepLink[]) {
+  links.forEach(link => {
+    try {
+      console.log('Opening deep link:', link);
+      router.push(link.path);
+    } catch (e) {
+      router.push(RouteNames.NotFound.toString());
+    }
   });
 }
 
