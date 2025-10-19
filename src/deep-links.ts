@@ -8,8 +8,7 @@ export async function listenForDeepLinks() {
 
   // listen for deep links while the app is running
   await onOpenUrl(urls => {
-    const links = urls.map(parseDeepLink);
-    openDeepLink(links);
+    openDeepLink(urls.map(parseDeepLink));
   });
 }
 

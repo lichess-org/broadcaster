@@ -25,7 +25,6 @@ function getRound() {
     .then(response => {
       if (response.response.status === 404) {
         router.push({ name: RouteNames.NotFound.toString() });
-        return;
       } else if (response.data) {
         round.value = response.data;
       }
