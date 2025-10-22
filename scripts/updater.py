@@ -31,10 +31,16 @@ platforms = [
 
 for key, platform in platforms:
     updater["platforms"][key]["signature"] = signatures[platform].text
-    url = updater["platforms"][key].get("url")
-    response = requests.get(url)
+
+    for asset in release["assets"]:
+        if asset["browser_download_url"].rsplit("/", 1)[-1] == updater["platforms"][key]["url"].rsplit("/", 1)[-1]:
+            updater["platforms"][key]["url"] = asset["browser_download_url"]
+            break
+
+    app_url = updater["platforms"][key].get("url")
+    response = requests.get(app_url)
     if response.status_code != 200:
-        raise Exception(f"Error fetching URL {url} for {key}: {response.status_code}")
+        raise Exception(f"Error fetching URL {app_url} for {key}: {response.status_code}")
 
 with open(version_file, "w") as f:
     json.dump(updater, f, indent=2)
