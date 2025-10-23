@@ -45,5 +45,5 @@ test('convert lichess url to deep link', () => {
     path: '/broadcast/suriname-festival/round-2/BEpc6OSp',
   });
 
-  expect(() => convertLichessUrlToDeepLink('foo')).toThrowError('Invalid URL: foo');
+  expect(() => convertLichessUrlToDeepLink('foo')).toThrowError('Invalid URL');
 });
