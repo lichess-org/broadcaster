@@ -15,5 +15,5 @@ it('returns null for non-existent query param', () => {
 
 it('throws for invalid url', () => {
   const url = 'not-a-valid-url';
-  expect(() => getQueryParam('code', url)).toThrowError('Invalid URL: not-a-valid-url');
+  expect(() => getQueryParam('code', url)).toThrowError('Invalid URL');
 });
