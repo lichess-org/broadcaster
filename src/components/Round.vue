@@ -41,12 +41,7 @@ function togglePin() {
   if (favorites.isRoundPinned(round.value.round.id)) {
     favorites.unpinRound(round.value.round.id);
   } else {
-    favorites.pinRound(
-      round.value.round.id,
-      round.value.round.name,
-      round.value.tour.id,
-      round.value.tour.name,
-    );
+    favorites.pinRound(round.value.round.id, round.value.round.name, round.value.tour.id, round.value.tour.name);
   }
 }
 

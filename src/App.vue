@@ -86,7 +86,9 @@ requestNotificationPermission();
                 </li>
               </ul>
             </li>
-            <li v-if="user.isLoggedIn() && (favorites.pinnedTournaments.length > 0 || favorites.pinnedRounds.length > 0)">
+            <li
+              v-if="user.isLoggedIn() && (favorites.pinnedTournaments.length > 0 || favorites.pinnedRounds.length > 0)"
+            >
               <div class="text-xs font-semibold leading-6 text-gray-400">Pinned</div>
               <ul class="-mx-2 mt-2 space-y-1">
                 <li v-for="tournament in favorites.pinnedTournaments" :key="tournament.id">

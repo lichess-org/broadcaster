@@ -52,6 +52,7 @@ pnpm test:watch
 ### File Upload Priority
 
 The app handles two upload modes:
+
 - **Multi-game mode**: If `games.pgn` exists, it's used exclusively (ignores individual game files)
 - **Individual mode**: Upload all `game-*.pgn` files sorted by game ID
 
@@ -68,6 +69,7 @@ Multi-game PGN files also get force-updated every 60 seconds to ensure sync.
 ### API Client
 
 The `lichessApiClient` in `src/client.ts` wraps openapi-fetch with:
+
 - Automatic Authorization header from user store
 - Custom User-Agent format: `{version} as:{username}`
 - Uses Tauri's fetch plugin for HTTP requests
@@ -76,6 +78,7 @@ The `lichessApiClient` in `src/client.ts` wraps openapi-fetch with:
 ### Routing
 
 Routes mirror Lichess broadcast URLs:
+
 - `/` - Status/Dashboard
 - `/find-broadcast` - Search broadcasts
 - `/broadcast/by/:user` - User's broadcasts
@@ -85,6 +88,7 @@ Routes mirror Lichess broadcast URLs:
 ### Tauri Rust Backend
 
 The Rust side (`src-tauri/src/lib.rs`) initializes:
+
 - Single instance enforcement (desktop only)
 - Deep link registration (non-macOS)
 - All Tauri plugins (fs, http, dialog, updater, etc.)

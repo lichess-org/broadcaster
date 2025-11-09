@@ -115,10 +115,7 @@ async function togglePin(event: Event) {
       class="flex-none p-1 text-gray-400 hover:text-yellow-400 transition-colors z-10 cursor-pointer"
       :title="favorites.isTournamentPinned(props.broadcast.tour.id) ? 'Unpin tournament' : 'Pin tournament'"
     >
-      <BookmarkIconSolid
-        v-if="favorites.isTournamentPinned(props.broadcast.tour.id)"
-        class="h-5 w-5 text-yellow-400"
-      />
+      <BookmarkIconSolid v-if="favorites.isTournamentPinned(props.broadcast.tour.id)" class="h-5 w-5 text-yellow-400" />
       <BookmarkIconOutline v-else class="h-5 w-5" />
     </button>
     <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
