@@ -1,14 +1,18 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { RouteNames, router } from '../router';
 import { BroadcastRound } from '../types';
 import FolderWatcher from './FolderWatcher.vue';
 import RoundTimes from './RoundTimes.vue';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { useSettingsStore } from '../stores/settings';
+import { useFavoritesStore } from '../stores/favorites';
 import { lichessApiClient } from '../client';
+import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/vue/24/outline';
+import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/16/solid';
 
 const settings = useSettingsStore();
+const favorites = useFavoritesStore();
 const round = ref<BroadcastRound | null>(null);
 
 function getRound() {
@@ -31,7 +35,30 @@ function getRound() {
     });
 }
 
+function togglePin() {
+  if (!round.value) return;
+
+  if (favorites.isRoundPinned(round.value.round.id)) {
+    favorites.unpinRound(round.value.round.id);
+  } else {
+    favorites.pinRound(
+      round.value.round.id,
+      round.value.round.name,
+      round.value.tour.id,
+      round.value.tour.name,
+    );
+  }
+}
+
 getRound();
+
+// Watch for route changes and reload round data
+watch(
+  () => router.currentRoute.value.params.id,
+  () => {
+    getRound();
+  },
+);
 </script>
 
 <template>
@@ -46,6 +73,22 @@ getRound();
         <RoundTimes :round="round.round" />
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
+        <button
+          type="button"
+          @click="togglePin"
+          class="inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs transition-colors"
+          :class="
+            favorites.isRoundPinned(round.round.id)
+              ? 'bg-yellow-600 hover:bg-yellow-500'
+              : 'bg-white/10 hover:bg-white/20'
+          "
+          :title="favorites.isRoundPinned(round.round.id) ? 'Unpin round' : 'Pin round'"
+        >
+          <BookmarkIconSolid v-if="favorites.isRoundPinned(round.round.id)" class="h-4 w-4" />
+          <BookmarkIconOutline v-else class="h-4 w-4" />
+          {{ favorites.isRoundPinned(round.round.id) ? 'Unpin' : 'Pin' }}
+        </button>
+
         <button
           type="button"
           @click="getRound"

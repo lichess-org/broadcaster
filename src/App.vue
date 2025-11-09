@@ -86,6 +86,75 @@ requestNotificationPermission();
                 </li>
               </ul>
             </li>
+            <li v-if="user.isLoggedIn() && (favorites.pinnedTournaments.length > 0 || favorites.pinnedRounds.length > 0)">
+              <div class="text-xs font-semibold leading-6 text-gray-400">Pinned</div>
+              <ul class="-mx-2 mt-2 space-y-1">
+                <li v-for="tournament in favorites.pinnedTournaments" :key="tournament.id">
+                  <router-link
+                    v-if="tournament.latestRoundId"
+                    :to="{
+                      name: RouteNames['RelayRound.show'].toString(),
+                      params: {
+                        ts: '-',
+                        rs: '-',
+                        id: tournament.latestRoundId,
+                      },
+                    }"
+                    class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
+                    active-class="bg-gray-800 text-white"
+                  >
+                    <span class="inline-flex h-6 w-6 items-center justify-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        class="w-4 h-4 text-yellow-400"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 4.25A2.25 2.25 0 0 1 4.25 2h7.5A2.25 2.25 0 0 1 14 4.25v10a.75.75 0 0 1-1.106.66l-4.394-2.466-4.394 2.466A.75.75 0 0 1 2 14.25v-10Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                    <span class="truncate">{{ tournament.name }}</span>
+                  </router-link>
+                </li>
+                <li v-for="round in favorites.pinnedRounds" :key="round.id">
+                  <router-link
+                    :to="{
+                      name: RouteNames['RelayRound.show'].toString(),
+                      params: {
+                        ts: '-',
+                        rs: '-',
+                        id: round.id,
+                      },
+                    }"
+                    class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
+                    active-class="bg-gray-800 text-white"
+                  >
+                    <span class="inline-flex h-6 w-6 items-center justify-center">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 16 16"
+                        fill="currentColor"
+                        class="w-4 h-4 text-yellow-400"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 4.25A2.25 2.25 0 0 1 4.25 2h7.5A2.25 2.25 0 0 1 14 4.25v10a.75.75 0 0 1-1.106.66l-4.394-2.466-4.394 2.466A.75.75 0 0 1 2 14.25v-10Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+                    </span>
+                    <span class="truncate">
+                      {{ round.name }}
+                      <span class="text-gray-500 text-xs">/ {{ round.tournamentName }}</span>
+                    </span>
+                  </router-link>
+                </li>
+              </ul>
+            </li>
             <li v-if="user.isLoggedIn()">
               <div class="text-xs font-semibold leading-6 text-gray-400">Broadcasts</div>
               <ul class="-mx-2 mt-2 space-y-1">
