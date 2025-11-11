@@ -2,17 +2,14 @@
 import { ref } from 'vue';
 import { LichessBroadcastByUser, LichessBroadcastWithRounds } from '../types';
 import { useStatusStore } from '../stores/status';
-import { useFavoritesStore } from '../stores/favorites';
 import RoundTimes from './RoundTimes.vue';
 import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
-import { StopIcon as StopIconOutline, BookmarkIcon as BookmarkIconOutline } from '@heroicons/vue/24/outline';
-import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/16/solid';
+import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
 import { lichessApiClient } from '../client';
 import { timestampToLocalDatetime } from '../dates';
 import { RouteNames } from '../router';
 
 const status = useStatusStore();
-const favorites = useFavoritesStore();
 const isExpanded = ref<boolean>(false);
 const broadcastWithRounds = ref<LichessBroadcastWithRounds | null>(null);
 
@@ -44,36 +41,6 @@ function getBroadcast(id: string) {
         broadcastWithRounds.value = response.data;
       }
     });
-}
-
-async function togglePin(event: Event) {
-  event.preventDefault();
-  event.stopPropagation();
-
-  if (favorites.isTournamentPinned(props.broadcast.tour.id)) {
-    favorites.unpinTournament(props.broadcast.tour.id);
-  } else {
-    // Fetch the broadcast to get the latest round
-    try {
-      const response = await lichessApiClient().GET('/api/broadcast/{broadcastTournamentId}', {
-        params: {
-          path: {
-            broadcastTournamentId: props.broadcast.tour.id,
-          },
-        },
-      });
-
-      if (response.data?.rounds && response.data.rounds.length > 0) {
-        // Get the latest round (last in the array)
-        const latestRound = response.data.rounds[response.data.rounds.length - 1];
-        favorites.pinTournament(props.broadcast.tour.id, props.broadcast.tour.name, latestRound.id);
-      } else {
-        console.error('No rounds found for tournament', props.broadcast.tour.id);
-      }
-    } catch (error) {
-      console.error('Failed to fetch tournament rounds for pinning', error);
-    }
-  }
 }
 </script>
 
@@ -110,14 +77,6 @@ async function togglePin(event: Event) {
         </h2>
       </div>
     </div>
-    <button
-      @click="togglePin"
-      class="flex-none p-1 text-gray-400 hover:text-yellow-400 transition-colors z-10 cursor-pointer"
-      :title="favorites.isTournamentPinned(props.broadcast.tour.id) ? 'Unpin tournament' : 'Pin tournament'"
-    >
-      <BookmarkIconSolid v-if="favorites.isTournamentPinned(props.broadcast.tour.id)" class="h-5 w-5 text-yellow-400" />
-      <BookmarkIconOutline v-else class="h-5 w-5" />
-    </button>
     <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
       <path
         fill-rule="evenodd"

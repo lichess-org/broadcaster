@@ -3,12 +3,6 @@ import { useUserStore } from './user';
 
 type SidebarUser = { label: string; username: string };
 
-export type PinnedTournament = {
-  id: string;
-  name: string;
-  latestRoundId: string;
-};
-
 export type PinnedRound = {
   id: string;
   name: string;
@@ -19,7 +13,6 @@ export type PinnedRound = {
 export const useFavoritesStore = defineStore('favorites', {
   state: () => ({
     users: [] as string[],
-    pinnedTournaments: [] as PinnedTournament[],
     pinnedRounds: [] as PinnedRound[],
   }),
   actions: {
@@ -30,22 +23,12 @@ export const useFavoritesStore = defineStore('favorites', {
     remove(user: string) {
       this.users = this.users.filter(u => u !== user);
     },
-    pinTournament(id: string, name: string, latestRoundId: string) {
-      if (this.pinnedTournaments.some(t => t.id === id)) return;
-      this.pinnedTournaments.push({ id, name, latestRoundId });
-    },
-    unpinTournament(id: string) {
-      this.pinnedTournaments = this.pinnedTournaments.filter(t => t.id !== id);
-    },
     pinRound(id: string, name: string, tournamentId: string, tournamentName: string) {
       if (this.pinnedRounds.some(r => r.id === id)) return;
       this.pinnedRounds.push({ id, name, tournamentId, tournamentName });
     },
     unpinRound(id: string) {
       this.pinnedRounds = this.pinnedRounds.filter(r => r.id !== id);
-    },
-    isTournamentPinned(id: string): boolean {
-      return this.pinnedTournaments.some(t => t.id === id);
     },
     isRoundPinned(id: string): boolean {
       return this.pinnedRounds.some(r => r.id === id);

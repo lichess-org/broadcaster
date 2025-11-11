@@ -47,13 +47,7 @@ function togglePin() {
 
 getRound();
 
-// Watch for route changes and reload round data
-watch(
-  () => router.currentRoute.value.params.id,
-  () => {
-    getRound();
-  },
-);
+watch(() => router.currentRoute.value.params.id, getRound);
 </script>
 
 <template>
@@ -64,7 +58,7 @@ watch(
           {{ round.round.name }}
           <span class="ml-2 text-gray-400">/ {{ round.tour.name }}</span>
         </h2>
-        <p class="text-gray-200 text-xl">{{ round.tour.description }}</p>
+        <p class="text-gray-200 text-xl truncate">{{ round.tour.description }}</p>
         <RoundTimes :round="round.round" />
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
