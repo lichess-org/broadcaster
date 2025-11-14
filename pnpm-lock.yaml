@@ -53,9 +53,6 @@ importers:
       '@tauri-apps/plugin-updater':
         specifier: ~2.9.0
         version: 2.9.0
-      fetch-ndjson:
-        specifier: ^1.1.7
-        version: 1.1.7
       openapi-fetch:
         specifier: ^0.15.0
         version: 0.15.0
@@ -955,9 +952,6 @@ packages:
     peerDependenciesMeta:
       picomatch:
         optional: true
-
-  fetch-ndjson@1.1.7:
-    resolution: {integrity: sha512-z8E5OWEple6dP+bZTLwYeeXfYD1Fuzc7wOHGnqW7tUCdo8TrJ6Amd6NgSvNSMSthq/AGcb+FAi0edAhPYvVwRQ==}
 
   fsevents@2.3.3:
     resolution: {integrity: sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw==}
@@ -2260,8 +2254,6 @@ snapshots:
   fdir@6.5.0(picomatch@4.0.3):
     optionalDependencies:
       picomatch: 4.0.3
-
-  fetch-ndjson@1.1.7: {}
 
   fsevents@2.3.3:
     optional: true
