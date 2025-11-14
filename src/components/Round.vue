@@ -8,7 +8,7 @@ import { openPath } from '@tauri-apps/plugin-opener';
 import { useSettingsStore } from '../stores/settings';
 import { useFavoritesStore } from '../stores/favorites';
 import { lichessApiClient } from '../client';
-import { BookmarkIcon as BookmarkIconOutline } from '@heroicons/vue/24/outline';
+import { BookmarkIcon as BookmarkIconOutline, ChevronLeftIcon } from '@heroicons/vue/24/outline';
 import { BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/16/solid';
 
 const settings = useSettingsStore();
@@ -52,11 +52,25 @@ watch(() => router.currentRoute.value.params.id, getRound);
 
 <template>
   <template v-if="round">
+    <nav class="mb-4">
+      <router-link
+        :to="{
+          name: RouteNames['RelayTour.show'].toString(),
+          params: {
+            id: round.tour.id,
+          },
+        }"
+        class="inline-flex items-center text-sm text-gray-400 hover:text-gray-200 transition-colors"
+      >
+        <ChevronLeftIcon class="h-4 w-4 mr-1" />
+        {{ round.tour.name }}
+      </router-link>
+    </nav>
+
     <div class="md:flex md:items-center md:justify-between mb-4">
       <div class="min-w-0 flex-1">
         <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
           {{ round.round.name }}
-          <span class="ml-2 text-gray-400">/ {{ round.tour.name }}</span>
         </h2>
         <p class="text-gray-200 text-xl truncate">{{ round.tour.description }}</p>
         <RoundTimes :round="round.round" />
