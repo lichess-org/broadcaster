@@ -1,23 +1,23 @@
 {
-  "version": "v0.32.0",
+  "version": "v0.33.0",
   "notes": "Bug fixes and integration with latest Lichess API updates",
-  "pub_date": "2025-10-18T21:41:15Z",
+  "pub_date": "2025-11-14T03:04:41Z",
   "platforms": {
     "darwin-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFU2eVc4aVEvTDRydzg3c3JNWTQrSmpvZkdmMTROQzMvcTlUdkx0QWhyUHVicldrbXRvZlpRMEJHSGN3Y2daZXBIUkdacnpCOUNwcW9FODRYcTh6NlEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYwODIzNjE1CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6ClE2SVN2eEJhaDZzTTRCbDBTVXB0ZElXMnU2SXNlMnNCV0VhZytTOWNYdDNDTi9WVHNIa1NTUlFsM1JpTjM1bmYvS0hqbFZEK0JzSW9rWTl0Z0c3eEJRPT0K",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.32.0/Lichess-Broadcaster-macos.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreGJYVDBaeTd3dzRibm5zQVU5L21HUGRSYW5FWEszQ3FTb0pGRTZqa1ZUbGFxd2I3ZDdIUlZaVXUxc2M1dGJONE9vcm1MdExTa3BGMGZzSDdPaXpHMXdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYzMDg5NDQ3CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6CmJXSko2RUZ2Q25uR21UN01VQnNhWUhzUW11RTF0S2R6UXJMd1Y3ZW93RlpLaGxUY1Viend1NVVzRlVBWFFBZlViYW1vRGZ2Rk5XNnlVUGljWXJFWUFRPT0K",
+      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.33.0/Lichess-Broadcaster-macos.app.tar.gz"
     },
     "darwin-aarch64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFU2eVc4aVEvTDRydzg3c3JNWTQrSmpvZkdmMTROQzMvcTlUdkx0QWhyUHVicldrbXRvZlpRMEJHSGN3Y2daZXBIUkdacnpCOUNwcW9FODRYcTh6NlEwPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYwODIzNjE1CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6ClE2SVN2eEJhaDZzTTRCbDBTVXB0ZElXMnU2SXNlMnNCV0VhZytTOWNYdDNDTi9WVHNIa1NTUlFsM1JpTjM1bmYvS0hqbFZEK0JzSW9rWTl0Z0c3eEJRPT0K",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.32.0/Lichess-Broadcaster-macos.app.tar.gz"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreGJYVDBaeTd3dzRibm5zQVU5L21HUGRSYW5FWEszQ3FTb0pGRTZqa1ZUbGFxd2I3ZDdIUlZaVXUxc2M1dGJONE9vcm1MdExTa3BGMGZzSDdPaXpHMXdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYzMDg5NDQ3CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlci5hcHAudGFyLmd6CmJXSko2RUZ2Q25uR21UN01VQnNhWUhzUW11RTF0S2R6UXJMd1Y3ZW93RlpLaGxUY1Viend1NVVzRlVBWFFBZlViYW1vRGZ2Rk5XNnlVUGljWXJFWUFRPT0K",
+      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.33.0/Lichess-Broadcaster-macos.app.tar.gz"
     },
     "linux-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreGJxN0E5NDNWYUViR01XQlF6TjJiYkY3Nlh3Z3QwZnJSd0dQVEFjUkpBc2pGdVQ2V3N4cEZkTjZCOFM4YzZia0J3NkJHN1hkTE9Rd2x0ZzFQWjlKd2dFPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYwODIzNTE5CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlcl8wLjMyLjBfYW1kNjQuQXBwSW1hZ2UKMnJCWlNMZWNERnp1dVpmYk5semdXSTdIUHhGTERWSUFKQWlnU3lGbUVYdmlFbEczZFFQSWJidzFEWmUzKy9IMW5sNUxGZG52UkMwNysxQk15bFBkQUE9PQo=",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.32.0/Lichess-Broadcaster-linux.AppImage"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreGFaZU5pTGdMbGlSMU4xOWRUdk1ZNDVITTlyekNVNWVvenVwTnpaZ0xnVVVQeW9JMXIrZXFTVHFwZzAyREZ0K015bDJGQlovS1cvd2VqSVdkK1lZNHdVPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYzMDg5MTU0CWZpbGU6TGljaGVzcyBCcm9hZGNhc3Rlcl8wLjMzLjBfYW1kNjQuQXBwSW1hZ2UKVms5T3Vla1hVTVJic3BOV2xJUGFhWjR3RDQrWmNhNWcwR3hvQVpNZmNMWTJzaXNnUWhWc2Q0MW1XUUJ2Y2FxY2hmMUg2VG1MYjlmTEdFbVVTNHpYQlE9PQo=",
+      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.33.0/Lichess-Broadcaster-linux.AppImage"
     },
     "windows-x86_64": {
-      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFdHeGpjUk5ibXdIUWZkWndUQmhpZEZ6d3F2S2tqVHYyL2NhOVJ6cTVCYVlZdVdnRFRCbVkzWFZXYUFYWGpVK25UWHRMNy9XMVFkQWpVNFlyTU1kT0FZPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYwODIzNjQzCWZpbGU6TGljaGVzcy1Ccm9hZGNhc3Rlci13aW5kb3dzLm1zaS56aXAKZ1kxaFFoQ2Q0Wm1pMUs2bmdVME9RSUlDMUVVRWtMcDBhZnFhNmpsc3kwdG8vQ2NzR0RpMWYwMWRzMEFiY2d2K2hwT25CS2k3emN3ZE9FMmFBbkZvREE9PQo=",
-      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.32.0/Lichess-Broadcaster-windows.msi.zip"
+      "signature": "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVTMGJHU1g4RXlreFVsYnBvOGhqWnNVK1NhVDdPQmFyR1JCZk53MnV0YVJ4K21XZ2FIZThhdFhsUzlQSldTWXFhanpMZ3Jxc2M2VTBFRWswQk41NXd5WU9xUEZ2ZzBOSndrPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNzYzMDg5MzUyCWZpbGU6TGljaGVzcy1Ccm9hZGNhc3Rlci13aW5kb3dzLm1zaS56aXAKb2tUbGhpQ2JROHZMK2crdWpQSFVYS1hjbEdKY2xISExOY0x3WW5OaGlIM014a2JvdG9DazhFUCtGdzJJOUNHMlFNVC9HQUJ5UlBYVnpNL2J0M3RzQ0E9PQo=",
+      "url": "https://github.com/lichess-org/broadcaster/releases/download/v0.33.0/Lichess-Broadcaster-windows.msi.zip"
     }
   }
 }
