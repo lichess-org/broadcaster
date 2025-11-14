@@ -38,10 +38,10 @@ function getRound() {
 function togglePin() {
   if (!round.value) return;
 
-  if (favorites.isRoundPinned(round.value.round.id)) {
-    favorites.unpinRound(round.value.round.id);
+  if (favorites.isBroadcastPinned(round.value.tour.id)) {
+    favorites.unpinBroadcast(round.value.tour.id);
   } else {
-    favorites.pinRound(round.value.round.id, round.value.round.name, round.value.tour.id, round.value.tour.name);
+    favorites.pinBroadcast(round.value.tour.id, round.value.tour.name);
   }
 }
 
@@ -81,15 +81,15 @@ watch(() => router.currentRoute.value.params.id, getRound);
           @click="togglePin"
           class="inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs transition-colors"
           :class="
-            favorites.isRoundPinned(round.round.id)
+            favorites.isBroadcastPinned(round.tour.id)
               ? 'bg-yellow-600 hover:bg-yellow-500'
               : 'bg-white/10 hover:bg-white/20'
           "
-          :title="favorites.isRoundPinned(round.round.id) ? 'Unpin round' : 'Pin round'"
+          :title="favorites.isBroadcastPinned(round.tour.id) ? 'Unpin broadcast' : 'Pin broadcast'"
         >
-          <BookmarkIconSolid v-if="favorites.isRoundPinned(round.round.id)" class="h-4 w-4" />
+          <BookmarkIconSolid v-if="favorites.isBroadcastPinned(round.tour.id)" class="h-4 w-4" />
           <BookmarkIconOutline v-else class="h-4 w-4" />
-          {{ favorites.isRoundPinned(round.round.id) ? 'Unpin' : 'Pin' }}
+          {{ favorites.isBroadcastPinned(round.tour.id) ? 'Unpin' : 'Pin' }}
         </button>
 
         <button
