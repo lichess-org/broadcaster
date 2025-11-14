@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import BroadcastsByUser from './components/BroadcastsByUser.vue';
+import BroadcastView from './components/BroadcastView.vue';
 import FindBroadcast from './components/FindBroadcast.vue';
 import NotFound from './components/NotFound.vue';
 import Round from './components/Round.vue';
@@ -12,6 +13,7 @@ export enum RouteNames {
   Settings,
   NotFound,
   'RelayTour.by',
+  'RelayTour.show',
   'RelayRound.show',
 }
 
@@ -37,6 +39,11 @@ export const router = createRouter({
       path: '/broadcast/by/:user',
       component: BroadcastsByUser,
       name: RouteNames['RelayTour.by'].toString(),
+    },
+    {
+      path: '/broadcast/:id',
+      component: BroadcastView,
+      name: RouteNames['RelayTour.show'].toString(),
     },
     {
       path: '/broadcast/:ts/:rs/:id',
