@@ -3,17 +3,15 @@ import { useUserStore } from './user';
 
 type SidebarUser = { label: string; username: string };
 
-export type PinnedRound = {
+export type PinnedBroadcast = {
   id: string;
   name: string;
-  tournamentId: string;
-  tournamentName: string;
 };
 
 export const useFavoritesStore = defineStore('favorites', {
   state: () => ({
     users: [] as string[],
-    pinnedRounds: [] as PinnedRound[],
+    pinnedBroadcasts: [] as PinnedBroadcast[],
   }),
   actions: {
     add(user: string) {
@@ -23,15 +21,15 @@ export const useFavoritesStore = defineStore('favorites', {
     remove(user: string) {
       this.users = this.users.filter(u => u !== user);
     },
-    pinRound(id: string, name: string, tournamentId: string, tournamentName: string) {
-      if (this.pinnedRounds.some(r => r.id === id)) return;
-      this.pinnedRounds.push({ id, name, tournamentId, tournamentName });
+    pinBroadcast(id: string, name: string) {
+      if (this.pinnedBroadcasts.some(b => b.id === id)) return;
+      this.pinnedBroadcasts.push({ id, name });
     },
-    unpinRound(id: string) {
-      this.pinnedRounds = this.pinnedRounds.filter(r => r.id !== id);
+    unpinBroadcast(id: string) {
+      this.pinnedBroadcasts = this.pinnedBroadcasts.filter(b => b.id !== id);
     },
-    isRoundPinned(id: string): boolean {
-      return this.pinnedRounds.some(r => r.id === id);
+    isBroadcastPinned(id: string): boolean {
+      return this.pinnedBroadcasts.some(b => b.id === id);
     },
   },
   getters: {

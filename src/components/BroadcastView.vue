@@ -6,10 +6,15 @@ import { lichessApiClient } from '../client';
 import { useStatusStore } from '../stores/status';
 import { useSettingsStore } from '../stores/settings';
 import { useLogStore } from '../stores/logs';
+import { useFavoritesStore } from '../stores/favorites';
 import { timestampToLocalDatetime } from '../dates';
 import { openPath } from '@tauri-apps/plugin-opener';
-import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
-import { StopIcon as StopIconOutline, ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
+import { CheckIcon, StopIcon, BookmarkIcon as BookmarkIconSolid } from '@heroicons/vue/16/solid';
+import {
+  StopIcon as StopIconOutline,
+  ExclamationTriangleIcon,
+  BookmarkIcon as BookmarkIconOutline,
+} from '@heroicons/vue/24/outline';
 import RoundTimes from './RoundTimes.vue';
 import { RouteNames } from '../router';
 
@@ -17,6 +22,7 @@ const route = useRoute();
 const status = useStatusStore();
 const settings = useSettingsStore();
 const logs = useLogStore();
+const favorites = useFavoritesStore();
 
 const broadcastId = ref<string>(route.params.id as string);
 const isLoading = ref<boolean>(true);
@@ -62,6 +68,16 @@ function fetchBroadcast() {
     });
 }
 
+function togglePin() {
+  if (!broadcast.value) return;
+
+  if (favorites.isBroadcastPinned(broadcast.value.tour.id)) {
+    favorites.unpinBroadcast(broadcast.value.tour.id);
+  } else {
+    favorites.pinBroadcast(broadcast.value.tour.id, broadcast.value.tour.name);
+  }
+}
+
 fetchBroadcast();
 
 onBeforeRouteUpdate(to => {
@@ -96,6 +112,21 @@ onBeforeRouteUpdate(to => {
         </p>
       </div>
       <div class="mt-4 flex md:ml-4 md:mt-0 space-x-1">
+        <button
+          type="button"
+          @click="togglePin"
+          class="inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-white shadow-xs transition-colors"
+          :class="
+            favorites.isBroadcastPinned(broadcast.tour.id)
+              ? 'bg-yellow-600 hover:bg-yellow-500'
+              : 'bg-white/10 hover:bg-white/20'
+          "
+          :title="favorites.isBroadcastPinned(broadcast.tour.id) ? 'Unpin broadcast' : 'Pin broadcast'"
+        >
+          <BookmarkIconSolid v-if="favorites.isBroadcastPinned(broadcast.tour.id)" class="h-4 w-4" />
+          <BookmarkIconOutline v-else class="h-4 w-4" />
+          {{ favorites.isBroadcastPinned(broadcast.tour.id) ? 'Unpin' : 'Pin' }}
+        </button>
         <button
           type="button"
           @click="fetchBroadcast"

@@ -86,17 +86,15 @@ requestNotificationPermission();
                 </li>
               </ul>
             </li>
-            <li v-if="user.isLoggedIn() && favorites.pinnedRounds.length > 0">
+            <li v-if="user.isLoggedIn() && favorites.pinnedBroadcasts.length > 0">
               <div class="text-xs font-semibold leading-6 text-gray-400">Pinned</div>
               <ul class="-mx-2 mt-2 space-y-1">
-                <li v-for="round in favorites.pinnedRounds" :key="round.id">
+                <li v-for="broadcast in favorites.pinnedBroadcasts" :key="broadcast.id">
                   <router-link
                     :to="{
-                      name: RouteNames['RelayRound.show'].toString(),
+                      name: RouteNames['RelayTour.show'].toString(),
                       params: {
-                        ts: '-',
-                        rs: '-',
-                        id: round.id,
+                        id: broadcast.id,
                       },
                     }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
@@ -117,8 +115,7 @@ requestNotificationPermission();
                       </svg>
                     </span>
                     <span class="truncate">
-                      {{ round.name }}
-                      <span class="text-gray-500 text-xs">/ {{ round.tournamentName }}</span>
+                      {{ broadcast.name }}
                     </span>
                   </router-link>
                 </li>
