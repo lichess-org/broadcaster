@@ -28,7 +28,7 @@ const hasRounds = computed<boolean>(() => {
 });
 
 const lichessUrl = computed<string>(() => {
-  if (!broadcast.value) return '';
+  if (!broadcast.value?.tour.slug || !broadcast.value?.tour.id) return '';
   return `${settings.lichessUrl}/broadcast/${broadcast.value.tour.slug}/${broadcast.value.tour.id}`;
 });
 
