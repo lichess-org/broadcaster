@@ -21,7 +21,7 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
 
-    "types": ["vitest/importMeta"]
+    "types": ["vitest/importMeta", "node"]
   },
   "include": ["src/**/*.ts", "sample-data/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "tests/**/*.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
