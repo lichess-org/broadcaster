@@ -3,9 +3,17 @@ import { useUserStore } from './user';
 
 type SidebarUser = { label: string; username: string };
 
+export type PinnedRound = {
+  id: string;
+  name: string;
+  tournamentId: string;
+  tournamentName: string;
+};
+
 export const useFavoritesStore = defineStore('favorites', {
   state: () => ({
     users: [] as string[],
+    pinnedRounds: [] as PinnedRound[],
   }),
   actions: {
     add(user: string) {
@@ -14,6 +22,16 @@ export const useFavoritesStore = defineStore('favorites', {
     },
     remove(user: string) {
       this.users = this.users.filter(u => u !== user);
+    },
+    pinRound(id: string, name: string, tournamentId: string, tournamentName: string) {
+      if (this.pinnedRounds.some(r => r.id === id)) return;
+      this.pinnedRounds.push({ id, name, tournamentId, tournamentName });
+    },
+    unpinRound(id: string) {
+      this.pinnedRounds = this.pinnedRounds.filter(r => r.id !== id);
+    },
+    isRoundPinned(id: string): boolean {
+      return this.pinnedRounds.some(r => r.id === id);
     },
   },
   getters: {
