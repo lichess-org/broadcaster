@@ -5,20 +5,23 @@ import { LichessBroadcastWithRounds } from '../types';
 import { lichessApiClient } from '../client';
 import { useStatusStore } from '../stores/status';
 import { useSettingsStore } from '../stores/settings';
+import { useLogStore } from '../stores/logs';
 import { timestampToLocalDatetime } from '../dates';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { CheckIcon, StopIcon } from '@heroicons/vue/16/solid';
-import { StopIcon as StopIconOutline } from '@heroicons/vue/24/outline';
+import { StopIcon as StopIconOutline, ExclamationTriangleIcon } from '@heroicons/vue/24/outline';
 import RoundTimes from './RoundTimes.vue';
 import { RouteNames } from '../router';
 
 const route = useRoute();
 const status = useStatusStore();
 const settings = useSettingsStore();
+const logs = useLogStore();
 
 const broadcastId = ref<string>(route.params.id as string);
 const isLoading = ref<boolean>(true);
 const broadcast = ref<LichessBroadcastWithRounds | null>(null);
+const error = ref<string | null>(null);
 
 const hasRounds = computed<boolean>(() => {
   return broadcast.value?.rounds ? broadcast.value.rounds.length > 0 : false;
@@ -32,6 +35,7 @@ const lichessUrl = computed<string>(() => {
 function fetchBroadcast() {
   isLoading.value = true;
   broadcast.value = null;
+  error.value = null;
 
   lichessApiClient()
     .GET('/api/broadcast/{broadcastTournamentId}', {
@@ -44,7 +48,14 @@ function fetchBroadcast() {
     .then(response => {
       if (response.data) {
         broadcast.value = response.data;
+      } else {
+        error.value = 'Failed to load broadcast';
+        logs.error(`Error loading broadcast ${broadcastId.value}`);
       }
+    })
+    .catch(err => {
+      error.value = 'An error occurred while loading the broadcast';
+      logs.error(`Error loading broadcast ${broadcastId.value}: ${err}`);
     })
     .finally(() => {
       isLoading.value = false;
@@ -153,6 +164,12 @@ onBeforeRouteUpdate(to => {
       <h3 class="mt-2 text-sm font-semibold text-gray-200">No rounds</h3>
       <p class="mt-1 text-sm text-gray-300">This broadcast doesn't have any rounds yet.</p>
     </div>
+  </div>
+
+  <div v-else-if="error" class="text-center mt-12">
+    <ExclamationTriangleIcon class="mx-auto h-12 w-12 text-red-400" />
+    <h3 class="mt-2 text-sm font-semibold text-gray-200">Error loading broadcast</h3>
+    <p class="mt-1 text-sm text-gray-300">{{ error }}</p>
   </div>
 
   <div v-else class="text-center mt-12">
