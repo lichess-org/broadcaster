@@ -88,7 +88,7 @@ onBeforeRouteUpdate(to => {
         <h2 class="text-2xl font-bold leading-7 text-white sm:truncate sm:text-3xl sm:tracking-tight">
           {{ broadcast.tour.name }}
         </h2>
-        <p v-if="broadcast.tour.dates" class="mt-1 text-sm text-gray-400">
+        <p v-if="broadcast.tour.dates && broadcast.tour.dates.length > 0" class="mt-1 text-sm text-gray-400">
           {{ timestampToLocalDatetime(broadcast.tour.dates[0]) }}
         </p>
         <p v-if="broadcast.tour.description" class="mt-2 text-sm text-gray-300">
