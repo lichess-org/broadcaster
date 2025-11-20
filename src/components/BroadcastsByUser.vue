@@ -16,7 +16,7 @@ const user = useUserStore();
 
 const username = ref<string>(router.currentRoute.value.params.user as string);
 const currentPage = ref<number>(
-  router.currentRoute.value.query.page ? parseInt(router.currentRoute.value.query.page as string) : 1,
+  router.currentRoute.value.query.page ? Number.parseInt(router.currentRoute.value.query.page as string) : 1,
 );
 
 const isLoading = ref<boolean>(true);
@@ -57,7 +57,7 @@ if (!pageHasBroadcasts.value) {
 
 onBeforeRouteUpdate((to, _from) => {
   username.value = to.params.user as string;
-  currentPage.value = parseInt(to.query.page as string) || 1;
+  currentPage.value = Number.parseInt(to.query.page as string) || 1;
   refresh();
 });
 
