@@ -90,8 +90,13 @@ function stopWatching() {
 function handleFolderChange(event: WatchEvent): void {
   if (!isWrite(event)) return;
 
-  event.paths.filter(file => file.endsWith('.pgn')).forEach(file => modifiedFiles.add(file));
-  if (event.paths.find(filename => isMultiGamePgn(filename))) {
+  for (const filename of event.paths) {
+    if (filename.endsWith('.pgn')) {
+      modifiedFiles.add(filename);
+    }
+  }
+
+  if (event.paths.some(filename => isMultiGamePgn(filename))) {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
 }
