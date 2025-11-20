@@ -99,9 +99,9 @@ const viewOnLichessUrl = computed<string>(() => {
   <Pagination :broadcasts="broadcasts" />
 
   <div v-if="pageHasBroadcasts" class="overflow-y-auto">
-    <div role="list" class="divide-y divide-white/5">
+    <menu class="divide-y divide-white/5">
       <BroadcastSummary v-for="broadcast in broadcasts?.currentPageResults" :broadcast="broadcast" />
-    </div>
+    </menu>
   </div>
 
   <div v-if="!pageHasBroadcasts && !isLoading" class="text-center mt-12">

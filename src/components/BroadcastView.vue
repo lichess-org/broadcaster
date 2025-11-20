@@ -145,7 +145,7 @@ onBeforeRouteUpdate(to => {
     </div>
 
     <div v-if="hasRounds" class="overflow-y-auto">
-      <div role="list" class="divide-y divide-white/5">
+      <menu class="divide-y divide-white/5">
         <router-link
           v-for="round in broadcast.rounds"
           :key="round.id"
@@ -173,7 +173,7 @@ onBeforeRouteUpdate(to => {
           <RoundTimes :round="round" />
           <em v-if="status.hasRound(round.id)" class="text-gray-400">Watching folder for changes...</em>
         </router-link>
-      </div>
+      </menu>
     </div>
 
     <div v-else class="text-center mt-12">
