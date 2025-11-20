@@ -12,7 +12,7 @@ export const useUserStore = defineStore(
 
     function setAccessToken(token: AccessTokenResponse) {
       accessToken.value = token;
-      expiresAt.value = new Date().getTime() + token.expires_in * 1000;
+      expiresAt.value = Date.now() + token.expires_in * 1000;
 
       updateUser();
     }
