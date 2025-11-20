@@ -1,6 +1,6 @@
 import { getCurrent, onOpenUrl } from '@tauri-apps/plugin-deep-link';
 import { DeepLink } from './types';
-import { RouteNames, router } from './router';
+import { router } from './router';
 
 export async function listenForDeepLinks() {
   // check if deep link was requested before the app was started
