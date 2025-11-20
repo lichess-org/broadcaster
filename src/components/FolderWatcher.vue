@@ -28,7 +28,7 @@ async function selectPgnFolder() {
     }
 
     if (typeof selected !== 'string') {
-      throw new Error('Expected a single folder to be selected');
+      throw new TypeError('Expected a single folder to be selected');
     }
 
     if (await multipleGamesPgnFiles(selected)) {
