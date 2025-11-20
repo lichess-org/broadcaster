@@ -30,14 +30,10 @@ export function convertLichessUrlToDeepLink(url: string): DeepLink {
 }
 
 export function openDeepLink(links: DeepLink[]) {
-  links.forEach(link => {
-    try {
-      console.log('Opening deep link:', link);
-      router.push(link.path);
-    } catch (e) {
-      router.push(RouteNames.NotFound.toString());
-    }
-  });
+  for (const link of links) {
+    console.log('Opening deep link:', link);
+    router.push(link.path);
+  }
 }
 
 export function parseDeepLink(url: string): DeepLink {
