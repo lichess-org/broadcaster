@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import { useLogStore } from '../stores/logs';
-import { watch } from 'vue';
 
 const logs = useLogStore();
 const logViewer = ref<HTMLElement | null>(null);
