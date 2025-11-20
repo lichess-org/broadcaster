@@ -12,15 +12,15 @@ import { convertLichessUrlToDeepLink, parseDeepLink } from '../src/deep-links';
 // GET   /broadcast/:ts/:rs/$roundId<\w{8}>/$chapterId<\w{8}> controllers.RelayRound.chapter(ts, rs, roundId: RelayRoundId, chapterId: StudyChapterId)
 // GET   /broadcast/$roundId<\w{8}>/teams        controllers.RelayRound.teamsView(roundId: RelayRoundId)
 test.each([
-  { path: '/broadcast/by/:user' },
-  { path: '/broadcast/subscribed' },
-  { path: '/broadcast/all-private' },
-  { path: '/broadcast/:ts/$id<\w{8}>' },
-  { path: '/broadcast/$tourId<\w{8}>/players' },
-  { path: '/broadcast/$tourId<\w{8}>/players/:id' },
-  { path: '/broadcast/:ts/:rs/$roundId<\w{8}>' },
-  { path: '/broadcast/:ts/:rs/$roundId<\w{8}>/$chapterId<\w{8}>' },
-  { path: '/broadcast/$roundId<\w{8}>/teams' },
+  { path: String.raw`/broadcast/by/:user` },
+  { path: String.raw`/broadcast/subscribed` },
+  { path: String.raw`/broadcast/all-private` },
+  { path: String.raw`/broadcast/:ts/$id<\w{8}>` },
+  { path: String.raw`/broadcast/$tourId<\w{8}>/players` },
+  { path: String.raw`/broadcast/$tourId<\w{8}>/players/:id` },
+  { path: String.raw`/broadcast/:ts/:rs/$roundId<\w{8}>` },
+  { path: String.raw`/broadcast/:ts/:rs/$roundId<\w{8}>/$chapterId<\w{8}>` },
+  { path: String.raw`/broadcast/$roundId<\w{8}>/teams` },
 ])('lila route ($path)', ({ path }) => {
   expect(parseDeepLink(`lichess-broadcaster:/${path}`)).toEqual({
     scheme: 'lichess-broadcaster',
