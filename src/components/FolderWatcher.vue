@@ -28,7 +28,7 @@ async function selectPgnFolder() {
     }
 
     if (typeof selected !== 'string') {
-      throw new Error('Expected a single folder to be selected');
+      throw new TypeError('Expected a single folder to be selected');
     }
 
     if (await multipleGamesPgnFiles(selected)) {
@@ -90,8 +90,13 @@ function stopWatching() {
 function handleFolderChange(event: WatchEvent): void {
   if (!isWrite(event)) return;
 
-  event.paths.filter(file => file.endsWith('.pgn')).forEach(file => modifiedFiles.add(file));
-  if (event.paths.find(filename => isMultiGamePgn(filename))) {
+  for (const filename of event.paths) {
+    if (filename.endsWith('.pgn')) {
+      modifiedFiles.add(filename);
+    }
+  }
+
+  if (event.paths.some(filename => isMultiGamePgn(filename))) {
     status.setRoundHasMultiGamePgn(props.round.round.id);
   }
 }

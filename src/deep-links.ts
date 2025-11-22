@@ -1,15 +1,13 @@
 import { getCurrent, onOpenUrl } from '@tauri-apps/plugin-deep-link';
 import { DeepLink } from './types';
-import { RouteNames, router } from './router';
+import { router } from './router';
 
 export async function listenForDeepLinks() {
   // check if deep link was requested before the app was started
   await onAppStart();
 
   // listen for deep links while the app is running
-  await onOpenUrl(urls => {
-    openDeepLink(urls.map(parseDeepLink));
-  });
+  await onOpenUrl(urls => openDeepLink(urls.map(parseDeepLink)));
 }
 
 async function onAppStart() {
@@ -30,14 +28,10 @@ export function convertLichessUrlToDeepLink(url: string): DeepLink {
 }
 
 export function openDeepLink(links: DeepLink[]) {
-  links.forEach(link => {
-    try {
-      console.log('Opening deep link:', link);
-      router.push(link.path);
-    } catch (e) {
-      router.push(RouteNames.NotFound.toString());
-    }
-  });
+  for (const link of links) {
+    console.log('Opening deep link:', link);
+    router.push(link.path);
+  }
 }
 
 export function parseDeepLink(url: string): DeepLink {

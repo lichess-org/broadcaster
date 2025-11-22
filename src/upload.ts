@@ -24,7 +24,7 @@ export async function fileList(folder: string, recursive: boolean = false): Prom
 }
 
 export function sortFiles(files: string[]): string[] {
-  const gameId = (file: string) => parseInt(file.match(/\d+/)?.[0] ?? '0');
+  const gameId = (file: string) => Number.parseInt(/\d+/.exec(file)?.[0] ?? '0', 10);
   return files.sort((a, b) => gameId(a) - gameId(b));
 }
 
@@ -65,7 +65,7 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
   } = { games: 0, moves: 0 };
   const errors: string[] = [];
 
-  pushResponse.data?.games.forEach(game => {
+  for (const game of pushResponse.data?.games || []) {
     const gameName = `[Round ${pgnTag('Round', game.tags)}] ${pgnTag('White', game.tags)} vs ${pgnTag('Black', game.tags)}`;
     if (game.error) {
       errors.push(`${gameName}: ${game.error}`);
@@ -73,7 +73,7 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
       successes.games += 1;
       successes.moves += game.moves;
     }
-  });
+  }
 
   if (errors.length) {
     logs.error(`Errors: ${errors.join(', ')}`);

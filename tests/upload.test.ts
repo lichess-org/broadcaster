@@ -5,7 +5,7 @@ import { DirEntry } from '@tauri-apps/plugin-fs';
 import { BroadcastPgnPushTags } from '../src/types';
 
 beforeAll(() => {
-  Object.defineProperty(window, '__TAURI_INTERNALS__', {
+  Object.defineProperty(globalThis, '__TAURI_INTERNALS__', {
     value: {
       plugins: {
         path: {

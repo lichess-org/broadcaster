@@ -2,6 +2,7 @@
 import json
 import os
 import requests
+from requests.exceptions import HTTPError
 
 release = requests.get("https://api.github.com/repos/lichess-org/broadcaster/releases/latest").json()
 
@@ -12,7 +13,7 @@ signatures["windows"] = requests.get("https://github.com/lichess-org/broadcaster
 
 for platform, response in signatures.items():
     if response.status_code != 200:
-        raise Exception(f"Error fetching signature for {platform}: {response.status_code}")
+        raise HTTPError(f"Error fetching signature for {platform}: {response.status_code}")
 
 version_file = os.path.join(os.path.dirname(__file__), "../updater/version.json")
 
@@ -40,7 +41,7 @@ for key, platform in platforms:
     app_url = updater["platforms"][key].get("url")
     response = requests.get(app_url)
     if response.status_code != 200:
-        raise Exception(f"Error fetching URL {app_url} for {key}: {response.status_code}")
+        raise HTTPError(f"Error fetching URL {app_url} for {key}: {response.status_code}")
 
 with open(version_file, "w") as f:
     json.dump(updater, f, indent=2)

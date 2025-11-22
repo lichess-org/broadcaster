@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import { getName, getVersion } from '@tauri-apps/api/app';
+import { platform } from '@tauri-apps/plugin-os';
 
 export const useSettingsStore = defineStore('settings', {
   state: () => ({
@@ -9,8 +11,12 @@ export const useSettingsStore = defineStore('settings', {
     setLichessUrl(url: string) {
       this.lichessUrl = url.replace(/\/$/, '');
     },
-    setVersion(v: string) {
-      this.version = v;
+    async setVersion() {
+      const appName: string = await getName();
+      const appVersion: string = await getVersion();
+      const platformName: string = platform();
+      const version: string = `${appName}/${appVersion} os:${platformName}`;
+      this.version = version;
     },
   },
   persist: true,

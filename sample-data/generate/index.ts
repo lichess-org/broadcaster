@@ -1,7 +1,7 @@
 import { faker } from '@faker-js/faker';
 import { Chess } from 'chess.js';
-import { writeFileSync } from 'fs';
-import { join } from 'path';
+import { writeFileSync } from 'node:fs';
+import { join } from 'node:path';
 
 const action = process.argv[2] as 'games' | 'errors' | 'multigame';
 const outputFolder = process.argv[3];
