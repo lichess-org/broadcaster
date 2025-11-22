@@ -7,9 +7,7 @@ export async function listenForDeepLinks() {
   await onAppStart();
 
   // listen for deep links while the app is running
-  await onOpenUrl(urls => {
-    openDeepLink(urls.map(parseDeepLink));
-  });
+  await onOpenUrl(urls => openDeepLink(urls.map(parseDeepLink)));
 }
 
 async function onAppStart() {
