@@ -19,7 +19,7 @@ const props = defineProps<{
 
 const roundStatus = computed(() => status.getRound(props.round.round.id));
 
-let modifiedFiles = new Set<string>();
+const modifiedFiles = new Set<string>();
 
 async function selectPgnFolder() {
   open({ directory: true }).then(async selected => {
