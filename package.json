@@ -32,13 +32,13 @@
     "openapi-fetch": "^0.15.0",
     "pinia": "^3.0.4",
     "pinia-plugin-persistedstate": "^4.7.1",
-    "pkce-challenge": "^5.0.0",
+    "pkce-challenge": "^5.0.1",
     "vue": "^3.5.24",
     "vue-router": "^4.6.3"
   },
   "devDependencies": {
     "@faker-js/faker": "^10.1.0",
-    "@lichess-org/types": "^2.0.99",
+    "@lichess-org/types": "^2.0.100",
     "@tauri-apps/cli": "^2.9.4",
     "@types/node": "^24.10.1",
     "@vitejs/plugin-vue": "^6.0.2",

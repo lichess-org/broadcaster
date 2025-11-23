@@ -63,8 +63,8 @@ importers:
         specifier: ^4.7.1
         version: 4.7.1(@nuxt/kit@3.17.5)(pinia@3.0.4(typescript@5.9.3)(vue@3.5.24(typescript@5.9.3)))
       pkce-challenge:
-        specifier: ^5.0.0
-        version: 5.0.0
+        specifier: ^5.0.1
+        version: 5.0.1
       vue:
         specifier: ^3.5.24
         version: 3.5.24(typescript@5.9.3)
@@ -76,8 +76,8 @@ importers:
         specifier: ^10.1.0
         version: 10.1.0
       '@lichess-org/types':
-        specifier: ^2.0.99
-        version: 2.0.99
+        specifier: ^2.0.100
+        version: 2.0.100
       '@tauri-apps/cli':
         specifier: ^2.9.4
         version: 2.9.4
@@ -365,8 +365,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@lichess-org/types@2.0.99':
-    resolution: {integrity: sha512-fI9psf/97actg530J3GyBp87xVDBk514mdJ6JHo5GOzPpBL/3X+fKq/pdTYGEJFCVj5vaCuVEeyfasC+MY5o3w==}
+  '@lichess-org/types@2.0.100':
+    resolution: {integrity: sha512-3lFK5VxNL7vmgCBCoRHc+HX3t2Rvj5hcctBgYXKWuttNl8K+upnrpcxS3vFyMPnv2O08duCbdZiOvMVNqxBIug==}
 
   '@nuxt/kit@3.17.5':
     resolution: {integrity: sha512-NdCepmA+S/SzgcaL3oYUeSlXGYO6BXGr9K/m1D0t0O9rApF8CSq/QQ+ja5KYaYMO1kZAEWH4s2XVcE3uPrrAVg==}
@@ -1172,8 +1172,8 @@ packages:
       typescript:
         optional: true
 
-  pkce-challenge@5.0.0:
-    resolution: {integrity: sha512-ueGLflrrnvwB3xuo/uGob5pd5FN7l0MsLf0Z87o/UQmRtwjvfylfc9MurIxRAWywCYTgrvpXBcqjV4OfCYGCIQ==}
+  pkce-challenge@5.0.1:
+    resolution: {integrity: sha512-wQ0b/W4Fr01qtpHlqSqspcj3EhBvimsdh0KlHhH8HRZnMsEa0ea2fTULOXOS9ccQr3om+GcGRk4e+isrZWV8qQ==}
     engines: {node: '>=16.20.0'}
 
   pkg-types@1.3.1:
@@ -1649,7 +1649,7 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@lichess-org/types@2.0.99': {}
+  '@lichess-org/types@2.0.100': {}
 
   '@nuxt/kit@3.17.5':
     dependencies:
@@ -2438,7 +2438,7 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  pkce-challenge@5.0.0: {}
+  pkce-challenge@5.0.1: {}
 
   pkg-types@1.3.1:
     dependencies:
