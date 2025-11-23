@@ -114,7 +114,7 @@ async function resetAndReupload() {
 
   logs.info('Resetting round and re-uploading PGNs');
 
-  lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/reset', {
+  await lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/reset', {
     params: {
       path: {
         broadcastRoundId: props.round.round.id,
