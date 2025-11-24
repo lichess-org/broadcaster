@@ -43,9 +43,8 @@ export async function uploadFolderToRound(roundId: string, folder: string): Prom
 
   const toUpload = filesToUpload(files);
 
-  await Promise.all(toUpload.map(async file => await readTextFile(file))).then(async body => {
-    await pushPgnToRound(roundId, body.join('\n\n'));
-  });
+  const contents = await Promise.all(toUpload.map(file => readTextFile(file)));
+  await pushPgnToRound(roundId, contents.join('\n\n'));
 }
 
 async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
