@@ -6,6 +6,7 @@ import { useLogStore } from '../stores/logs';
 import AddUserToSidebar from './AddUserToSidebar.vue';
 import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
+import { toast } from 'vue3-toastify';
 
 const logs = useLogStore();
 const settings = useSettingsStore();
@@ -15,9 +16,33 @@ const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
 });
 
+const urlError = ref<string>('');
+
+function validateUrl(url: string): boolean {
+  if (!url || url.trim() === '') {
+    urlError.value = 'Lichess URL cannot be empty';
+    return false;
+  }
+
+  try {
+    new URL(url);
+    urlError.value = '';
+    return true;
+  } catch {
+    urlError.value = 'Please enter a valid URL';
+    return false;
+  }
+}
+
 async function save() {
+  if (!validateUrl(form.value.lichessUrl)) {
+    toast.error(urlError.value);
+    return;
+  }
+
   settings.setLichessUrl(form.value.lichessUrl);
   form.value.lichessUrl = settings.lichessUrl;
+  toast.success('Settings updated successfully');
 }
 
 function clearAllData() {
@@ -38,41 +63,40 @@ async function openDevTools() {
 <template>
   <h2 class="text-gray-400 text-2xl font-bold leading-7 sm:truncate sm:text-3xl sm:tracking-tight">Settings</h2>
 
-  <div
-    class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8"
-    v-if="user.isLoggedIn()"
-  >
-    <div>
-      <h2 class="text-gray-400 text-base font-semibold leading-7">Session</h2>
+  <template v-if="user.isLoggedIn()">
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-gray-400 text-base font-semibold leading-7">Session</h2>
+      </div>
+
+      <div>
+        <p class="mb-2 text-sm leading-6 text-gray-400">
+          You are logged in as <strong>{{ user.username }}</strong>
+        </p>
+        <form class="flex items-start md:col-span-2" @submit.prevent="logout()">
+          <button
+            type="submit"
+            class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400"
+          >
+            Logout
+          </button>
+        </form>
+      </div>
     </div>
 
-    <div>
-      <p class="mb-2 text-sm leading-6 text-gray-400">
-        You are logged in as <strong>{{ user.username }}</strong>
-      </p>
-      <form class="flex items-start md:col-span-2" @submit.prevent="logout()">
-        <button
-          type="submit"
-          class="rounded-md bg-indigo-500 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-indigo-400"
-        >
-          Logout
-        </button>
-      </form>
+    <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
+      <div>
+        <h2 class="text-gray-400 text-base font-semibold leading-7">Sidebar</h2>
+      </div>
+      <div class="md:col-span-2">
+        <p class="mb-2 text-sm leading-6 text-gray-400">
+          Include broadcasts by other users in the app's sidebar. If you are a contributor to another user's broadcast,
+          you can add their username here.
+        </p>
+        <AddUserToSidebar />
+      </div>
     </div>
-  </div>
-
-  <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
-    <div>
-      <h2 class="text-gray-400 text-base font-semibold leading-7">Sidebar</h2>
-    </div>
-    <div class="md:col-span-2">
-      <p class="mb-2 text-sm leading-6 text-gray-400">
-        Include broadcasts by other users in the app's sidebar. If you are a contributor to another user's broadcast,
-        you can add their username here.
-      </p>
-      <AddUserToSidebar />
-    </div>
-  </div>
+  </template>
 
   <div class="grid max-w-7xl grid-cols-1 gap-x-8 gap-y-10 px-4 py-8 sm:px-6 md:grid-cols-3 lg:px-8">
     <div>
@@ -130,7 +154,10 @@ async function openDevTools() {
               <label for="lichessUrl" class="block text-sm font-medium leading-6 text-white">Lichess URL</label>
               <div class="mt-2">
                 <div
-                  class="flex rounded-md bg-white/5 ring-1 ring-inset ring-white/10 focus-within:ring-2 focus-within:ring-inset focus-within:ring-indigo-500"
+                  class="flex rounded-md bg-white/5 ring-1 ring-inset focus-within:ring-2 focus-within:ring-inset"
+                  :class="
+                    urlError ? 'ring-red-500 focus-within:ring-red-500' : 'ring-white/10 focus-within:ring-indigo-500'
+                  "
                 >
                   <input
                     type="text"
@@ -138,8 +165,11 @@ async function openDevTools() {
                     autocomplete="off"
                     class="flex-1 border-0 bg-transparent py-1.5 px-2 text-white focus:ring-0 sm:text-sm sm:leading-6"
                     v-model="form.lichessUrl"
+                    @blur="validateUrl(form.lichessUrl)"
+                    @input="urlError = ''"
                   />
                 </div>
+                <p v-if="urlError" class="mt-2 text-sm text-red-400">{{ urlError }}</p>
               </div>
             </div>
           </div>

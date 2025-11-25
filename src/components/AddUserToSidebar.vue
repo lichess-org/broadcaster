@@ -2,6 +2,7 @@
 import { ref } from 'vue';
 import { lichessApiClient } from '../client';
 import { useFavoritesStore } from '../stores/favorites';
+import { toast } from 'vue3-toastify';
 
 const username = ref('');
 const error = ref('');
@@ -9,22 +10,34 @@ const error = ref('');
 const favorites = useFavoritesStore();
 
 function save() {
+  const usernameToAdd = username.value.trim();
+
+  if (!usernameToAdd) {
+    return;
+  }
+
   lichessApiClient()
     .GET('/api/user/{username}', {
       params: {
         path: {
-          username: username.value,
+          username: usernameToAdd,
         },
       },
     })
     .then(response => {
       if (response.data?.username) {
         favorites.add(response.data.username);
+        username.value = '';
+        error.value = '';
+        toast.success(`Added ${response.data.username} to sidebar`);
+      } else if (response.error) {
+        error.value = 'User not found';
+        toast.error('User does not exist');
       }
-      username.value = '';
     })
-    .catch(e => {
-      error.value = e;
+    .catch(() => {
+      error.value = 'User not found';
+      toast.error('User does not exist');
     });
 }
 </script>
