@@ -153,7 +153,7 @@ requestNotificationPermission();
                 </li>
               </ul>
             </li>
-            <li v-if="settings.updateAvailable" :class="{ 'mt-auto': settings.updateAvailable }">
+            <li v-if="settings.updateAvailable" class="mt-auto">
               <button
                 type="button"
                 @click="checkForUpdates"
