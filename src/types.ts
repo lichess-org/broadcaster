@@ -14,3 +14,8 @@ export type DeepLink = {
   scheme: string;
   path: string;
 };
+
+export type AvailableUpdate = {
+  currentVersion: string;
+  version: string;
+};

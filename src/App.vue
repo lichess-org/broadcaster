@@ -4,6 +4,7 @@ import { requestNotificationPermission } from './notify';
 import { useFavoritesStore } from './stores/favorites';
 import { RouteNames } from './router';
 import { useSettingsStore } from './stores/settings';
+import { checkForUpdates } from './updater';
 
 const user = useUserStore();
 const favorites = useFavoritesStore();
@@ -152,7 +153,36 @@ requestNotificationPermission();
                 </li>
               </ul>
             </li>
-            <li class="mt-auto">
+            <li v-if="settings.updateAvailable" class="mt-auto">
+              <button
+                type="button"
+                @click="checkForUpdates"
+                class="w-full group flex flex-col gap-y-1 rounded-md p-3 text-sm bg-blue-900/50 border border-blue-700 cursor-pointer hover:bg-blue-900/70 hover:border-blue-600 transition-colors"
+                title="Click to install update"
+              >
+                <div class="flex items-center gap-x-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-5 w-5 text-blue-400"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5M16.5 12 12 16.5m0 0L7.5 12m4.5 4.5V3"
+                    />
+                  </svg>
+                  <span class="font-semibold text-blue-300">Update Available</span>
+                </div>
+                <p class="text-xs text-gray-300 text-left">
+                  Version {{ settings.updateAvailable.version }} is ready to install
+                </p>
+              </button>
+            </li>
+            <li :class="{ 'mt-auto': !settings.updateAvailable }">
               <router-link
                 :to="{ name: RouteNames.Settings.toString() }"
                 class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
