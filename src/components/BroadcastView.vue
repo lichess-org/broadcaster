@@ -150,7 +150,7 @@ onBeforeRouteUpdate(to => {
           v-for="round in broadcast.rounds"
           :key="round.id"
           :to="{
-            name: RouteNames['RelayRound.show'].toString(),
+            name: RouteNames['RelayRound.show'],
             params: {
               ts: '-',
               rs: '-',

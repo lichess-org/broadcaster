@@ -28,7 +28,7 @@ function getRound() {
     })
     .then(response => {
       if (response.response.status === 404) {
-        router.push({ name: RouteNames.NotFound.toString() });
+        router.push({ name: RouteNames.NotFound });
       } else if (response.data) {
         round.value = response.data;
       }
@@ -55,7 +55,7 @@ watch(() => router.currentRoute.value.params.id, getRound);
     <nav class="mb-4">
       <router-link
         :to="{
-          name: RouteNames['RelayTour.show'].toString(),
+          name: RouteNames['RelayTour.show'],
           params: {
             id: round.tour.id,
           },

@@ -26,4 +26,5 @@ app.use(Vue3Toastify, {
   theme: 'dark',
   position: 'top-right',
 } as ToastContainerOptions);
+
 app.mount('#app');

@@ -14,7 +14,7 @@ const props = defineProps<{
 <template>
   <router-link
     :to="{
-      name: RouteNames['RelayTour.show'].toString(),
+      name: RouteNames['RelayTour.show'],
       params: {
         id: props.broadcast.tour.id,
       },

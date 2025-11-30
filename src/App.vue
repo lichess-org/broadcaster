@@ -33,7 +33,7 @@ requestNotificationPermission();
                 <li>
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
-                    :to="{ name: RouteNames.Home.toString() }"
+                    :to="{ name: RouteNames.Home }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                     active-class="bg-gray-800 text-white"
                   >
@@ -56,7 +56,7 @@ requestNotificationPermission();
 
                   <router-link
                     v-if="user.isLoggedIn()"
-                    :to="{ name: RouteNames.FindBroadcast.toString() }"
+                    :to="{ name: RouteNames.FindBroadcast }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                     active-class="bg-gray-800 text-white"
                   >
@@ -85,7 +85,7 @@ requestNotificationPermission();
                 <li v-for="broadcast in favorites.pinnedBroadcasts" :key="broadcast.id">
                   <router-link
                     :to="{
-                      name: RouteNames['RelayTour.show'].toString(),
+                      name: RouteNames['RelayTour.show'],
                       params: {
                         id: broadcast.id,
                       },
@@ -121,7 +121,7 @@ requestNotificationPermission();
                   <!-- Current: "bg-gray-800 text-white", Default: "text-gray-400 hover:text-white hover:bg-gray-800" -->
                   <router-link
                     :to="{
-                      name: RouteNames['RelayTour.by'].toString(),
+                      name: RouteNames['RelayTour.by'],
                       params: {
                         user: u.username,
                       },
@@ -145,7 +145,7 @@ requestNotificationPermission();
                 </li>
                 <li>
                   <router-link
-                    :to="{ name: RouteNames.Settings.toString() }"
+                    :to="{ name: RouteNames.Settings }"
                     class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:bg-gray-800 hover:text-white"
                   >
                     <span class="truncate">+ Add</span>
@@ -184,7 +184,7 @@ requestNotificationPermission();
             </li>
             <li :class="{ 'mt-auto': !settings.updateAvailable }">
               <router-link
-                :to="{ name: RouteNames.Settings.toString() }"
+                :to="{ name: RouteNames.Settings }"
                 class="group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 text-gray-400 hover:text-white hover:bg-gray-800"
                 active-class="bg-gray-800 text-white"
               >
