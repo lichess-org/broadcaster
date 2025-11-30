@@ -6,6 +6,7 @@ import AddUserToSidebar from './AddUserToSidebar.vue';
 import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { toast } from 'vue3-toastify';
+import { appDataDir } from '@tauri-apps/api/path';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -15,6 +16,11 @@ const form = ref<{ lichessUrl: string }>({
 });
 
 const urlError = ref<string>('');
+
+const databaseDir = ref<string>('');
+appDataDir().then(dir => {
+  databaseDir.value = dir;
+});
 
 function validateUrl(url: string): boolean {
   if (!url || url.trim() === '') {
@@ -121,6 +127,11 @@ async function openDevTools() {
       <p class="mb-2 text-sm leading-6 text-gray-400">
         Click here to <a href="#" class="underline" @click.prevent="openDevTools()">open dev tools</a> to check for
         console errors.
+      </p>
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        This app stores data in a SQLite database in your home directory. You can find it at
+        <a href="#" class="underline" @click.prevent="openPath(databaseDir)"> {{ databaseDir }}</a
+        >.
       </p>
       <div class="mt-8">
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">

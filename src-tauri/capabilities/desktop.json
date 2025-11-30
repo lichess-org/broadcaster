@@ -41,6 +41,9 @@
       "allow": [
         {
           "path": "**"
+        },
+        {
+          "path": "$APPDATA"
         }
       ]
     },
