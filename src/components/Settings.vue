@@ -130,7 +130,7 @@ async function openDevTools() {
       </p>
       <p class="mb-2 text-sm leading-6 text-gray-400">
         This app stores data in a SQLite database in your home directory. You can find it at
-        <a href="#" class="underline" @click.prevent="openPath(databaseDir)"> {{ databaseDir }}</a
+        <a href="#" class="underline" @click.prevent="openPath(databaseDir)">{{ databaseDir }}</a
         >.
       </p>
       <div class="mt-8">

@@ -3,7 +3,10 @@ import { ref } from 'vue';
 import { notify } from '../notify';
 import Database from '@tauri-apps/plugin-sql';
 
-type LogType = 'info' | 'error';
+enum LogType {
+  Info = 'info',
+  Error = 'error',
+}
 
 export interface Log {
   id: number;
@@ -34,7 +37,7 @@ export const useLogStore = defineStore('logs', () => {
     return db;
   }
 
-  const add = async (message: string, type: LogType = 'info', context?: LogContext): Promise<void> => {
+  const add = async (message: string, type: LogType = LogType.Info, context?: LogContext): Promise<void> => {
     const database = await getDb();
     const timestamp = Date.now();
 
@@ -55,11 +58,11 @@ export const useLogStore = defineStore('logs', () => {
   };
 
   const info = async (message: string, context?: LogContext): Promise<void> => {
-    await add(message, 'info', context);
+    await add(message, LogType.Info, context);
   };
 
   const error = async (message: string, context?: LogContext): Promise<void> => {
-    await add(message, 'error', context);
+    await add(message, LogType.Error, context);
     notify('Error', message);
   };
 
