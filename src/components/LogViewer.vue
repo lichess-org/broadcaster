@@ -45,9 +45,14 @@ watch(autoScroll, value => {
     v-if="displayedLogs.length"
     class="bg-gray-700 mt-4 p-2 text-sm font-mono flex flex-col overflow-y-auto h-[calc(80vh)]"
   >
-    <li v-for="log in displayedLogs" :key="log.id" class="text-gray-100" :class="{
-      'text-red-400': log.type === 'error',
-    }">
+    <li
+      v-for="log in displayedLogs"
+      :key="log.id"
+      class="text-gray-100"
+      :class="{
+        'text-red-400': log.type === 'error',
+      }"
+    >
       {{ new Date(log.timestamp).toLocaleTimeString() }} -
       {{ log.message }}
     </li>
