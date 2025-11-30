@@ -5,7 +5,6 @@ import { LichessBroadcastWithRounds } from '../types';
 import { lichessApiClient } from '../client';
 import { useStatusStore } from '../stores/status';
 import { useSettingsStore } from '../stores/settings';
-import { useLogStore } from '../stores/logs';
 import { useFavoritesStore } from '../stores/favorites';
 import { timestampToLocalDatetime } from '../dates';
 import { openPath } from '@tauri-apps/plugin-opener';
@@ -17,11 +16,11 @@ import {
 } from '@heroicons/vue/24/outline';
 import RoundTimes from './RoundTimes.vue';
 import { RouteNames } from '../router';
+import { toast } from 'vue3-toastify';
 
 const route = useRoute();
 const status = useStatusStore();
 const settings = useSettingsStore();
-const logs = useLogStore();
 const favorites = useFavoritesStore();
 
 const broadcastId = ref<string>(route.params.id as string);
@@ -56,12 +55,12 @@ function fetchBroadcast() {
         broadcast.value = response.data;
       } else {
         error.value = 'Failed to load broadcast';
-        logs.error(`Error loading broadcast ${broadcastId.value}`);
+        toast.error('Error loading broadcast');
       }
     })
-    .catch(err => {
+    .catch(() => {
       error.value = 'An error occurred while loading the broadcast';
-      logs.error(`Error loading broadcast ${broadcastId.value}: ${err}`);
+      toast.error('Error loading broadcast');
     })
     .finally(() => {
       isLoading.value = false;

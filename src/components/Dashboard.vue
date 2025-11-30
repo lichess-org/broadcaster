@@ -1,9 +1,7 @@
 <script setup lang="ts">
-import { useLogStore } from '../stores/logs';
 import { useStatusStore } from '../stores/status';
 import LogViewer from './LogViewer.vue';
 
-const logs = useLogStore();
 const status = useStatusStore();
 </script>
 
@@ -23,7 +21,8 @@ const status = useStatusStore();
     <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
       <p class="text-sm font-medium leading-6 text-gray-400">Upload Queue</p>
       <p class="mt-2 flex items-baseline gap-x-2">
-        <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.queueSize }}</span>
+        <!-- <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.queueSize }}</span> -->
+         todo
       </p>
     </div>
     <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
@@ -35,7 +34,8 @@ const status = useStatusStore();
     <div class="bg-gray-700 px-4 py-6 sm:px-6 lg:px-8">
       <p class="text-sm font-medium leading-6 text-gray-400">Games</p>
       <p class="mt-2 flex items-baseline gap-x-2">
-        <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.files.size }}</span>
+        <!-- <span class="text-4xl font-semibold tracking-tight text-white">{{ logs.files.size }}</span> -->
+         todo
       </p>
     </div>
   </div>

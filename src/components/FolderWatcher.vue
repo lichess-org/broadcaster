@@ -9,6 +9,7 @@ import { computed } from 'vue';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { BroadcastRound } from '../types';
 import { lichessApiClient } from '../client';
+import { toast } from 'vue3-toastify';
 
 const logs = useLogStore();
 const status = useStatusStore();
@@ -32,9 +33,12 @@ async function selectPgnFolder() {
     }
 
     if (await multipleGamesPgnFiles(selected)) {
-      logs.error(
+      toast.error(
         `Multiple games.pgn files were found within the selected folder (${selected}).
          Make sure you select the Round folder and not the Tournament folder.`,
+        {
+          autoClose: false,
+        },
       );
       return;
     }
@@ -111,8 +115,12 @@ async function uploadMultiGamePgn(path: string): Promise<void> {
 
 async function resetAndReupload() {
   if (!roundStatus.value) return;
+  toast.info('Resetting round and re-uploading PGNs');
 
-  logs.info('Resetting round and re-uploading PGNs');
+  await logs.info('Resetting round and re-uploading PGNs', {
+    broadcastTournamentId: props.round.tour.id,
+    roundId: props.round.round.id,
+  });
 
   await lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/reset', {
     params: {
