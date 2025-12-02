@@ -37,7 +37,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
     const database = await getDb();
     await database.execute(
-      "UPDATE settings SET value = $1 WHERE key = 'lichess_url'",
+      "INSERT INTO settings (key, value) VALUES ('lichess_url', $1) ON CONFLICT(key) DO UPDATE SET value = $1",
       [normalizedUrl],
     );
   };
