@@ -41,6 +41,12 @@
       "allow": [
         {
           "path": "**"
+        },
+        {
+          "path": "$APPDATA"
+        },
+        {
+          "path": "$APPCONFIG"
         }
       ]
     },
@@ -57,6 +63,7 @@
     "updater:default",
     "dialog:default",
     "process:default",
-    "deep-link:default"
+    "deep-link:default",
+    "sql:default"
   ]
 }

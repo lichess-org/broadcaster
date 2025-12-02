@@ -2,13 +2,12 @@
 import { ref } from 'vue';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
-import { useLogStore } from '../stores/logs';
 import AddUserToSidebar from './AddUserToSidebar.vue';
 import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { toast } from 'vue3-toastify';
+import { appConfigDir, appDataDir } from '@tauri-apps/api/path';
 
-const logs = useLogStore();
 const settings = useSettingsStore();
 const user = useUserStore();
 
@@ -17,6 +16,16 @@ const form = ref<{ lichessUrl: string }>({
 });
 
 const urlError = ref<string>('');
+
+const configDir = ref<string>('');
+appConfigDir().then(dir => {
+  configDir.value = dir;
+});
+
+const storageDir = ref<string>('');
+appDataDir().then(dir => {
+  storageDir.value = dir;
+});
 
 function validateUrl(url: string): boolean {
   if (!url || url.trim() === '') {
@@ -52,7 +61,6 @@ function clearAllData() {
 
 function logout() {
   user.logout();
-  logs.clear();
 }
 
 async function openDevTools() {
@@ -124,6 +132,12 @@ async function openDevTools() {
       <p class="mb-2 text-sm leading-6 text-gray-400">
         Click here to <a href="#" class="underline" @click.prevent="openDevTools()">open dev tools</a> to check for
         console errors.
+      </p>
+      <p class="mb-2 text-sm leading-6 text-gray-400">
+        This app stores data in a SQLite database in
+        <a href="#" class="underline" @click.prevent="openPath(configDir)">{{ configDir }}</a> and local storage files
+        in <a href="#" class="underline" @click.prevent="openPath(storageDir)">{{ storageDir }}</a
+        >.
       </p>
       <div class="mt-8">
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
