@@ -25,16 +25,16 @@ interface LogContext {
 }
 
 export const useLogStore = defineStore('logs', () => {
-  let db: Database | null = null;
+  let dbPromise: Promise<Database> | null = null;
 
   // Trigger for reactivity when logs change
   const logChangeCounter = ref(0);
 
   async function getDb(): Promise<Database> {
-    if (!db) {
-      db = await Database.load('sqlite:lichess-broadcaster.db');
+    if (!dbPromise) {
+      dbPromise = Database.load('sqlite:lichess-broadcaster.db');
     }
-    return db;
+    return dbPromise;
   }
 
   const add = async (message: string, type: LogType = LogType.Info, context?: LogContext): Promise<void> => {
