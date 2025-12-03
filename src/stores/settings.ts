@@ -8,7 +8,7 @@ import { AvailableUpdate } from '../types';
 export const useSettingsStore = defineStore('settings', () => {
   let dbPromise: Promise<Database> | null = null;
 
-  const lichessUrl = ref('');
+  const lichessUrl = ref('http://lichess.org');
   const version = ref('unknown');
   const updateAvailable = ref<AvailableUpdate | null>(null);
 

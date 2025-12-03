@@ -64,6 +64,7 @@
     "dialog:default",
     "process:default",
     "deep-link:default",
-    "sql:default"
+    "sql:default",
+    "sql:allow-execute"
   ]
 }

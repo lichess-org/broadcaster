@@ -7,6 +7,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { toast } from 'vue3-toastify';
 import { appConfigDir, appDataDir } from '@tauri-apps/api/path';
+import { RouteNames, router } from '../router';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -68,6 +69,7 @@ function clearAllData() {
 
 function logout() {
   user.logout();
+  router.push({ name: RouteNames.Home });
 }
 
 async function openDevTools() {
