@@ -59,7 +59,9 @@ export const useSettingsStore = defineStore('settings', () => {
   };
 
   // Load lichessUrl on store initialization
-  loadLichessUrl();
+  loadLichessUrl().catch((err) => {
+    console.error('Failed to load lichessUrl:', err);
+  });
 
   return {
     lichessUrl,
