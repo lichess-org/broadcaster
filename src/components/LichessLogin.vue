@@ -87,7 +87,6 @@ async function login() {
     await openUrl(urlToOpen);
 
     await onUrl(url => {
-      console.log({ url });
       const code = getQueryParam('code', url);
 
       if (!code) {
