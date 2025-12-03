@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
 import AddUserToSidebar from './AddUserToSidebar.vue';
@@ -7,6 +7,7 @@ import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
 import { toast } from 'vue3-toastify';
 import { appConfigDir, appDataDir } from '@tauri-apps/api/path';
+import { RouteNames, router } from '../router';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -14,6 +15,14 @@ const user = useUserStore();
 const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
 });
+
+// Update form when settings change (e.g., after loading from DB)
+watch(
+  () => settings.lichessUrl,
+  newUrl => {
+    form.value.lichessUrl = newUrl;
+  },
+);
 
 const urlError = ref<string>('');
 
@@ -49,8 +58,7 @@ async function save() {
     return;
   }
 
-  settings.setLichessUrl(form.value.lichessUrl);
-  form.value.lichessUrl = settings.lichessUrl;
+  await settings.setLichessUrl(form.value.lichessUrl);
   toast.success('Settings updated successfully');
 }
 
@@ -61,6 +69,7 @@ function clearAllData() {
 
 function logout() {
   user.logout();
+  router.push({ name: RouteNames.Home });
 }
 
 async function openDevTools() {

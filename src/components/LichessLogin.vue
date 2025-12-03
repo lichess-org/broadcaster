@@ -8,6 +8,7 @@ import { useUserStore } from '../stores/user';
 import { openUrl } from '@tauri-apps/plugin-opener';
 import { getQueryParam } from '../url';
 import { getIdentifier } from '@tauri-apps/api/app';
+import { toast } from 'vue3-toastify';
 
 const settings = useSettingsStore();
 const user = useUserStore();
@@ -89,6 +90,9 @@ async function login() {
       const code = getQueryParam('code', url);
 
       if (!code) {
+        const error = getQueryParam('error', url);
+        const errorDescription = getQueryParam('error_description', url);
+        toast.error(`Login error: ${error} ${errorDescription}`);
         throw new Error('No code received in OAuth callback');
       }
 
@@ -107,16 +111,20 @@ async function login() {
           headers,
         })
         .then(response => {
-          if (response.data) {
+          if (response.error) {
+            toast.error(`${response.error.error} ${response.error.error_description}`);
+          } else if (response.data) {
             user.setAccessToken(response.data);
           }
         })
         .catch(error => {
           console.error('Error fetching token:', error);
+          toast.error(`Error fetching token: ${error}`);
         });
     });
   } catch (error) {
     console.error('Error starting OAuth server:', error);
+    toast.error(`Error starting OAuth server: ${error}`);
   }
 }
 </script>
