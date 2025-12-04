@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { notify } from '../notify';
 import Database from '@tauri-apps/plugin-sql';
+import { DB_CONNECTION_STRING } from '../const';
 
 enum LogType {
   Info = 'info',
@@ -32,7 +33,7 @@ export const useLogStore = defineStore('logs', () => {
 
   async function getDb(): Promise<Database> {
     if (!dbPromise) {
-      dbPromise = Database.load('sqlite:lichess-broadcaster.db');
+      dbPromise = Database.load(DB_CONNECTION_STRING);
     }
     return dbPromise;
   }

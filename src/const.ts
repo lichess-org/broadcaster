@@ -1,1 +1,1 @@
-export const DB_CONN = 'sqlite:lichess-broadcaster.db';
+export const DB_CONNECTION_STRING = 'sqlite:lichess-broadcaster.db';

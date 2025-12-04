@@ -4,6 +4,7 @@ import { getName, getVersion } from '@tauri-apps/api/app';
 import { platform } from '@tauri-apps/plugin-os';
 import Database from '@tauri-apps/plugin-sql';
 import { AvailableUpdate } from '../types';
+import { DB_CONNECTION_STRING } from '../const';
 
 export const useSettingsStore = defineStore('settings', () => {
   let dbPromise: Promise<Database> | null = null;
@@ -14,7 +15,7 @@ export const useSettingsStore = defineStore('settings', () => {
 
   async function getDb(): Promise<Database> {
     if (!dbPromise) {
-      dbPromise = Database.load('sqlite:lichess-broadcaster.db');
+      dbPromise = Database.load(DB_CONNECTION_STRING);
     }
     return dbPromise;
   }

@@ -3,6 +3,7 @@ import { ref } from 'vue';
 import Database from '@tauri-apps/plugin-sql';
 import { AccessTokenResponse } from '../types';
 import { lichessApiClient } from '../client';
+import { DB_CONNECTION_STRING } from '../const';
 
 export const useUserStore = defineStore('user', () => {
   let dbPromise: Promise<Database> | null = null;
@@ -19,7 +20,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function getDb(): Promise<Database> {
     if (!dbPromise) {
-      dbPromise = Database.load('sqlite:lichess-broadcaster.db');
+      dbPromise = Database.load(DB_CONNECTION_STRING);
     }
     return dbPromise;
   }
@@ -114,7 +115,6 @@ export const useUserStore = defineStore('user', () => {
     expiresAt.value = null;
     username.value = null;
 
-    // Clear from DB
     getDb()
       .then(db => {
         db.execute(
