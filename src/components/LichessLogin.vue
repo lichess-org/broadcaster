@@ -110,11 +110,11 @@ async function login() {
           },
           headers,
         })
-        .then(response => {
+        .then(async response => {
           if (response.error) {
             toast.error(`${response.error.error} ${response.error.error_description}`);
           } else if (response.data) {
-            user.setAccessToken(response.data);
+            await user.setAccessToken(response.data);
           }
         })
         .catch(error => {

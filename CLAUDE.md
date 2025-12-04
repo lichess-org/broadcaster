@@ -10,7 +10,7 @@ Lichess Broadcaster is a cross-platform desktop application built with Tauri (Ru
 
 - **Frontend**: Vue 3 + TypeScript + Tailwind CSS + Vite
 - **Backend**: Rust (Tauri v2)
-- **State Management**: Pinia with persistence
+- **State Management**: Pinia with persistence via sqlite
 - **Routing**: Vue Router
 - **API Client**: openapi-fetch with @lichess-org/types
 - **Testing**: Vitest with jsdom
@@ -131,7 +131,7 @@ pnpx tsx sample-data/generate/index.ts errors path/to/folder
 
 ### State Persistence
 
-User store and settings store use `pinia-plugin-persistedstate` to persist across app restarts.
+User, settings, and favorites stores use sqlite to persist data across app restarts.
 
 ### Type Safety
 

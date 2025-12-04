@@ -2,6 +2,7 @@ import { computed, ref } from 'vue';
 import { defineStore } from 'pinia';
 import Database from '@tauri-apps/plugin-sql';
 import { useUserStore } from './user';
+import { DB_CONNECTION_STRING } from '../const';
 
 type SidebarUser = { label: string; username: string };
 
@@ -19,7 +20,7 @@ export const useFavoritesStore = defineStore('favorites', () => {
 
   async function getDb(): Promise<Database> {
     if (!dbPromise) {
-      dbPromise = Database.load('sqlite:lichess-broadcaster.db');
+      dbPromise = Database.load(DB_CONNECTION_STRING);
     }
     return dbPromise;
   }
