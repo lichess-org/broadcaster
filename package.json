@@ -48,11 +48,11 @@
     "better-sqlite3": "^12.5.0",
     "chess.js": "^1.4.0",
     "jsdom": "^27.2.0",
-    "prettier": "^3.7.3",
+    "prettier": "^3.7.4",
     "tailwindcss": "^4.1.17",
     "typescript": "^5.9.3",
     "vite": "^7.2.6",
-    "vitest": "^4.0.14",
+    "vitest": "^4.0.15",
     "vue-tsc": "^3.1.5"
   },
   "packageManager": "pnpm@10.24.0+sha512.01ff8ae71b4419903b65c60fb2dc9d34cf8bb6e06d03bde112ef38f7a34d6904c424ba66bea5cdcf12890230bf39f9580473140ed9c946fef328b6e5238a345a",
