@@ -15,7 +15,7 @@ export function lichessApiClient(addlHeaders?: Record<string, string>) {
   headers.set('User-Agent', uaPrefix + ' as:' + (user.username ?? 'anon'));
 
   if (user.accessToken) {
-    headers.set('Authorization', `Bearer ${user.accessToken.access_token}`);
+    headers.set('Authorization', `Bearer ${user.accessToken}`);
   }
 
   if (addlHeaders) {

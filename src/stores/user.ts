@@ -7,7 +7,7 @@ import { lichessApiClient } from '../client';
 export const useUserStore = defineStore('user', () => {
   let dbPromise: Promise<Database> | null = null;
 
-  const accessToken = ref<AccessTokenResponse | null>(null);
+  const accessToken = ref<string | null>(null);
   const expiresAt = ref<number | null>(null);
   const username = ref<string | null>(null);
 
@@ -26,10 +26,7 @@ export const useUserStore = defineStore('user', () => {
 
   async function getSettingValue(key: string): Promise<string | null> {
     const database = await getDb();
-    const result = await database.select<Array<{ value: string }>>(
-      'SELECT value FROM settings WHERE key = ?',
-      [key],
-    );
+    const result = await database.select<Array<{ value: string }>>('SELECT value FROM settings WHERE key = ?', [key]);
 
     if (result.length > 0) {
       return result[0].value;
@@ -41,13 +38,13 @@ export const useUserStore = defineStore('user', () => {
     const value = await getSettingValue(dbKeys.accessToken);
 
     if (value) {
-      accessToken.value = JSON.parse(value) as AccessTokenResponse;
+      accessToken.value = value;
     }
   }
 
   async function loadExpiresAt(): Promise<void> {
     const value = await getSettingValue(dbKeys.expiresAt);
-    
+
     if (value) {
       expiresAt.value = parseInt(value, 10);
     }
@@ -62,14 +59,14 @@ export const useUserStore = defineStore('user', () => {
   }
 
   function setAccessToken(token: AccessTokenResponse) {
-    accessToken.value = token;
+    accessToken.value = token.access_token;
     expiresAt.value = Date.now() + token.expires_in * 1000;
 
     getDb()
       .then(db => {
         db.execute(
           `INSERT INTO settings (key, value) VALUES ('${dbKeys.accessToken}', $1) ON CONFLICT(key) DO UPDATE SET value = $1`,
-          [JSON.stringify(token)],
+          [token.access_token],
         );
         db.execute(
           `INSERT INTO settings (key, value) VALUES ('${dbKeys.expiresAt}', $1) ON CONFLICT(key) DO UPDATE SET value = $1`,
@@ -129,7 +126,10 @@ export const useUserStore = defineStore('user', () => {
     // Clear from DB
     getDb()
       .then(db => {
-        db.execute(`DELETE FROM settings WHERE key IN ('${dbKeys.accessToken}', '${dbKeys.expiresAt}', '${dbKeys.username}')`, []);
+        db.execute(
+          `DELETE FROM settings WHERE key IN ('${dbKeys.accessToken}', '${dbKeys.expiresAt}', '${dbKeys.username}')`,
+          [],
+        );
       })
       .catch(err => console.error('Failed to clear user data:', err));
   }
