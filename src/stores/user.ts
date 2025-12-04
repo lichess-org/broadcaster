@@ -34,6 +34,15 @@ export const useUserStore = defineStore('user', () => {
     return null;
   }
 
+  async function updateSettingValue(key: string, value: string): Promise<void> {
+    const database = await getDb();
+    await database.execute(`INSERT INTO settings (key, value) VALUES (?, ?) ON CONFLICT(key) DO UPDATE SET value = ?`, [
+      key,
+      value,
+      value,
+    ]);
+  }
+
   async function loadAccessToken(): Promise<void> {
     const value = await getSettingValue(dbKeys.accessToken);
 
@@ -62,18 +71,8 @@ export const useUserStore = defineStore('user', () => {
     accessToken.value = token.access_token;
     expiresAt.value = Date.now() + token.expires_in * 1000;
 
-    getDb()
-      .then(db => {
-        db.execute(
-          `INSERT INTO settings (key, value) VALUES ('${dbKeys.accessToken}', $1) ON CONFLICT(key) DO UPDATE SET value = $1`,
-          [token.access_token],
-        );
-        db.execute(
-          `INSERT INTO settings (key, value) VALUES ('${dbKeys.expiresAt}', $1) ON CONFLICT(key) DO UPDATE SET value = $1`,
-          [expiresAt.value!.toString()],
-        );
-      })
-      .catch(err => console.error('Failed to save access token:', err));
+    updateSettingValue(dbKeys.accessToken, token.access_token);
+    updateSettingValue(dbKeys.expiresAt, expiresAt.value!.toString());
 
     updateUser();
   }
@@ -86,15 +85,7 @@ export const useUserStore = defineStore('user', () => {
           logout(false);
         } else if (response.data?.username) {
           username.value = response.data.username;
-
-          getDb()
-            .then(db => {
-              db.execute(
-                `INSERT INTO settings (key, value) VALUES ('${dbKeys.username}', $1) ON CONFLICT(key) DO UPDATE SET value = $1`,
-                [response.data.username],
-              );
-            })
-            .catch(err => console.error('Failed to save username:', err));
+          updateSettingValue(dbKeys.username, response.data.username);
         }
       });
   }
