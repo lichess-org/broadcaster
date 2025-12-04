@@ -29,5 +29,21 @@ pub fn migrations() -> Vec<Migration> {
             INSERT INTO settings (key, value) VALUES ('lichess_url', 'https://lichess.org');",
             kind: MigrationKind::Up,
         },
+        Migration {
+            version: 3,
+            description: "create_favorites_tables",
+            sql: "CREATE TABLE pinned_users (
+                username TEXT PRIMARY KEY,
+                created_at INTEGER NOT NULL
+            );
+            CREATE INDEX idx_pinned_users_created_at ON pinned_users(created_at ASC);
+            CREATE TABLE pinned_broadcasts (
+                id TEXT PRIMARY KEY,
+                name TEXT NOT NULL,
+                created_at INTEGER NOT NULL
+            );
+            CREATE INDEX idx_pinned_broadcasts_created_at ON pinned_broadcasts(created_at ASC);",
+            kind: MigrationKind::Up,
+        },
     ]
 }
