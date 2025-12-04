@@ -68,25 +68,24 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
-  function setAccessToken(token: AccessTokenResponse) {
+  async function setAccessToken(token: AccessTokenResponse) {
     accessToken.value = token.access_token;
     expiresAt.value = Date.now() + token.expires_in * 1000;
 
-    updateSettingValue(dbKeys.accessToken, token.access_token);
-    updateSettingValue(dbKeys.expiresAt, expiresAt.value!.toString());
-
-    updateUser();
+    await updateSettingValue(dbKeys.accessToken, token.access_token);
+    await updateSettingValue(dbKeys.expiresAt, expiresAt.value!.toString());
+    await updateUser();
   }
 
-  function updateUser() {
-    lichessApiClient()
+  async function updateUser() {
+    await lichessApiClient()
       .GET('/api/account')
-      .then(response => {
+      .then(async response => {
         if (!response.response.ok) {
           logout(false);
         } else if (response.data?.username) {
           username.value = response.data.username;
-          updateSettingValue(dbKeys.username, response.data.username);
+          await updateSettingValue(dbKeys.username, response.data.username);
         }
       });
   }
