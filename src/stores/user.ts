@@ -117,8 +117,8 @@ export const useUserStore = defineStore('user', () => {
     getDb()
       .then(db => {
         db.execute(
-          `DELETE FROM settings WHERE key IN ('${dbKeys.accessToken}', '${dbKeys.expiresAt}', '${dbKeys.username}')`,
-          [],
+          `DELETE FROM settings WHERE key IN (?, ?, ?)`,
+          [dbKeys.accessToken, dbKeys.expiresAt, dbKeys.username],
         );
       })
       .catch(err => console.error('Failed to clear user data:', err));
