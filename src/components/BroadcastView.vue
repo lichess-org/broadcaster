@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
-import { useRoute, onBeforeRouteUpdate } from 'vue-router';
+import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
 import { LichessBroadcastWithRounds } from '../types';
 import { lichessApiClient } from '../client';
 import { useStatusStore } from '../stores/status';
@@ -19,6 +19,7 @@ import { RouteNames } from '../router';
 import { toast } from 'vue3-toastify';
 
 const route = useRoute();
+const router = useRouter();
 const status = useStatusStore();
 const settings = useSettingsStore();
 const favorites = useFavoritesStore();
@@ -75,6 +76,12 @@ function togglePin() {
   } else {
     favorites.pinBroadcast(broadcast.value.tour.id, broadcast.value.tour.name);
   }
+}
+
+function handleUnpin() {
+  favorites.unpinBroadcast(broadcastId.value);
+  toast.success('Broadcast unpinned');
+  router.push({ name: RouteNames.Home });
 }
 
 fetchBroadcast();
@@ -200,6 +207,25 @@ onBeforeRouteUpdate(to => {
     <ExclamationTriangleIcon class="mx-auto h-12 w-12 text-red-400" />
     <h3 class="mt-2 text-sm font-semibold text-gray-200">Error loading broadcast</h3>
     <p class="mt-1 text-sm text-gray-300">{{ error }}</p>
+
+    <div class="mt-6 flex justify-center gap-3">
+      <button
+        v-if="favorites.isBroadcastPinned(broadcastId)"
+        @click="handleUnpin"
+        type="button"
+        class="inline-flex items-center gap-x-1.5 rounded-md bg-yellow-600 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-yellow-500"
+      >
+        <BookmarkIconSolid class="h-4 w-4" />
+        Unpin Broadcast
+      </button>
+      <button
+        @click="router.back()"
+        type="button"
+        class="inline-flex items-center rounded-md bg-white/10 px-3 py-2 text-sm font-semibold text-white shadow-xs hover:bg-white/20"
+      >
+        Go Back
+      </button>
+    </div>
   </div>
 
   <div v-else class="text-center mt-12">
