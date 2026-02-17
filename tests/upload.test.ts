@@ -18,8 +18,12 @@ beforeAll(() => {
 });
 
 describe('filters files to upload', () => {
-  it('returns a single multi-game PGN', () => {
-    expect(filesToUpload(['/path/to/games.pgn', '/path/to/game-1.pgn'])).toEqual(['/path/to/games.pgn']);
+  it('uses individual PGN files when they exist alongside games.pgn', () => {
+    expect(filesToUpload(['/path/to/games.pgn', '/path/to/game-1.pgn'])).toEqual(['/path/to/game-1.pgn']);
+  });
+
+  it('uses games.pgn when it is the only PGN file', () => {
+    expect(filesToUpload(['/path/to/games.pgn', '/path/to/image.jpg'])).toEqual(['/path/to/games.pgn']);
   });
 
   it('returns a list of PGN files', () => {

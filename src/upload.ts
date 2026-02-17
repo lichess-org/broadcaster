@@ -29,12 +29,13 @@ export function sortFiles(files: string[]): string[] {
 }
 
 export function filesToUpload(files: string[]): string[] {
-  const multiGamePgn = files.find(isMultiGamePgn);
+  const pgnFiles = files.filter(isPgnFile);
+  const otherPgnFiles = pgnFiles.filter(f => !isMultiGamePgn(f));
 
-  if (multiGamePgn) {
-    return [multiGamePgn];
+  if (otherPgnFiles.length > 0) {
+    return sortFiles(otherPgnFiles);
   } else {
-    return sortFiles(files.filter(isPgnFile));
+    return pgnFiles; // only games.pgn, or nothing
   }
 }
 

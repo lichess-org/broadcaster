@@ -98,8 +98,9 @@ function handleFolderChange(event: WatchEvent): void {
 
 async function uploadMultiGamePgn(path: string): Promise<void> {
   const files = await fileList(path);
-  const multiGamePgn = files.find(file => isMultiGamePgn(file));
-  if (multiGamePgn) {
+  const hasMultiGamePgn = files.some(file => isMultiGamePgn(file));
+  const hasOtherPgnFiles = files.some(file => file.endsWith('.pgn') && !isMultiGamePgn(file));
+  if (hasMultiGamePgn && !hasOtherPgnFiles) {
     await uploadFolderToRound(props.round.round.id, path);
   }
 }
@@ -164,6 +165,7 @@ async function resetAndReupload() {
         <strong>tournament</strong> folder.
       </p>
     </div>
+    <!--
     <div
       v-else-if="!status.roundHasMultiGamePgn(round.round.id)"
       class="bg-yellow-100 border-l-8 border-yellow-500 text-yellow-700 p-4 my-4"
@@ -178,6 +180,7 @@ async function resetAndReupload() {
         >)
       </p>
     </div>
+    -->
   </div>
 
   <div v-else class="border-gray-700 border-2 p-6 my-4">
