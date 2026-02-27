@@ -86,6 +86,18 @@ it('sorts files with multiple digits', () => {
   ]);
 });
 
+it('sorts files with multiple digits with full paths', () => {
+  const files = ['C:\\Fide Candidates 2026\\round-1\\game-1.pgn', 'C:\\Fide Candidates 2026\\round-1\\game-10.pgn', 'C:\\Fide Candidates 2026\\round-1\\game-11.pgn', 'C:\\Fide Candidates 2026\\round-1\\game-2.pgn', 'C:\\Fide Candidates 2026\\round-1\\game-20.pgn', 'C:\\Fide Candidates 2026\\round-1\\game-3.pgn'];
+  expect(sortFiles(files)).toEqual([
+    'C:\\Fide Candidates 2026\\round-1\\game-1.pgn',
+    'C:\\Fide Candidates 2026\\round-1\\game-2.pgn',
+    'C:\\Fide Candidates 2026\\round-1\\game-3.pgn',
+    'C:\\Fide Candidates 2026\\round-1\\game-10.pgn',
+    'C:\\Fide Candidates 2026\\round-1\\game-11.pgn',
+    'C:\\Fide Candidates 2026\\round-1\\game-20.pgn',
+  ]);
+});
+
 it('returns a PGN name', () => {
   const tags: BroadcastPgnPushTags = { White: 'Magnus Carlsen' };
   expect(pgnTag('White', tags)).toBe('Magnus Carlsen');
