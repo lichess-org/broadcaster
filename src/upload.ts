@@ -24,7 +24,7 @@ export async function fileList(folder: string, recursive: boolean = false): Prom
 }
 
 export function sortFiles(files: string[]): string[] {
-  const gameId = (file: string) => Number.parseInt(/\d+/.exec(file)?.[0] ?? '0', 10);
+  const gameId = (file: string) => Number.parseInt(/(\d+)\D*$/.exec(file)?.[1] ?? '0', 10);
   return files.sort((a, b) => gameId(a) - gameId(b));
 }
 
