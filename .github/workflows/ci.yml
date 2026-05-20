@@ -15,6 +15,7 @@ jobs:
           - 22
         os:
           - ubuntu-latest
+          - ubuntu-22.04-arm
           - macos-latest
           - windows-latest
         script:
