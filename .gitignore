@@ -28,3 +28,14 @@ src/assets/mask-1.png
 src/assets/rounded.png
 
 todo.md
+
+# Devenv
+.devenv*
+devenv.local.nix
+devenv.local.yaml
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
