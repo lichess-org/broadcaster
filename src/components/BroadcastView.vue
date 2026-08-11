@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router';
-import { LichessBroadcastWithRounds } from '../types';
+import { LichessBroadcastWithRoundsAndFullGroup } from '../types';
 import { lichessApiClient } from '../client';
 import { useStatusStore } from '../stores/status';
 import { useSettingsStore } from '../stores/settings';
@@ -26,7 +26,7 @@ const favorites = useFavoritesStore();
 
 const broadcastId = ref<string>(route.params.id as string);
 const isLoading = ref<boolean>(true);
-const broadcast = ref<LichessBroadcastWithRounds | null>(null);
+const broadcast = ref<LichessBroadcastWithRoundsAndFullGroup | null>(null);
 const error = ref<string | null>(null);
 
 const hasRounds = computed<boolean>(() => {

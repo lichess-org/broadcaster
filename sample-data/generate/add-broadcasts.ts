@@ -23,9 +23,11 @@ for (let i = 1; i <= 100; i++) {
     showScores: faker.datatype.boolean(0.2),
     showRatingDiffs: faker.datatype.boolean(0.2),
     markdown: faker.lorem.text(),
-    'info.fideTc': faker.helpers.arrayElement(['rapid', 'blitz', 'standard']),
-    'info.timeZone': faker.helpers.arrayElement(['UTC', 'America/New_York', 'Europe/Paris']),
-    'info.website': faker.internet.url(),
+    info: {
+      fideTC: faker.helpers.arrayElement(['rapid', 'blitz', 'standard']),
+      timeZone: faker.helpers.arrayElement(['UTC', 'America/New_York', 'Europe/Paris']),
+      website: faker.internet.url(),
+    },
   };
 
   if (faker.datatype.boolean(0.3)) {

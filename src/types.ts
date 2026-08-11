@@ -5,7 +5,7 @@ export type AccessTokenResponse = operations['apiToken']['responses']['200']['co
 export type LichessPaginatedBroadcasts =
   operations['broadcastsByUser']['responses']['200']['content']['application/json'];
 export type LichessBroadcastByUser = components['schemas']['BroadcastByUser'];
-export type LichessBroadcastWithRounds = components['schemas']['BroadcastWithRounds'];
+export type LichessBroadcastWithRoundsAndFullGroup = components['schemas']['BroadcastWithRoundsAndFullGroup'];
 export type BroadcastRoundInfo = components['schemas']['BroadcastRoundInfo'];
 export type BroadcastPgnPushTags = components['schemas']['BroadcastPgnPushTags'];
 export type BroadcastRound = components['schemas']['BroadcastRound'];
