@@ -179,7 +179,7 @@ requestNotificationPermission();
                 </div>
                 <p class="text-xs text-gray-300 text-left">
                   Version <strong>{{ settings.updateAvailable.version }}</strong> is ready to install.
-                  <br>
+                  <br />
                   Current version: {{ settings.updateAvailable.currentVersion }}
                 </p>
               </button>
