@@ -76,10 +76,10 @@ async function pushPgnToRound(roundId: string, pgn: string): Promise<void> {
   }
 
   if (errors.length) {
-    await logs.error(errors.join(', '), { roundId });
+    logs.error(errors.join(', '));
   }
   if (successes.games > 0) {
-    await logs.info(`Uploaded ${successes.games} games, ${successes.moves} moves`, { roundId });
+    logs.info(`Uploaded ${successes.games} games, ${successes.moves} moves`);
   }
 }
 

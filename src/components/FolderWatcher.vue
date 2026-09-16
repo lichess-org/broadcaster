@@ -118,10 +118,7 @@ async function resetAndReupload() {
   if (!roundStatus.value) return;
   toast.info('Resetting round and re-uploading PGNs');
 
-  await logs.info('Resetting round and re-uploading PGNs', {
-    broadcastTournamentId: props.round.tour.id,
-    roundId: props.round.round.id,
-  });
+  logs.info('Resetting round and re-uploading PGNs');
 
   await lichessApiClient().POST('/api/broadcast/round/{broadcastRoundId}/reset', {
     params: {

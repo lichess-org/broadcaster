@@ -1,11 +1,10 @@
 <script setup lang="ts">
 import { onMounted, ref, watch } from 'vue';
-import { useLogStore, type Log } from '../stores/logs';
+import { useLogStore } from '../stores/logs';
 
 const logs = useLogStore();
 const logViewer = ref<HTMLElement | null>(null);
 const autoScroll = ref<boolean>(true);
-const displayedLogs = ref<Log[]>([]);
 
 function scrollToBottom(): void {
   if (logViewer.value) {
@@ -13,24 +12,11 @@ function scrollToBottom(): void {
   }
 }
 
-async function loadLogs(): Promise<void> {
-  displayedLogs.value = await logs.getLogs(1000);
-  if (autoScroll.value) {
-    await new Promise(resolve => setTimeout(resolve, 0));
-    scrollToBottom();
-  }
-}
-
 onMounted(() => {
-  loadLogs();
+  scrollToBottom();
 });
 
-watch(
-  () => logs.logChangeCounter,
-  () => {
-    loadLogs();
-  },
-);
+logs.$subscribe(() => autoScroll.value && scrollToBottom());
 
 watch(autoScroll, value => {
   if (value) {
@@ -42,18 +28,19 @@ watch(autoScroll, value => {
 <template>
   <ol
     ref="logViewer"
-    v-if="displayedLogs.length"
+    v-if="logs.logs.length"
     class="bg-gray-700 mt-4 p-2 text-sm font-mono flex flex-col overflow-y-auto h-[calc(80vh)]"
   >
     <li
-      v-for="log in displayedLogs"
-      :key="log.id"
-      class="text-gray-100"
+      v-for="log in logs.logs"
       :class="{
-        'text-red-400': log.type === 'error',
+        'text-gray-100': log.color === 'white',
+        'text-red-400': log.color === 'red',
+        'text-green-400': log.color === 'green',
+        'text-blue-400': log.color === 'blue',
       }"
     >
-      {{ new Date(log.timestamp).toLocaleTimeString() }} -
+      {{ log.date.toLocaleTimeString() }} -
       {{ log.message }}
     </li>
   </ol>
