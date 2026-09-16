@@ -41,12 +41,6 @@
       "allow": [
         {
           "path": "**"
-        },
-        {
-          "path": "$APPDATA"
-        },
-        {
-          "path": "$APPCONFIG"
         }
       ]
     },
