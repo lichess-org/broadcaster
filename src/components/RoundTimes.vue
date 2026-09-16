@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { computed } from 'vue';
 import { BroadcastRoundInfo } from '../types';
-import { delayDisplay, relativeTimeDisplay, timestampToLocalDatetime } from '../dates';
+import { relativeTimeDisplay, timestampToLocalDatetime } from '../dates';
 
 const props = defineProps<{
   round: BroadcastRoundInfo;
 }>();
-
-const delay = computed<string>(() => {
-  return delayDisplay(props.round.delay);
-});
 
 const relativeTime = computed<string>(() => {
   return relativeTimeDisplay(props.round.startsAt);
@@ -27,11 +23,5 @@ const startsAt = computed<string>(() => {
       <circle cx="1" cy="1" r="1" />
     </svg>
     <p class="whitespace-nowrap">{{ relativeTime }}</p>
-    <template v-if="delay">
-      <svg viewBox="0 0 2 2" class="h-0.5 w-0.5 flex-none fill-gray-300">
-        <circle cx="1" cy="1" r="1" />
-      </svg>
-      <p class="whitespace-nowrap">Move Delay: {{ delay }}</p>
-    </template>
   </div>
 </template>
