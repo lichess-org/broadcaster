@@ -58,7 +58,8 @@ jobs:
             libssl-dev \
             libwebkit2gtk-4.1-dev \
             libxdo-dev \
-            wget
+            wget \
+            xdg-utils
 
       - name: tauri build
         id: tauri-build
