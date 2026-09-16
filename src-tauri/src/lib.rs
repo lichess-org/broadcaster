@@ -3,8 +3,6 @@ use tauri::{AppHandle, Manager};
 #[cfg(not(target_os = "macos"))]
 use tauri_plugin_deep_link::DeepLinkExt;
 
-mod sql;
-
 pub fn run() {
     let _ = fix_path_env::fix();
 
@@ -32,11 +30,6 @@ pub fn run() {
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_shell::init())
         .plugin(tauri_plugin_updater::Builder::new().build())
-        .plugin(
-            tauri_plugin_sql::Builder::default()
-                .add_migrations("sqlite:lichess-broadcaster.db", sql::migrations())
-                .build(),
-        )
         .invoke_handler(tauri::generate_handler![open_dev_tools])
         .setup(|app| {
             if tauri::is_dev() {

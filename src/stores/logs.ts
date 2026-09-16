@@ -1,97 +1,56 @@
-import { defineStore } from 'pinia';
+import { acceptHMRUpdate, defineStore } from 'pinia';
 import { ref } from 'vue';
 import { notify } from '../notify';
-import Database from '@tauri-apps/plugin-sql';
-import { DB_CONNECTION_STRING } from '../const';
 
-enum LogType {
-  Info = 'info',
-  Error = 'error',
-}
+type LogType = 'info' | 'error';
+type LogColor = 'white' | 'red' | 'green' | 'blue';
 
-export interface Log {
-  id: number;
-  timestamp: number;
+interface Log {
+  date: Date;
   type: LogType;
   message: string;
-  broadcast_tournament_id: string | null;
-  round_id: string | null;
-  game_id: string | null;
-}
-
-interface LogContext {
-  broadcastTournamentId?: string;
-  roundId?: string;
-  gameId?: string;
+  color: LogColor;
 }
 
 export const useLogStore = defineStore('logs', () => {
-  let dbPromise: Promise<Database> | null = null;
+  const logs = ref<Log[]>([]);
+  const files = ref<Set<string>>(new Set());
+  const moveCount = ref(0);
+  const queueSize = ref(0);
 
-  // Trigger for reactivity when logs change
-  const logChangeCounter = ref(0);
-
-  async function getDb(): Promise<Database> {
-    if (!dbPromise) {
-      dbPromise = Database.load(DB_CONNECTION_STRING);
-    }
-    return dbPromise;
-  }
-
-  const add = async (message: string, type: LogType = LogType.Info, context?: LogContext): Promise<void> => {
-    const database = await getDb();
-    const timestamp = Date.now();
-
-    await database.execute(
-      'INSERT INTO logs (timestamp, type, message, broadcast_tournament_id, round_id, game_id) VALUES ($1, $2, $3, $4, $5, $6)',
-      [
-        timestamp,
-        type,
-        message,
-        context?.broadcastTournamentId ?? null,
-        context?.roundId ?? null,
-        context?.gameId ?? null,
-      ],
-    );
-
-    // Trigger reactivity
-    logChangeCounter.value++;
+  const add = (message: string, type: LogType = 'info', color: LogColor = 'white') => {
+    logs.value.push({
+      date: new Date(),
+      type,
+      message,
+      color,
+    });
   };
 
-  const info = async (message: string, context?: LogContext): Promise<void> => {
-    await add(message, LogType.Info, context);
+  const info = (message: string, color: LogColor = 'white') => {
+    add(message, 'info', color);
   };
 
-  const error = async (message: string, context?: LogContext): Promise<void> => {
-    await add(message, LogType.Error, context);
+  const error = (message: string) => {
+    add(message, 'error', 'red');
     notify('Error', message);
   };
 
-  const getLogs = async (limit: number = 1000): Promise<Log[]> => {
-    const database = await getDb();
-    const rows = await database.select<Log[]>(
-      'SELECT id, timestamp, type, message, broadcast_tournament_id, round_id, game_id FROM logs ORDER BY timestamp DESC LIMIT $1',
-      [limit],
-    );
-
-    return rows;
-  };
-
-  const clear = async (): Promise<void> => {
-    const database = await getDb();
-    await database.execute('DELETE FROM logs', []);
-
-    // Trigger reactivity
-    logChangeCounter.value++;
+  const clear = () => {
+    logs.value = [];
   };
 
   return {
-    add,
+    logs,
+    files,
+    moveCount,
+    queueSize,
     info,
     error,
-    getLogs,
     clear,
-
-    logChangeCounter,
   };
 });
+
+if (import.meta.hot) {
+  import.meta.hot.accept(acceptHMRUpdate(useLogStore, import.meta.hot));
+}

@@ -32,6 +32,7 @@
     "@tauri-apps/plugin-updater": "~2.9.0",
     "openapi-fetch": "^0.15.2",
     "pinia": "^3.0.4",
+    "pinia-plugin-persistedstate": "^4.7.1",
     "pkce-challenge": "^5.0.1",
     "vue": "^3.5.41",
     "vue-router": "^4.6.4",
@@ -41,10 +42,8 @@
     "@faker-js/faker": "^10.5.0",
     "@lichess-org/types": "^2.0.162",
     "@tauri-apps/cli": "^2.11.4",
-    "@types/better-sqlite3": "^7.6.13",
     "@types/node": "^24.13.3",
     "@vitejs/plugin-vue": "^6.0.8",
-    "better-sqlite3": "^12.11.1",
     "chess.js": "^1.4.0",
     "jsdom": "^27.4.0",
     "prettier": "^3.9.6",
@@ -61,7 +60,6 @@
       "esbuild"
     ],
     "ignoredBuiltDependencies": [
-      "better-sqlite3",
       "esbuild"
     ]
   }

@@ -142,12 +142,12 @@ async function openDevTools() {
         Click here to <a href="#" class="underline" @click.prevent="openDevTools()">open dev tools</a> to check for
         console errors.
       </p>
-      <p class="mb-2 text-sm leading-6 text-gray-400">
+      <!--<p class="mb-2 text-sm leading-6 text-gray-400">
         This app stores data in a SQLite database in
         <a href="#" class="underline" @click.prevent="openPath(configDir)">{{ configDir }}</a> and local storage files
         in <a href="#" class="underline" @click.prevent="openPath(storageDir)">{{ storageDir }}</a
         >.
-      </p>
+      </p>-->
       <div class="mt-8">
         <form class="flex items-start md:col-span-2" @submit.prevent="clearAllData()">
           <button
