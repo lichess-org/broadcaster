@@ -178,7 +178,9 @@ requestNotificationPermission();
                   <span class="font-semibold text-blue-300">Update Available</span>
                 </div>
                 <p class="text-xs text-gray-300 text-left">
-                  Version {{ settings.updateAvailable.version }} is ready to install
+                  Version <strong>{{ settings.updateAvailable.version }}</strong> is ready to install.
+                  <br>
+                  Current version: {{ settings.updateAvailable.currentVersion }}
                 </p>
               </button>
             </li>
