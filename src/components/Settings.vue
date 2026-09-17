@@ -2,6 +2,7 @@
 import { ref, watch } from 'vue';
 import { useSettingsStore } from '../stores/settings';
 import { useUserStore } from '../stores/user';
+import { useLogStore } from '../stores/logs';
 import AddUserToSidebar from './AddUserToSidebar.vue';
 import { invoke } from '@tauri-apps/api/core';
 import { openPath } from '@tauri-apps/plugin-opener';
@@ -11,6 +12,7 @@ import { RouteNames, router } from '../router';
 
 const settings = useSettingsStore();
 const user = useUserStore();
+const logs = useLogStore();
 
 const form = ref<{ lichessUrl: string }>({
   lichessUrl: settings.lichessUrl,
@@ -69,6 +71,7 @@ function clearAllData() {
 
 function logout() {
   user.logout();
+  logs.clear();
   router.push({ name: RouteNames.Home });
 }
 

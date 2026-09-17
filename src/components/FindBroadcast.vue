@@ -2,12 +2,17 @@
 import { ref } from 'vue';
 import { convertLichessUrlToDeepLink, openDeepLink } from '../deep-links';
 import { useSettingsStore } from '../stores/settings';
+import { RouteNames, router } from '../router';
 
 const settings = useSettingsStore();
 const url = ref<string>('');
 
 async function go() {
-  openDeepLink([convertLichessUrlToDeepLink(url.value)]);
+  try {
+    openDeepLink([convertLichessUrlToDeepLink(url.value)]);
+  } catch {
+    router.push({ name: RouteNames.NotFound });
+  }
 }
 </script>
 
